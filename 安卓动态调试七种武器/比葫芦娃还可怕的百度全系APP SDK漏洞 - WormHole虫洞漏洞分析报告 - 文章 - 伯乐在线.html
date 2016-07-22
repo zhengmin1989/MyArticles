@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)http://blog.jobbole.com/93923/ -->
+<html lang="zh-CN" prefix="og: http://ogp.me/ns#" class="js rgba borderradius boxshadow textshadow opacity cssanimations cssgradients csstransitions fontface generatedcontent video audio js"><!--<![endif]--><!-- BEGIN head --><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><div class="fit-vids-style">­<style>               .fluid-width-video-wrapper {                 width: 100%;                              position: relative;                       padding: 0;                            }                                                                                   .fluid-width-video-wrapper iframe,        .fluid-width-video-wrapper object,        .fluid-width-video-wrapper embed {           position: absolute;                       top: 0;                                   left: 0;                                  width: 100%;                              height: 100%;                          }                                       </style></div><script src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/cm.js" charset="utf-8"></script><script src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/shares.php" charset="utf-8"></script><script src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/id.php" charset="utf-8"></script>
+
+	<!-- Title -->
+	
+	
+	<!-- Meta Tags -->
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- Favicon & Mobileicon -->
+	<link rel="shortcut icon" href="http://jbcdn2.b0.upaiyun.com/2013/12/favicon.png">
+	<link rel="apple-touch-icon" href="http://jbcdn2.b0.upaiyun.com/2013/12/jobbole-blog-logo-mobile.png">
+	
+	<!-- RSS, Atom & Pingbacks -->
+		<link rel="alternate" title="文章 – 伯乐在线 RSS Feed" href="http://blog.jobbole.com/feed/">
+		<link rel="alternate" title="RSS .92" href="http://blog.jobbole.com/feed/rss/">
+	<link rel="alternate" title="Atom 0.3" href="http://blog.jobbole.com/feed/atom/">
+	<link rel="pingback" href="http://blog.jobbole.com/xmlrpc.php">
+	
+	<!-- Theme Hook -->
+	
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.13 - http://yoast.com/wordpress/seo/ -->
+<title>比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线</title>
+<meta name="description" content="「你不应该给软件装后门，因为你不能保证这个后门只有好人能够使用。」—— 苹果 CEO 库克">
+<link rel="canonical" href="http://blog.jobbole.com/93923/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线">
+<meta property="og:description" content="「你不应该给软件装后门，因为你不能保证这个后门只有好人能够使用。」—— 苹果 CEO 库克">
+<meta property="og:url" content="http://blog.jobbole.com/93923/">
+<meta property="og:site_name" content="文章 - 伯乐在线">
+<meta property="og:image" content="http://ww3.sinaimg.cn/mw690/8aef0dd3jw1exmvf06yy1j20h30eq776.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/mw690/8aef0dd3jw1exmvf0qupxj20u00cyn3y.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/mw690/8aef0dd3jw1exmvf19rwij20hs0budgq.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/mw690/8aef0dd3jw1exmvf1n6hjj20iq04w3zv.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/mw690/8aef0dd3jw1exmvf23edjj20py0f5n34.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/mw690/8aef0dd3jw1exmvf2vlggj210m0haqbr.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/mw690/8aef0dd3jw1exmvf3fw95j204k05iwef.jpg">
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="stylesheet" id="dashicons-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/dashicons.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="thickbox-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/thickbox.css" type="text/css" media="all">
+<link rel="stylesheet" id="fancybox-css-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jquery.fancybox.css" type="text/css" media="all">
+<link rel="stylesheet" id="jobbole-wp-css-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jobbole-wp-plugin.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon_colorbox_css-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/colorbox.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon_style-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/crayon_style.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon_global_style-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/global_style.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-theme-github-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/github.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-font-monaco-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/monaco.css" type="text/css" media="all">
+<link rel="stylesheet" id="v48fv_images-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/images.css" type="text/css" media="all">
+<link rel="stylesheet" id="v48fv_front-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/front.css" type="text/css" media="all">
+<link rel="stylesheet" id="v48fv_common-css" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/common.css" type="text/css" media="all">
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jquery.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jquery-migrate.min.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jquery.fancybox.pack.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/superfish.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/menu-effects.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var JobboleAjax = {"ajaxurl":"http:\/\/blog.jobbole.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jobbole-wp-plugin.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jquery.colorbox-min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"2.7.1.1","is_admin":"0","ajaxurl":"http:\/\/blog.jobbole.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"\u4f7f\u7528 %s \u590d\u5236\uff0c\u4f7f\u7528 %s \u7c98\u8d34\u3002","minimize":"\u70b9\u51fb\u5c55\u5f00\u4ee3\u7801"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/util.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonTagEditorSettings = {"home_url":"http:\/\/blog.jobbole.com","css":"crayon-te","css_selected":"crayon-selected","code_css":"#crayon-code","url_css":"#crayon-url","url_info_css":"#crayon-te-url-info","lang_css":"#crayon-lang","title_css":"#crayon-title","mark_css":"#crayon-mark","range_css":"#crayon-range","inline_css":"crayon-inline","inline_hide_css":"crayon-hide-inline","inline_hide_only_css":"crayon-hide-inline-only","hl_css":"#crayon-highlight","switch_html":"#content-html","switch_tmce":"#content-tmce","tinymce_button_generic":".mce-btn","tinymce_button":"a.mce_crayon_tinymce,.mce-i-crayon_tinymce","tinymce_button_unique":"mce_crayon_tinymce","tinymce_highlight":"mce-active","submit_css":"#crayon-te-ok","cancel_css":"#crayon-te-cancel","content_css":"#crayon-te-content","dialog_title_css":"#crayon-te-title","submit_wrapper_css":"#crayon-te-submit-wrapper","data_value":"data-value","attr_sep":":","css_sep":"_","fallback_lang":"default","add_text":"Add Code","edit_text":"Edit Code","quicktag_text":"crayon","submit_add":"\u63d2\u5165","submit_edit":"\u4fdd\u5b58","bar":"#crayon-te-bar","bar_content":"#crayon-te-bar-content","extensions":{"scpt":"applescript","applescript":"applescript","swf":"as","fla":"as","cs":"c#","h":"c++","hh":"c++","hpp":"c++","hxx":"c++","h++":"c++","cc":"c++","cpp":"c++","cxx":"c++","c++":"c++","pas":"delphi","java":"java","class":"java","jar":"java","mv":"miva","mvc":"miva","mvt":"miva","m":"objc","mm":"objc","psc":"papyrus","pl":"perl","py":"python","pyw":"python","pyc":"python","pyo":"python","pyd":"python","rb":"ruby","rbx":"ruby","rhtml":"ruby","vbs":"vb"}};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/crayon_tag_editor.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jquery.popup.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/crayon.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/modernizr.js"></script>
+<link rel="https://api.w.org/" href="http://blog.jobbole.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.jobbole.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blog.jobbole.com/wp-includes/wlwmanifest.xml"> 
+<link rel="shortlink" href="http://blog.jobbole.com/?p=93923">
+<link rel="alternate" type="application/json+oembed" href="http://blog.jobbole.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fblog.jobbole.com%2F93923%2F">
+<link rel="alternate" type="text/xml+oembed" href="http://blog.jobbole.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fblog.jobbole.com%2F93923%2F&amp;format=xml">
+<script type="text/javascript">
+	window._wp_rp_static_base_url = 'http://dtmvdvtzf8rz0.cloudfront.net/static/';
+	window._wp_rp_wp_ajax_url = "http://blog.jobbole.com/wp-admin/admin-ajax.php";
+	window._wp_rp_plugin_version = '2.8';
+	window._wp_rp_post_id = '93923';
+	window._wp_rp_num_rel_posts = '10';
+</script>
+    <script type="text/javascript">
+        jQuery(function($){
+            $('.comment-reply-link').click(function(e){
+                e.preventDefault();
+                var args = $(this).data('onclick');
+                args = args.replace(/.*\(|\)/gi, '').replace(/\"|\s+/g, '');
+                args = args.split(',');
+                tinymce.EditorManager.execCommand('mceRemoveEditor', true, 'comment_editor');
+                addComment.moveForm.apply( addComment, args );
+                tinymce.EditorManager.execCommand('mceAddEditor', true, 'comment_editor');
+            });
+
+            $('#cancel-comment-reply-link').click(function(e){
+                e.preventDefault();
+                tinymce.EditorManager.execCommand('mceRemoveEditor', true, 'comment_editor');
+                tinymce.EditorManager.execCommand('mceAddEditor', true, 'comment_editor');
+            });
+        });
+    </script>
+	
+	<!-- CSS -->
+    <link rel="stylesheet" type="text/css" media="screen" href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/style.css">
+	<style>
+				*::selection { background: #0099cc; }
+		*::-moz-selection { background: #0099cc; }
+		body {
+            background: #ffffff         }
+
+        a,
+        .tabs ul.nav li a:hover,
+        .tabs ul.nav li.active a,
+        .dropcap,
+        .toggle.hover .toggle-title,
+        li.comment cite a:hover,
+        h3.widget-title,
+        .post-meta .meta-title:hover,
+        .the-latest a:hover h4,
+        .aw_socialcounter_widget li a:hover,
+        .aw_tabbed_widget #tab-latest-comments a:hover
+        {
+            color: #0099cc;
+        }
+
+		a:hover { color: #b30000; }
+		input:focus, textarea:focus { border-color: #0099cc; }
+
+		#searchsubmit,
+        .highlight,
+        .aw_tabbed_widget .tabs ul.nav li.active a, footer .aw_tabbed_widget .tabs ul.nav li.active a,
+        #top .aw_tabbed_widget .tabs ul.nav li.active a,
+        .aw_tabbed_widget .tabs ul.nav li a:hover,
+        footer .aw_tabbed_widget .tabs ul.nav li a:hover,
+        #top .aw_tabbed_widget .tabs ul.nav li a:hover,
+        .aw_twitter_widget .twitter-icon, .testimonial-icon,
+        #top-closed:hover,
+        .flex-control-nav a:hover,
+        .flex-control-nav a.flex-active {
+            background-color: #0099cc;
+        }
+
+		.submit { background-color: #0099cc; border-color: #007399; }
+		.submit:hover { background-color: #b30000; border-color: #860000; }
+		#searchsubmit:hover { background-color: #b30000; }
+		.toggle.hover .toggle-icon { border-top-color: #0099cc; }
+		.toggle.hover.active .toggle-icon { border-bottom-color: #0099cc; }
+		.flex-direction-nav li .flex-prev:hover { border-right-color: #0099cc; }
+		.flex-direction-nav li .flex-next:hover { border-left-color: #0099cc; }
+		@media only screen and (min-width: 768px) and (max-width: 959px) {
+			.aw_tabbed_widget .tabs ul.nav li a:hover, .tabs ul.nav li.active a { color: #0099cc; }
+		}
+		@media screen and (max-width: 767px) {
+			.tabs ul.nav li a:hover, .tabs ul.nav li.active a { color: #0099cc; }
+		}
+	</style>
+
+	<!--[if IE 8]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <![endif]-->
+
+	<!-- Links: RSS + Atom Syndication + Pingback etc. -->
+	<link rel="alternate" type="application/rss+xml" title="文章 – 伯乐在线 RSS Feed" href="http://blog.jobbole.com/feed/">
+	<link rel="alternate" type="text/xml" title="RSS .92" href="http://blog.jobbole.com/feed/rss/">
+	<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://blog.jobbole.com/feed/atom/">
+	<link rel="pingback" href="http://blog.jobbole.com/xmlrpc.php">
+
+<!-- END head -->
+<script src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/_cm.js"></script><style type="text/css">.fancybox-margin{margin-right:17px;}</style></head>
+
+<!-- BEGIN body -->
+<body class="single single-post postid-93923 single-format-standard unknown"><link href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jiathis_counter.css" rel="stylesheet" type="text/css"><link href="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jiathis_share.css" rel="stylesheet" type="text/css"><iframe frameborder="0" style="position: absolute; display: none; opacity: 0;" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/saved_resource.html"></iframe><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; top: 50%; left: 50%; overflow: auto;"></div><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; overflow: auto;"></div><iframe frameborder="0" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jiathis_utility.html" style="display: none;"></iframe>
+
+		
+	    <nav id="top-nav" class="menu-nav">
+
+        <!-- BEGIN .container -->
+        <div class="container">
+
+            <div class="grid-7 hide-on-480 hide-on-767">
+                <ul id="menu-main-menu" class="menu left sf-js-enabled">
+                    <li class="menu-item">
+                        <a href="http://www.jobbole.com/">首页</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="http://top.jobbole.com/">资讯</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="http://blog.jobbole.com/">文章</a>
+                    </li>
+                    <li class="menu-item">
+                        <span><a href="http://blog.jobbole.com/93923/#">频道 <i class="fa fa-angle-double-down"></i></a></span>
+                        <ul class="sub-menu sf-js-enabled" style="display: none; visibility: hidden;">
+                            <li class="menu-item"><a href="http://design.jobbole.com/">设计频道</a></li>
+                            <li class="menu-item"><a href="http://web.jobbole.com/">Web前端</a></li>
+                            <li class="menu-item"><a href="http://python.jobbole.com/">Python开发</a></li>
+                            <li class="menu-item"><a href="http://www.importnew.com/?utm_source=home-top-nav">Java技术</a></li>
+                            <li class="menu-item"><a href="http://android.jobbole.com/">Android应用</a></li>
+                            <li class="menu-item"><a href="http://ios.jobbole.com/">iOS应用</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="http://hao.jobbole.com/">资源</a>
+                    </li>
+
+                    
+                    <li class="menu-item">
+                        <a href="http://group.jobbole.com/">小组</a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="http://date.jobbole.com/"><i class="fa fa-heart-o pinkiconcolor"></i> 相亲</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="grid-5">
+                <ul id="menu-main-menu" class="menu sf-js-enabled">
+                    <li class="menu-item hide-on-768-wider left">
+                        <span><a href="http://blog.jobbole.com/93923/#">频道 <i class="fa fa-angle-double-down"></i></a></span>
+                        <ul class="sub-menu sf-js-enabled" style="display: none; visibility: hidden;">
+                            <li class="menu-item"><a href="http://www.jobbole.com/">首页</a></li>
+                            <li class="menu-item"><a href="http://top.jobbole.com/">资讯</a></li>
+                            <li class="menu-item"><a href="http://blog.jobbole.com/">文章</a></li>
+                            <li class="menu-item"><a href="http://group.jobbole.com/">小组</a></li>
+                            <li class="menu-item"><a href="http://date.jobbole.com/">相亲 <i class="fa fa-heart-o pinkiconcolor"></i></a></li>
+                            <li class="menu-item"><a href="http://hao.jobbole.com/">资源</a></li>
+                            <li class="menu-item"><a href="http://design.jobbole.com/">设计</a></li>
+                            <li class="menu-item"><a href="http://web.jobbole.com/">前端</a></li>
+                            <li class="menu-item"><a href="http://python.jobbole.com/">Python</a></li>
+                            <li class="menu-item"><a href="http://www.importnew.com/">Java</a></li>
+                            <li class="menu-item"><a href="http://android.jobbole.com/">安卓</a></li>
+                            <li class="menu-item"><a href="http://ios.jobbole.com/">iOS</a></li>
+
+                                                    </ul>
+                    </li>
+
+                                            <li class="menu-item"><a href="http://www.jobbole.com/login?redirect=http%3A%2F%2Fblog.jobbole.com%2F93923%2F"><i class="fa fa-sign-in"></i> 登录</a></li>
+                        <li class="menu-item"><a href="http://www.jobbole.com/register"><i class="fa fa-user-plus"></i> 注册</a></li>
+                    
+                    
+                    <li class="menu-item"><a title="帮助" href="http://blog.jobbole.com/87622/"><i class="fa fa-question-circle fa-lg"></i></a></li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+
+        </div>
+        <!-- END .container -->
+
+    </nav>
+    <!-- END #top-nav -->
+  	
+	<!-- BEGIN #wrapper -->
+	<div id="wrapper" class="container">
+
+		<!-- BEGIN header -->
+		<header>
+		
+						
+			<div class="header-wrapper">
+								
+				<!-- BEGIN #logo -->
+				<div id="logo" class="leaderboard-true">
+                    <a href="http://blog.jobbole.com/"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jobbole-logo.png" alt="文章 – 伯乐在线"></a>
+				</div>
+				<!-- END #logo -->
+				
+				<!-- BEGIN #leaderboard -->
+				<div id="leaderboard">
+				
+					<a href="http://www.magedu.com/" target="_blank"><img width="728" height="90" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/bfdcef89gw1f3zdnqbs1qj20k902igmq.jpg"></a>				
+				</div>
+				<!-- END #leaderboard -->
+				
+				<div class="clear"></div>
+			
+			</div>
+			
+						
+			<div class="clear"></div>
+
+            			<!-- BEGIN #main-nav -->
+			<nav id="main-nav" class="grid-12 menu-nav">
+                <div class="menu-sub-menu-container"><ul id="main-nav-menu" class="menu sf-js-enabled"><li id="menu-item-33290" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-33290"><a href="http://blog.jobbole.com/">首页</a></li>
+<li id="menu-item-33406" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-33406"><a href="http://blog.jobbole.com/all-posts/">最新文章</a></li>
+<li id="menu-item-56111" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-56111"><a href="http://blog.jobbole.com/tag/featuredpost/">经典回顾</a></li>
+<li id="menu-item-33319" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-33319"><a href="http://blog.jobbole.com/category/programmer/">开发</a>
+<ul class="sub-menu sf-js-enabled" style="display: none; visibility: hidden;">
+	<li id="menu-item-81047" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-81047"><a href="http://web.jobbole.com/">Web前端</a></li>
+	<li id="menu-item-81218" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-81218"><a href="http://python.jobbole.com/">Python</a></li>
+	<li id="menu-item-81220" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-81220"><a href="http://android.jobbole.com/">Android</a></li>
+	<li id="menu-item-81219" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-81219"><a href="http://ios.jobbole.com/">iOS</a></li>
+	<li id="menu-item-53194" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-53194"><a href="http://www.importnew.com/">Java</a></li>
+	<li id="menu-item-57616" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-57616"><a href="http://blog.jobbole.com/category/c-cpp/">C/C++</a></li>
+	<li id="menu-item-57003" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-57003"><a href="http://blog.jobbole.com/category/php-programmer/">PHP</a></li>
+	<li id="menu-item-97173" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-97173"><a href="http://blog.jobbole.com/tag/net/">.NET</a></li>
+	<li id="menu-item-55603" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55603"><a href="http://blog.jobbole.com/category/ruby/">Ruby</a></li>
+	<li id="menu-item-70347" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-70347"><a href="http://blog.jobbole.com/category/go/">Go</a></li>
+</ul>
+</li>
+<li id="menu-item-95935" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-95935"><a href="http://design.jobbole.com/">设计</a>
+<ul class="sub-menu sf-js-enabled" style="display: none; visibility: hidden;">
+	<li id="menu-item-55608" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55608"><a href="http://design.jobbole.com/category/ui-design/">UI设计</a></li>
+	<li id="menu-item-55610" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55610"><a href="http://design.jobbole.com/category/web-design/">网页设计</a></li>
+	<li id="menu-item-55609" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55609"><a href="http://design.jobbole.com/category/inter-design/">交互设计</a></li>
+	<li id="menu-item-55611" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55611"><a href="http://design.jobbole.com/category/ue-design/">用户体验</a></li>
+	<li id="menu-item-95936" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-95936"><a href="http://design.jobbole.com/category/guide/">设计教程</a></li>
+	<li id="menu-item-95937" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-95937"><a href="http://design.jobbole.com/category/design-career/">设计职场</a></li>
+</ul>
+</li>
+<li id="menu-item-33313" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children menu-item-33313"><a href="http://blog.jobbole.com/category/it-tech/">IT技术</a>
+<ul class="sub-menu sf-js-enabled" style="display: none; visibility: hidden;">
+	<li id="menu-item-55604" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55604"><a href="http://blog.jobbole.com/tag/linux/">Linux</a></li>
+	<li id="menu-item-55607" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55607"><a href="http://blog.jobbole.com/tag/unix/">UNIX</a></li>
+	<li id="menu-item-55605" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55605"><a href="http://blog.jobbole.com/tag/mysql/">MySQL</a></li>
+	<li id="menu-item-55621" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55621"><a href="http://blog.jobbole.com/tag/nosql/">NoSQL</a></li>
+	<li id="menu-item-55622" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55622"><a href="http://blog.jobbole.com/tag/database/">数据库</a></li>
+	<li id="menu-item-55606" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55606"><a href="http://blog.jobbole.com/tag/git/">Git</a></li>
+	<li id="menu-item-89963" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-89963"><a href="http://blog.jobbole.com/tag/machinelearning/">机器学习</a></li>
+	<li id="menu-item-55635" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55635"><a href="http://blog.jobbole.com/tag/algorithm/">算法</a></li>
+	<li id="menu-item-55612" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55612"><a href="http://blog.jobbole.com/tag/%e6%b5%8b%e8%af%95/">测试</a></li>
+	<li id="menu-item-55618" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55618"><a href="http://blog.jobbole.com/tag/%e5%ae%89%e5%85%a8/">信息安全</a></li>
+	<li id="menu-item-55636" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-55636"><a href="http://blog.jobbole.com/tag/vim/">Vim</a></li>
+</ul>
+</li>
+<li id="menu-item-33390" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33390"><a href="http://blog.jobbole.com/category/career/">职场</a></li>
+<li id="menu-item-95977" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-95977"><a href="http://top.jobbole.com/category/news/">业界</a></li>
+<li id="menu-item-97313" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-97313"><a href="http://blog.jobbole.com/category/geeks/">极客</a></li>
+<li id="menu-item-33317" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-33317"><a href="http://blog.jobbole.com/category/startup/">创业</a></li>
+<li id="menu-item-56094" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-56094"><a href="http://blog.jobbole.com/category/interview/">访谈</a></li>
+<li id="menu-item-56110" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-56110"><a href="http://blog.jobbole.com/category/overseas/">在国外</a></li>
+</ul><select class="selectnav" id="selectnav1"><option value="">- 导航条 -</option><option value="http://blog.jobbole.com/">首页</option><option value="http://blog.jobbole.com/all-posts/">最新文章</option><option value="http://blog.jobbole.com/tag/featuredpost/">经典回顾</option><option value="http://blog.jobbole.com/category/programmer/">开发</option><option value="http://web.jobbole.com/">- Web前端</option><option value="http://python.jobbole.com/">- Python</option><option value="http://android.jobbole.com/">- Android</option><option value="http://ios.jobbole.com/">- iOS</option><option value="http://www.importnew.com/">- Java</option><option value="http://blog.jobbole.com/category/c-cpp/">- C/C++</option><option value="http://blog.jobbole.com/category/php-programmer/">- PHP</option><option value="http://blog.jobbole.com/tag/net/">- .NET</option><option value="http://blog.jobbole.com/category/ruby/">- Ruby</option><option value="http://blog.jobbole.com/category/go/">- Go</option><option value="http://design.jobbole.com/">设计</option><option value="http://design.jobbole.com/category/ui-design/">- UI设计</option><option value="http://design.jobbole.com/category/web-design/">- 网页设计</option><option value="http://design.jobbole.com/category/inter-design/">- 交互设计</option><option value="http://design.jobbole.com/category/ue-design/">- 用户体验</option><option value="http://design.jobbole.com/category/guide/">- 设计教程</option><option value="http://design.jobbole.com/category/design-career/">- 设计职场</option><option value="http://blog.jobbole.com/category/it-tech/">IT技术</option><option value="http://blog.jobbole.com/tag/linux/">- Linux</option><option value="http://blog.jobbole.com/tag/unix/">- UNIX</option><option value="http://blog.jobbole.com/tag/mysql/">- MySQL</option><option value="http://blog.jobbole.com/tag/nosql/">- NoSQL</option><option value="http://blog.jobbole.com/tag/database/">- 数据库</option><option value="http://blog.jobbole.com/tag/git/">- Git</option><option value="http://blog.jobbole.com/tag/machinelearning/">- 机器学习</option><option value="http://blog.jobbole.com/tag/algorithm/">- 算法</option><option value="http://blog.jobbole.com/tag/%e6%b5%8b%e8%af%95/">- 测试</option><option value="http://blog.jobbole.com/tag/%e5%ae%89%e5%85%a8/">- 信息安全</option><option value="http://blog.jobbole.com/tag/vim/">- Vim</option><option value="http://blog.jobbole.com/category/career/">职场</option><option value="http://top.jobbole.com/category/news/">业界</option><option value="http://blog.jobbole.com/category/geeks/">极客</option><option value="http://blog.jobbole.com/category/startup/">创业</option><option value="http://blog.jobbole.com/category/interview/">访谈</option><option value="http://blog.jobbole.com/category/overseas/">在国外</option></select></div>				<div class="clear"></div>
+			</nav>
+			<!-- END #main-nav -->
+                        <div class="clear"></div>
+
+		</header>
+		<!-- END header -->
+		
+		<div id="breadcrumb" class="grid-12 margin-20"><div class="breadcrumb-wrapper"><!-- Breadcrumb NavXT 4.4.0 -->
+<a title="Go to 伯乐在线." href="http://www.jobbole.com/" class="main-home">伯乐在线</a> &gt; <a href="http://blog.jobbole.com/" class="home">首页</a> &gt; <a href="http://blog.jobbole.com/all-posts/" class="post-root post-post">所有文章</a> &gt; <a href="http://blog.jobbole.com/category/it-tech/" class="category">IT技术</a> &gt; 比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告</div></div><div class="clear"></div>
+
+<!-- BEGIN .grid-8 -->
+<div class="grid-8">
+
+		
+	<!-- BEGIN .post -->
+<div class="post-93923 post type-post status-publish format-standard hentry category-it-tech tag-android tag-wormhole tag-1214 tag-1345 tag-861 odd" id="post-93923">
+	
+	<!-- BEGIN .entry-header -->
+	<div class="entry-header">
+	
+				
+		<h1>比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告</h1>
+		
+							
+	</div>
+	<!-- BEGIN .entry-header -->
+	
+	<!-- BEGIN .entry-meta -->
+	<div class="entry-meta">
+	
+		<p class="entry-meta-hide-on-mobile">
+
+            2015/11/02 ·  <a href="http://blog.jobbole.com/category/it-tech/" rel="category tag">IT技术</a>
+            
+            
+
+            
+             ·  <a href="http://blog.jobbole.com/tag/android/">Android</a>, <a href="http://blog.jobbole.com/tag/wormhole/">WormHole</a>, <a href="http://blog.jobbole.com/tag/%e5%ae%89%e5%85%a8/">安全</a>, <a href="http://blog.jobbole.com/tag/%e6%bc%8f%e6%b4%9e/">漏洞</a>, <a href="http://blog.jobbole.com/tag/%e7%99%be%e5%ba%a6/">百度</a>
+            
+</p>
+
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style" style="display: block; margin: 0 0px; clear: both;"><span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_tsina" title="分享到微博"><span class="jiathis_txt jtico jtico_tsina"></span></a>
+<a class="jiathis_button_weixin" title="分享到微信"><span class="jiathis_txt jtico jtico_weixin"></span></a>
+<a class="jiathis_button_qzone" title="分享到QQ空间"><span class="jiathis_txt jtico jtico_qzone"></span></a>
+<a class="jiathis_button_fb" title="分享到Facebook"><span class="jiathis_txt jtico jtico_fb"></span></a>
+<a class="jiathis_button_douban" title="分享到豆瓣"><span class="jiathis_txt jtico jtico_douban"></span></a>
+<a class="jiathis_button_readitlater"></a>
+<a class="jiathis_button_evernote" title="分享到印象笔记"><span class="jiathis_txt jtico jtico_evernote"></span></a>
+<a class="jiathis_button_ydnote" title="分享到有道云笔记"><span class="jiathis_txt jtico jtico_ydnote"></span></a>
+<a href="http://www.jiathis.com/share?uid=1745061" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+<a class="jiathis_counter_style"><span class="jiathis_button_expanded jiathis_counter jiathis_bubble_style" id="jiathis_counter_90" title="累计分享35次">35</span></a>
+</div>
+<!-- JiaThis Button END -->
+
+
+	</div>
+	<!-- END .entry-meta -->
+
+	<!-- BEGIN .entry -->
+	<div class="entry">
+
+        			<div class="textwidget"><p><script src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/courselistrandjs"></script><style type="text/css">.imooc ,.imooc ul,.imooc li{margin:0;padding:0;}.imooc{background:#f0f0f0;text-align:left;}.imooc ul{list-style:none;padding:9px;border:1px dotted #9b9b9b;overflow:hidden;}.imooc ul li{width:300px;float:left;font-size:14px;font-weight:bold;line-height:19px;}.imooc li a{display:block;height:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#09c;text-decoration: none;margin-right:10px;}.imooc li a:hover{color:#b30000;}.imooc li.no-data{line-height: 50px;color: #000;}</style></p><div class="imooc"><ul><li><a target="_blank" title="Android-五子连珠" href="http://www.imooc.com/view/641?from=jobboleblog">Android-五子连珠</a></li><li><a target="_blank" title="AIDL-小白成长记" href="http://www.imooc.com/view/606?from=jobboleblog">AIDL-小白成长记</a></li><li><a target="_blank" title="Android的ListView分页功能" href="http://www.imooc.com/view/136?from=jobboleblog">Android的ListView分页功能</a></li><li><a target="_blank" title="Android-见证消息推送时刻进阶篇" href="http://www.imooc.com/view/358?from=jobboleblog">Android-见证消息推送时刻进阶篇</a></li></ul></div><span style="display:block;margin-bottom:10px;"></span><p></p>
+</div>
+		
+		<div class="copyright-area">原文出处： <a target="_blank" href="http://drops.wooyun.org/papers/10061">乌云知识库 - 瘦蛟舞+蒸米</a>&nbsp;&nbsp;&nbsp;</div><p>「You can’t have a back door in the software because you can’t have a back door that’s only for the good guys.」 – Apple CEO Tim Cook</p>
+<p>「你不应该给软件装后门，因为你不能保证这个后门只有好人能够使用。」—— 苹果 CEO 库克</p>
+<p><strong>0x00 序</strong></p>
+<p>最早接触网络安全的人一定还记得当年RPC冲击波，WebDav等远程攻击漏洞和由此产生的蠕虫病毒。黑客只要编写程序扫描网络中开放了特定端口的机器，随后发送对应的远程攻击代码就可以控制对方主机，在控制对方主机后，程序可以继续扫描其他机器再次进行攻击。因为漏洞出在主机本身，想要修复漏洞必须安装补丁才行，但因为很多人并不会及时升级系统或者安装补丁，所以漏洞或者蠕虫会影响大量的机器非常长的时间，甚至有的蠕虫病毒可以感染全世界上亿的服务器，对企业和用户造成非常严重的损失。</p>
+<p>Android发布后，我们就一直幻想着能发现一个像PC上的远程攻击一样厉害的漏洞，但是Android系统默认并没有开放任何端口，开放socket端口的APP也非常稀少，似乎出现像PC那样严重的漏洞是不太可能的。但可惜的是，世界上并没有绝对的安全，就在这么几个稀少的端口中，我们真的找了一个非常严重的socket远程攻击漏洞，并且影响多个用户量过亿的APP，我们把这个漏洞称之为WormHole虫洞漏洞。</p>
+<p><strong>0x01 影响和危害</strong></p>
+<p>WormHole虫洞漏洞到底有多严重呢？请看一下我们统计的受影响的APP列表（还没有统计全）：</p>
+<p>百度地图 检测版本8.7<br>
+百度手机助手 检测版本6.6.0<br>
+百度浏览器 检测版本6.1.13.0<br>
+手机百度 检测版本6.9<br>
+hao123 检测版本6.1<br>
+百度音乐 检测版本5.6.5.0<br>
+百度贴吧 检测版本6.9.2<br>
+百度云 检测版本7.8<br>
+百度视频 检测版本7.18.1<br>
+安卓市场 检测版本6.0.86<br>
+百度新闻 检测版本5.4.0.0<br>
+爱奇艺 检测版本6.0<br>
+乐视视频 检测版本5.9<br>
+…完整列表见附录</p>
+<p>这个列表是2015年10月14号统计的百度系APP的最新版，理论上所有小于等于检测版本的这些百度系的APP都有被远程攻击的危险。根据易观智库的统计排行：</p>
+<p><img alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/8aef0dd3jw1exmvf06yy1j20h30eq776.jpg"></p>
+<p>可以看到手机百度、百度手机助手、百度地图等百度系APP有着上亿的下载安装量和加起来超过三亿的活跃用户。</p>
+<p>安装了百度的这些APP会有什么后果和危害呢？</p>
+<ol>
+<li>无论是 wifi 无线网络或者3G/4G 蜂窝网络，只要是手机在联网状态都有可能受到攻击。攻击者事先无需接触手机，无需使用DNS欺骗。</li>
+<li>此漏洞只与app有关，不受系统版本影响，在google最新的android 6.0上均测试成功。</li>
+<li>漏洞可以达到如下攻击效果:</li>
+</ol>
+<ul>
+<li>远程静默安装应用</li>
+<li>远程启动任意应用</li>
+<li>远程打开任意网页</li>
+<li>远程静默添加联系人</li>
+<li>远程获取用用户的GPS地理位置信息/获取imei信息/安装应用信息</li>
+<li>远程发送任意intent广播</li>
+<li>远程读取写入文件等。</li>
+</ul>
+<p>下面是视频DEMO:</p>
+<p><object width="600" height="500"><param name="movie" value="http://player.youku.com/player.php/sid/XMTM2NDk0NDQ2NA/v.swf"><param name="allowFullScreen" value="true"><param name="allowscriptaccess" value="never"><param name="allownetworking" value="internal"><param name="flashvars" value="isShowRelatedVideo=false&amp;showAd=0&amp;show_pre=1&amp;show_next=1&amp;isAutoPlay=false&amp;isDebug=false&amp;UserID=&amp;winType=interior&amp;playMovie=true&amp;MMControl=false&amp;MMout=false&amp;RecordCode=1001,1002,1003,1004,1005,1006,2001,3001,3002,3003,3004,3005,3007,3008,9999"><embed src="http://player.youku.com/player.php/sid/XMTM2NDk0NDQ2NA/v.swf" type="application/x-shockwave-flash" allowscriptaccess="never" allownetworking="internal" allowfullscreen="true" width="600" height="500" flashvars="isShowRelatedVideo=false&amp;showAd=0&amp;show_pre=1&amp;show_next=1&amp;isAutoPlay=false&amp;isDebug=false&amp;UserID=&amp;winType=interior&amp;playMovie=true&amp;MMControl=false&amp;MMout=false&amp;RecordCode=1001,1002,1003,1004,1005,1006,2001,3001,3002,3003,3004,3005,3007,3008,9999"></object></p>
+<p>俺们做的视频效果太差,下面demo视频是从网上看到的：</p>
+<p><object id="tenvideo_flash_player_1446104063032" width="600" height="500" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" align="middle" bgcolor="#000000"><param name="wmode" value="direct"><param name="flashvars" value="vid=f01705fjy5v&amp;tpid=0&amp;showend=1&amp;showcfg=1&amp;searchbar=1&amp;pic=http://shp.qpic.cn/qqvideo_ori/0/f01705fjy5v_496_280/0&amp;shownext=1&amp;list=2&amp;autoplay=0"><param name="src" value="http://imgcache.qq.com/tencentvideo_v1/player/TPout.swf?max_age=86400&amp;v=20140714"><param name="quality" value="high"><param name="allowscriptaccess" value="always"><param name="allowfullscreen" value="true"><param name="pluginspage" value="http://get.adobe.com/cn/flashplayer/"><param name="title" value="Adobe Flash Player"><embed id="tenvideo_flash_player_1446104063032" width="600" height="500" type="application/x-shockwave-flash" src="http://imgcache.qq.com/tencentvideo_v1/player/TPout.swf?max_age=86400&amp;v=20140714" wmode="direct" flashvars="vid=f01705fjy5v&amp;tpid=0&amp;showend=1&amp;showcfg=1&amp;searchbar=1&amp;pic=http://shp.qpic.cn/qqvideo_ori/0/f01705fjy5v_496_280/0&amp;shownext=1&amp;list=2&amp;autoplay=0" quality="high" allowscriptaccess="always" allowfullscreen="true" pluginspage="http://get.adobe.com/cn/flashplayer/" title="Adobe Flash Player" align="middle" bgcolor="#000000"></object></p>
+<p>&nbsp;</p>
+<p><strong>0x02 漏洞分析</strong></p>
+<p>安装百度系app后，通过adb shell连接手机，随后使用netstat会发现手机打开了40310/6259端口，并且任何IP都可以进行连接。</p>
+<p><img alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/8aef0dd3jw1exmvf0qupxj20u00cyn3y.jpg"><br>
+原来这个端口是由java层的nano http实现的，并且这个http服务，百度给起名叫immortal service（不朽/不死的服务）。为什么叫不朽的呢？因为这个服务会在后台一直运行，并且如果你手机中装了多个有wormhole漏洞的app，这些app会时刻检查40310/6259端口，如果那个监听40310/6259端口的app被卸载了，另一个app会立马启动服务重新监听40310/6259端口。</p>
+<p><img alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/8aef0dd3jw1exmvf19rwij20hs0budgq.jpg"></p>
+<p>我们继续分析，整个immortal service服务其实是一个http服务，但是在接受数据的函数里有一些验证,比如 http 头部remote-addr字段是否是”127.0.0.1”，但是会一点web技巧的人就知道，只要伪造一下头部信息就可把remote-addr字段变成”127.0.0.1”。</p>
+<p><img alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/8aef0dd3jw1exmvf1n6hjj20iq04w3zv.jpg"></p>
+<p>成功的和http server进行通讯后，就可以通过url给APP下达指令了。拿百度地图为例，以下是百度地图APP中存在的远程控制的指令的反汇编代码：</p>
+<p><img alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/8aef0dd3jw1exmvf23edjj20py0f5n34.jpg"></p>
+<ol>
+<li><strong>geolocation 获取用户手机的GPS地理位置（城市，经度，纬度）</strong></li>
+<li>getsearchboxinfo 获取手机百度的版本信息</li>
+<li>getapn 获取当前的网络状况（WIFI/3G/4G运营商）</li>
+<li>getserviceinfo 获取提供 nano http 的应用信息</li>
+<li>getpackageinfo 获取手机应用的版本信息</li>
+<li><strong>sendintent 发送任意intent 可以用来打开网页或者与其他app交互</strong></li>
+<li><strong>getcuid 获取imei</strong></li>
+<li>getlocstring 获取本地字符串信息</li>
+<li>scandownloadfile 扫描下载文件(UCDownloads/QQDownloads/360Download…)</li>
+<li><strong>addcontactinfo 给手机增加联系人</strong></li>
+<li><strong>getapplist获取全部安装app信息</strong></li>
+<li><strong>downloadfile 下载任意文件到指定路径如果文件是apk则进行安装</strong></li>
+<li><strong>uploadfile 上传任意文件到指定路径 如果文件是apk则进行安装</strong></li>
+</ol>
+<p>当我们看到这些远程指令的时候吓了一跳。你说你一个百度地图好好的导航行不行？为什么要去给别人添加联系人呢？添加联系人也就算了，为什么要去别的服务器下载应用并且安装呢？更夸张的是，安装还不是弹出对话框让用户选择是否安装，而是直接申请root权限进行静默安装。下图是代码段：</p>
+<p><img alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/8aef0dd3jw1exmvf2vlggj210m0haqbr.jpg"></p>
+<p>可以看到下载完app后会有三个判断:</p>
+<ol>
+<li>手机助手为系统应用直接使用android.permission.INSTALL_PACKAGES权限静默安装应用</li>
+<li>手机助手获得 root 权限后使用 su 后执行 pm install 静默安装应用</li>
+<li>非以上二种情况则弹出引用安装的确认框</li>
+</ol>
+<p>一般用户是非常相信百度系APP，如果百度系APP申请了root权限的话一般都会通过，但殊不知自己已经打开了潘多拉的魔盒。</p>
+<p>如果手机没root就没法静默安装应用了吗？不是的，downloadfile和uploadfile可以选择下载文件的位置，并且百度系app会从”/data/data/[app]/”目录下动态加载一些dex或so文件，这时我们只需要利用downloadfile或uploadfile指令覆盖原本的dex或so文件就可以执行我们想要执行的任意代码了。比如说，利用dex或者so获取一个反弹shell，然后把提权的exp传到手机上执行获得root权限，接下来就可以干所有想干的任何事情了。</p>
+<p><strong>0x03 POC</strong></p>
+<p>因为影响过大，暂不公布，会在WormHole漏洞修复完后更新。</p>
+<p><strong>0x04 测试</strong></p>
+<p>简单测试了一下WormHole这个漏洞的影响性，我们知道3G/4G下的手机其实全部处于一个巨大无比的局域网中，只要通过4G手机开个热点，就可以用电脑连接热点然后用扫描器和攻击脚本对全国甚至全世界连接了3G/4G的手机进行攻击。在家远程入侵一亿台手机不再是梦。</p>
+<p>我们使用获取包名的脚本，对电信的下一个 C 段进行了扫描，结果如下：</p><!-- Crayon Syntax Highlighter v2.7.1.1 -->
+
+		<div id="crayon-57918a4d17118997051235" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-always" style="margin-top: 12px; margin-bottom: 12px; font-size: 13px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 13px !important;height: 19.5px !important; line-height: 19.5px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 13px !important;height: 19.5px !important; line-height: 19.5px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="切换是否显示行编号"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="纯文本显示代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="切换自动换行"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="点击展开代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="复制代码"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="在新窗口中显示代码"><div class="crayon-button-icon"></div></div><span class="crayon-language">Shell</span></div></div>
+			<div class="crayon-info" style="min-height: 18.2px !important; line-height: 18.2px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 13px !important; line-height: 15px !important; z-index: 0; opacity: 0;">Discovered open port 6259/tcp on 10.142.3.25  "com.baidu.searchbox","version":"19"
+Discovered open port 6259/tcp on 10.142.3.93  "packagename":"com.baidu.appsearch"
+Discovered open port 6259/tcp on 10.142.3.135  "com.hiapk.marketpho","version":"121"
+Discovered open port 6259/tcp on 10.142.3.163  "packagename":"com.hiapk.marketpho"
+Discovered open port 6259/tcp on 10.142.3.117  "com.baidu.browser.apps","version":"121"
+Discovered open port 6259/tcp on 10.142.3.43   "com.qiyi.video","version":"20"
+Discovered open port 6259/tcp on 10.142.3.148  "com.baidu.appsearch","version":"121"
+Discovered open port 6259/tcp on 10.142.3.196  "com.baidu.input","version":"16"
+Discovered open port 6259/tcp on 10.142.3.204  "com.baidu.BaiduMap","version":"20"
+Discovered open port 6259/tcp on 10.142.3.145  "com.baidu.appsearch","version":"121"
+Discovered open port 6259/tcp on 10.142.3.188  "com.hiapk.marketpho","version":"21"
+Discovered open port 40310/tcp on 10.142.3.53  "com.baidu.BaiduMap","version":"122"
+Discovered open port 40310/tcp on 10.142.3.162  "com.ting.mp3.android","version":"122" 
+Discovered open port 40310/tcp on 10.142.3.139 "com.baidu.searchbox","version":"122"
+Discovered open port 40310/tcp on 10.142.3.143 "com.baidu.BaiduMap","version":"122"
+Discovered open port 40310/tcp on 10.142.3.176  "packagename":"com.baidu.searchbox"</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 13px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57918a4d17118997051235-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57918a4d17118997051235-2">2</div><div class="crayon-num" data-line="crayon-57918a4d17118997051235-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57918a4d17118997051235-4">4</div><div class="crayon-num" data-line="crayon-57918a4d17118997051235-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-57918a4d17118997051235-6">6</div><div class="crayon-num" data-line="crayon-57918a4d17118997051235-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-57918a4d17118997051235-8">8</div><div class="crayon-num" data-line="crayon-57918a4d17118997051235-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-57918a4d17118997051235-10">10</div><div class="crayon-num" data-line="crayon-57918a4d17118997051235-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-57918a4d17118997051235-12">12</div><div class="crayon-num" data-line="crayon-57918a4d17118997051235-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-57918a4d17118997051235-14">14</div><div class="crayon-num" data-line="crayon-57918a4d17118997051235-15">15</div><div class="crayon-num crayon-striped-num" data-line="crayon-57918a4d17118997051235-16">16</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 13px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57918a4d17118997051235-1"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">6259</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.25</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"com.baidu.searchbox"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"19"</span></div><div class="crayon-line crayon-striped-line" id="crayon-57918a4d17118997051235-2"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">6259</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.93</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"packagename"</span><span class="crayon-o">:</span><span class="crayon-s">"com.baidu.appsearch"</span></div><div class="crayon-line" id="crayon-57918a4d17118997051235-3"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">6259</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.135</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"com.hiapk.marketpho"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"121"</span></div><div class="crayon-line crayon-striped-line" id="crayon-57918a4d17118997051235-4"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">6259</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.163</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"packagename"</span><span class="crayon-o">:</span><span class="crayon-s">"com.hiapk.marketpho"</span></div><div class="crayon-line" id="crayon-57918a4d17118997051235-5"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">6259</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.117</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"com.baidu.browser.apps"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"121"</span></div><div class="crayon-line crayon-striped-line" id="crayon-57918a4d17118997051235-6"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">6259</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.43</span><span class="crayon-h">&nbsp;&nbsp; </span><span class="crayon-s">"com.qiyi.video"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"20"</span></div><div class="crayon-line" id="crayon-57918a4d17118997051235-7"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">6259</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.148</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"com.baidu.appsearch"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"121"</span></div><div class="crayon-line crayon-striped-line" id="crayon-57918a4d17118997051235-8"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">6259</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.196</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"com.baidu.input"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"16"</span></div><div class="crayon-line" id="crayon-57918a4d17118997051235-9"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">6259</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.204</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"com.baidu.BaiduMap"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"20"</span></div><div class="crayon-line crayon-striped-line" id="crayon-57918a4d17118997051235-10"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">6259</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.145</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"com.baidu.appsearch"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"121"</span></div><div class="crayon-line" id="crayon-57918a4d17118997051235-11"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">6259</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.188</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"com.hiapk.marketpho"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"21"</span></div><div class="crayon-line crayon-striped-line" id="crayon-57918a4d17118997051235-12"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">40310</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.53</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"com.baidu.BaiduMap"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"122"</span></div><div class="crayon-line" id="crayon-57918a4d17118997051235-13"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">40310</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.162</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"com.ting.mp3.android"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"122"</span><span class="crayon-h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-57918a4d17118997051235-14"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">40310</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.139</span><span class="crayon-h"> </span><span class="crayon-s">"com.baidu.searchbox"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"122"</span></div><div class="crayon-line" id="crayon-57918a4d17118997051235-15"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">40310</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.143</span><span class="crayon-h"> </span><span class="crayon-s">"com.baidu.BaiduMap"</span><span class="crayon-sy">,</span><span class="crayon-s">"version"</span><span class="crayon-o">:</span><span class="crayon-s">"122"</span></div><div class="crayon-line crayon-striped-line" id="crayon-57918a4d17118997051235-16"><span class="crayon-e">Discovered </span><span class="crayon-e">open </span><span class="crayon-i">port</span><span class="crayon-h"> </span><span class="crayon-cn">40310</span><span class="crayon-o">/</span><span class="crayon-e">tcp </span><span class="crayon-i">on</span><span class="crayon-h"> </span><span class="crayon-cn">10.142.3.176</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-s">"packagename"</span><span class="crayon-o">:</span><span class="crayon-s">"com.baidu.searchbox"</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0061 seconds] -->
+<p>255个IP就有16手机有WormHole漏洞。</p>
+<p>除此之外，我们发现华为，三星，联想，金立等公司的某些机型在中国出厂的时候都会预装百度系app，突然间感到整个人都不好了。。。</p>
+<p><img alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/8aef0dd3jw1exmvf3fw95j204k05iwef.jpg"></p>
+<p><strong>0x05 总结</strong></p>
+<p>我们已经在2015年10月14日的时候将WormHole的漏洞报告通过乌云提交给了百度，并且百度已经确认了漏洞并且开始进行修复了。但这次漏洞并不能靠服务器端进行修复，必须采用升级app的方法进行修复，希望用户得到预警后尽快升级自己的应用到最新版，以免被WormHole漏洞攻击。</p>
+<p><strong>0x06 受影响的app列表</strong></p>
+<p>足球直播<br>
+足球巨星<br>
+足彩网<br>
+卓易彩票<br>
+助手贴吧<br>
+中国足彩网<br>
+中国蓝TV<br>
+中国蓝HD<br>
+珍品网<br>
+掌上百度<br>
+悦动圈跑步<br>
+优米课堂<br>
+音悦台<br>
+移动91桌面<br>
+央视影音<br>
+修车易<br>
+小红书海外购物神器<br>
+侠侣周边游<br>
+物色<br>
+万达电影<br>
+贴吧看片<br>
+贴吧饭团<br>
+视频直播<br>
+生活小工具<br>
+上网导航<br>
+全民探索<br>
+穷游<br>
+汽车之家<br>
+拇指医生(医生版)<br>
+萌萌聊天<br>
+美西时尚<br>
+么么哒<br>
+蚂蚁短租<br>
+旅游攻略<br>
+乐视视频<br>
+酷音铃声<br>
+口袋理财<br>
+经理人分享<br>
+购车族<br>
+歌勇赛<br>
+凤凰视频<br>
+风云直播Pro<br>
+多米音乐<br>
+都市激情飙车<br>
+懂球帝<br>
+蛋蛋理财<br>
+穿越古代<br>
+彩票到家<br>
+彩票365<br>
+爆猛料<br>
+百姓网<br>
+百度桌面Plus<br>
+百度云<br>
+百度游戏大全<br>
+百度音乐2014<br>
+百度新闻<br>
+百度团购<br>
+百度图片<br>
+百度贴吧青春版<br>
+百度贴吧简版<br>
+百度贴吧HD<br>
+百度输入法<br>
+百度手机助手<br>
+百度手机游戏<br>
+百度视频HD<br>
+百度视频<br>
+百度浏览器<br>
+百度翻译<br>
+百度地图DuWear版<br>
+百度地图<br>
+百度HD<br>
+百度<br>
+安卓市场<br>
+爱奇艺视频<br>
+VidNow<br>
+Video Now<br>
+T2F话友<br>
+Selfie Wonder<br>
+PPS影音<br>
+PhotoWonder<br>
+hao123特价<br>
+CCTV手机电视<br>
+91桌面<br>
+91助手<br>
+91爱桌面<br>
+91 Launcher<br>
+365彩票</p>
+<p><strong>PS:</strong></p>
+<p>1.文章是提前编辑好打算漏洞公开后再发布,趋势已经发文所以跟进.</p>
+<p>http://blog.trendmicro.com/trendlabs-security-intelligence/setting-the-record-straight-on-moplus-sdk-and-the-wormhole-vulnerability/</p>
+<p>2.网上公布的一些 app 列表大多是根据百度 moplus SDK 的特征指令静态扫描得来这样会有一定误报导致无辜 app 躺枪,比如漫画岛app 虽然集成了此 SDK 但是因为代码混淆策略,指令实现类名被混淆后 findClass 无法找到,所以 exp 都会提示404.</p>
+<p>3.关联漏洞</p>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2015-0145365" target="_blank">WooYun: 百度输入法安卓版存在远程获取信息控制用户行为漏洞（可恶意推入内容等4G网络内可找到目标）</a></p>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2015-0148406" target="_blank">WooYun: WormHole虫洞漏洞总结报告(附检测结果与测试脚本)</a></p>
+
+        <script language="javascript"> 
+var randomNum = Math.round(Math.random()*1);
+var innerHTML=new Array(2);
+innerHTML[0]="加入伯乐在线专栏作者。扩大知名度，还能得赞赏！详见《<a target='_blank' href='http://blog.jobbole.com/99322'>招募专栏作者</a>》";
+innerHTML[1]="程序员专属极客T恤，你喜欢哪款？ -> <a target='_blank' href='https://fanpinshe.taobao.com/category-1240220550.htm'>第2件八折，从这里抢购</a>";
+var widgetHTML="<div id='single-page-inner-widget'>"+innerHTML[randomNum]+"</div>";
+document.write(widgetHTML);
+</script><div id="single-page-inner-widget">加入伯乐在线专栏作者。扩大知名度，还能得赞赏！详见《<a target="_blank" href="http://blog.jobbole.com/99322">招募专栏作者</a>》</div>
+        
+        
+    <div class="post-adds">
+        <span data-post-id="93923" class=" btn-bluet-bigger href-style vote-post-up   register-user-only "><i class="fa  fa-thumbs-o-up"></i> <h10 id="93923votetotal">1</h10> 赞</span>
+        <span data-book-type="1" data-site-id="2" data-item-id="93923" data-item-type="1" class=" btn-bluet-bigger href-style bookmark-btn  register-user-only "><i class="fa fa-bookmark-o  "></i>  收藏</span>
+
+                    <a href="http://blog.jobbole.com/93923/#article-comment"><span class="btn-bluet-bigger href-style hide-on-480"><i class="fa fa-comments-o"></i>  评论</span></a>
+        
+        
+        
+        <!-- JiaThis Button BEGIN -->
+        <div class="jiathis_style_24x24" style="display: inline-flex; position: relative; margin: 0; clear: both;float: right;">
+            <a class="jiathis_button_tsina" title="分享到微博"><span class="jiathis_txt jtico jtico_tsina"></span></a>
+            <a class="jiathis_button_weixin" title="分享到微信"><span class="jiathis_txt jtico jtico_weixin"></span></a>
+            <a class="jiathis_button_qzone" title="分享到QQ空间"><span class="jiathis_txt jtico jtico_qzone"></span></a>
+            <a class="jiathis_button_fb hide-on-480" title="分享到Facebook"><span class="jiathis_txt jtico jtico_fb"></span></a>
+            <a href="http://www.jiathis.com/share?uid=1745061" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+        </div>
+
+    </div>
+
+
+
+
+        <!-- BEGIN #author-bio -->
+
+
+<!-- END #author-bio -->
+	</div>
+	<!-- END .entry -->
+
+
+<script type="text/javascript">
+var jiathis_config={
+	data_track_clickback:false,
+	title:"分享从伯乐在线看到的一篇好文章 ",
+	summary:"《比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告》",
+	pic:"http://ww3.sinaimg.cn/mw690/8aef0dd3jw1exmvf06yy1j20h30eq776.jpg",
+	appkey:{
+         "tsina": 1473879058    },
+	ralateuid:{
+		"tsina": 1670481425	},
+	hideMore:false
+}
+</script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jia.js" charset="utf-8"></script><script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/plugin.client.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+			<div class="textwidget"><p><a href="http://blog.jobbole.com/84342/?utm_source=blog.jobbole.com&amp;utm_medium=articleBanner&amp;utm_content=2015.9.16" target="_blank"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/e5298966gw1evykwqsj8wj20h802smxh.jpg"></a></p>
+</div>
+		
+</div>
+<!-- END .post -->
+    
+<div class="wp_rp_wrap  wp_rp_plain" id="wp_rp_first"><div class="wp_rp_content"><h3 class="related_post_title">相关文章</h3><ul class="related_post wp_rp" style="visibility: visible"><li><a href="http://blog.jobbole.com/86657/" class="wp_rp_title">百度全站 https FAQ：技术宅告诉你如何搜索更安全</a></li><li><a href="http://blog.jobbole.com/86660/" class="wp_rp_title">大型网站的 HTTPS 实践（1）：HTTPS 协议和原理</a></li><li><a href="http://blog.jobbole.com/58179/" class="wp_rp_title">我如何发现Facebook服务器中的远程代码执行漏洞：OpenID中的XML外部实体扩展漏洞</a></li><li><a href="http://blog.jobbole.com/26064/" class="wp_rp_title">几种极其隐蔽的XSS注入的防护</a></li><li><a href="http://blog.jobbole.com/86664/" class="wp_rp_title">大型网站的 HTTPS 实践（2）：HTTPS 对性能的影响</a></li><li><a href="http://blog.jobbole.com/86670/" class="wp_rp_title">大型网站的 HTTPS 实践（4）：协议层以外的实践</a></li><li><a href="http://blog.jobbole.com/86668/" class="wp_rp_title">大型网站的 HTTPS 实践（3）：基于协议和配置的优化</a></li><li><a href="http://blog.jobbole.com/74590/" class="wp_rp_title">我是如何绕过Google和Facebook等大站的两步验证的</a></li><li><a href="http://blog.jobbole.com/90942/" class="wp_rp_title">空指针漏洞防护技术（提高篇）</a></li><li><a href="http://blog.jobbole.com/90589/" class="wp_rp_title">一个缓冲区溢出漏洞的简易教程</a></li></ul></div></div>
+
+    
+<div style="text-align: left;">
+    <h3>可能感兴趣的话题</h3>
+    <ul style="font-size: 13px; list-style: disc inside;">
+                        <li>
+                    <a href="http://group.jobbole.com/20755/?utm_source=blog.jobbole.com&amp;utm_medium=article-related-group-topic" title="你被什么样的bug折磨的最无奈？" target="_blank">你被什么样的bug折磨的最无奈？</a>
+                     · <a href="http://group.jobbole.com/20755/#comments" target="_blank"><i class="fa fa-comments-o"></i> 15</a>                </li>
+                            <li>
+                    <a href="http://group.jobbole.com/21556/?utm_source=blog.jobbole.com&amp;utm_medium=article-related-group-topic" title="关于跑步" target="_blank">关于跑步</a>
+                     · <a href="http://group.jobbole.com/21556/#comments" target="_blank"><i class="fa fa-comments-o"></i> 2</a>                </li>
+                            <li>
+                    <a href="http://group.jobbole.com/20095/?utm_source=blog.jobbole.com&amp;utm_medium=article-related-group-topic" title="中文出身的妹纸，零基础学习JAVA靠谱么。。。" target="_blank">中文出身的妹纸，零基础学习JAVA靠谱么。。。</a>
+                     · <a href="http://group.jobbole.com/20095/#comments" target="_blank"><i class="fa fa-comments-o"></i> 108</a>                </li>
+                            <li>
+                    <a href="http://group.jobbole.com/17537/?utm_source=blog.jobbole.com&amp;utm_medium=article-related-group-topic" title="零基础自学Python感觉很难，不像大家说的那么简单" target="_blank">零基础自学Python感觉很难，不像大家说的那么简单</a>
+                     · <a href="http://group.jobbole.com/17537/#comments" target="_blank"><i class="fa fa-comments-o"></i> 56</a>                </li>
+                            <li>
+                    <a href="http://group.jobbole.com/21565/?utm_source=blog.jobbole.com&amp;utm_medium=article-related-group-topic" title="Python自学大概多久，求大神推荐相关书籍" target="_blank">Python自学大概多久，求大神推荐相关书籍</a>
+                                    </li>
+                            <li>
+                    <a href="http://group.jobbole.com/21228/?utm_source=blog.jobbole.com&amp;utm_medium=article-related-group-topic" title="自学了一些前端基础知识，不知道接下来该怎么做" target="_blank">自学了一些前端基础知识，不知道接下来该怎么做</a>
+                     · <a href="http://group.jobbole.com/21228/#comments" target="_blank"><i class="fa fa-comments-o"></i> 42</a>                </li>
+                            <li>
+                    <a href="http://group.jobbole.com/20505/?utm_source=blog.jobbole.com&amp;utm_medium=article-related-group-topic" title="这样的日子我受够了，是时候走了，实在受不了了" target="_blank">这样的日子我受够了，是时候走了，实在受不了了</a>
+                     · <a href="http://group.jobbole.com/20505/#comments" target="_blank"><i class="fa fa-comments-o"></i> 42</a>                </li>
+                            <li>
+                    <a href="http://group.jobbole.com/19948/?utm_source=blog.jobbole.com&amp;utm_medium=article-related-group-topic" title="你们觉得程序员这个职业怎么样？" target="_blank">你们觉得程序员这个职业怎么样？</a>
+                     · <a href="http://group.jobbole.com/19948/#comments" target="_blank"><i class="fa fa-comments-o"></i> 54</a>                </li>
+                            <li>
+                    <a href="http://group.jobbole.com/20904/?utm_source=blog.jobbole.com&amp;utm_medium=article-related-group-topic" title="说说程序猿的爱好都有啥" target="_blank">说说程序猿的爱好都有啥</a>
+                     · <a href="http://group.jobbole.com/20904/#comments" target="_blank"><i class="fa fa-comments-o"></i> 70</a>                </li>
+                            <li>
+                    <a href="http://group.jobbole.com/20062/?utm_source=blog.jobbole.com&amp;utm_medium=article-related-group-topic" title="请各位帮忙支招？自己比较菜,还要带着2个同事……" target="_blank">请各位帮忙支招？自己比较菜,还要带着2个同事……</a>
+                     · <a href="http://group.jobbole.com/20062/#comments" target="_blank"><i class="fa fa-comments-o"></i> 50</a>                </li>
+                </ul>
+</div>
+    
+        <!-- BEGIN .navigation -->
+        <div class="navigation margin-20">
+
+            <div class="alignleft"><a href="http://blog.jobbole.com/93902/" rel="prev">« 你好，Oh My Zsh - 社区力量全新方式定义命令行</a></div>
+            <div class="alignright"><a href="http://blog.jobbole.com/93932/" rel="next">你知道计算机在一秒内可以做多少事情吗？ »</a></div>
+            <div class="clear"></div>
+
+        </div>
+        <!-- END .navigation -->
+
+    
+	
+            <div id="article-comment" class="dot-box center-align">
+
+                        <a href="http://www.jobbole.com/login?redirect=http://blog.jobbole.com/93923/"><button type="button" class="btn btn-non-transparent">登录后评论</button></a>
+            
+            <a target="_blank" href="http://www.jobbole.com/register"><button type="button" class="btn btn-primary">新用户注册</button></a>
+
+            <br><br>
+            <span>直接登录</span>
+            <style type="text/css">.t_login_text{margin:0; padding:0;}.t_login_button{margin:0; padding: 5px 0;}.t_login_button a{margin:0; padding-right:3px; line-height:25px}.t_login_button img{display:inline; border:none;}</style><!-- 使用社交帐号登录 来自 WordPress连接微博 插件 --><span class="connectBox1 t_login_button"><a href="http://blog.jobbole.com/wp-content/plugins/wp-connect/login.php?go=weixin&amp;redirect_url=http%3A%2F%2Fblog.jobbole.com%2F93923%2F" title="微信" rel="nofollow"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/btn_weixin.png"></a><a href="http://blog.jobbole.com/wp-content/plugins/wp-connect/login.php?go=qzone&amp;redirect_url=http%3A%2F%2Fblog.jobbole.com%2F93923%2F" title="QQ" rel="nofollow"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/btn_qzone.png"></a><a href="http://blog.jobbole.com/wp-content/plugins/wp-connect/login.php?go=sina&amp;redirect_url=http%3A%2F%2Fblog.jobbole.com%2F93923%2F" title="新浪微博" rel="nofollow"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/btn_sina.png"></a><a href="http://blog.jobbole.com/wp-content/plugins/wp-connect/login.php?go=douban&amp;redirect_url=http%3A%2F%2Fblog.jobbole.com%2F93923%2F" title="豆瓣" rel="nofollow"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/btn_douban.png"></a><a href="http://blog.jobbole.com/wp-content/plugins/wp-connect/login.php?go=github&amp;redirect_url=http%3A%2F%2Fblog.jobbole.com%2F93923%2F" title="GitHub" rel="nofollow"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/btn_github.png"></a></span>        </div>
+    
+
+    <div id="comment_list" class="comments">
+
+        
+    </div>
+		
+
+	
+</div>
+<!-- END .grid-8 -->
+
+<!-- BEGIN #sidebar -->
+<div id="sidebar" class="grid-4">
+
+	    <div class="nav-search-box ">
+                <form method="get" id="searchform" action="http://blog.jobbole.com/">
+            <select id="searchselect">
+                                    <option selected="" value="http://blog.jobbole.com">文章</option>
+                                    <option value="http://hao.jobbole.com">资源</option>
+                                    <option value="http://design.jobbole.com">设计</option>
+                                    <option value="http://web.jobbole.com">WEB前端</option>
+                                    <option value="http://ios.jobbole.com">IOS</option>
+                                    <option value="http://python.jobbole.com">Python</option>
+                                    <option value="http://android.jobbole.com">安卓</option>
+                                    <option value="http://top.jobbole.com">资讯</option>
+                                    <option value="http://group.jobbole.com">小组</option>
+                                    <option value="http://date.jobbole.com">面向对象</option>
+                            </select>
+            <div class="input-wrapper">
+                <input type="text" value="" name="s" id="s" placeholder="输入搜索关键字">
+            </div>
+            <input type="submit" id="searchsubmit" value="搜索">
+        </form>
+    </div>
+<div id="text-103" class="widget widget_text">			<div class="textwidget"><p><a href="https://fanpinshe.taobao.com/category-1240220550.htm" target="_blank"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/4a47b8f3f21d775ef3c754d3eca8da63.jpg"></a></p>
+</div>
+		</div><div class="tabs tabbed_widget"><ul class="nav clearfix"><li class="active"><a id="link-tab1" href="http://blog.jobbole.com/93923/#tab1" title="本周热门文章">本周热门文章</a></li><li><a id="link-tab2" href="http://blog.jobbole.com/93923/#tab2" title="本月热门文章">本月热门文章</a></li><li><a id="link-tab3" href="http://blog.jobbole.com/93923/#tab3" title="热门标签">热门标签</a></li></ul><div id="tab1" class="tab" style="display: block;"><div class="floated-thumb">
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">0</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103538/" title="魔都 3 年，从程序员到 CTO">魔都 3 年，从程序员到 CTO</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">1</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103506/" title="数学有什么用处？看完后恍然大悟！">数学有什么用处？看完后恍然大悟！</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">2</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103658/" title="趣文：为什么有些程序员特别喜欢猫？">趣文：为什么有些程序员特别喜欢猫？</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">3</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103548/" title="Nginx 工作原理和优化、漏洞">Nginx 工作原理和优化、漏洞</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">4</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103451/" title="静态网站生成器将是下一个大事件">静态网站生成器将是下一个大事件</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">5</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103105/" title="这里有一份面经，请查收（1）">这里有一份面经，请查收（1）</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">6</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103630/" title="RabbitMQ、ActiveMQ、ZeroMQ、Kafka之间的比较汇总">RabbitMQ、ActiveMQ、ZeroMQ、...</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">7</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103635/" title="谈谈命名">谈谈命名</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">8</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103729/" title="Linus Torvalds 是一个糟糕的老板吗?">Linus Torvalds 是一个糟糕的老...</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">9</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103561/" title="从业 30 年的女系统管理员的经验分享">从业 30 年的女系统管理员的经验分享</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                </div></div><div id="tab2" class="tab" style="display: none;"><div class="floated-thumb">
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">0</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103464/" title="程序员离职后的代码没人敢接手 ：15 张令人喷饭的 IT 趣图（第4季）">程序员离职后的代码没人敢接手 ：15...</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">1</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/101501/" title="国内程序员的办公桌是什么样的？">国内程序员的办公桌是什么样的？</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">2</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103343/" title="学 Vim 时希望早点知道的建议">学 Vim 时希望早点知道的建议</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">3</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/102957/" title="30 分钟 git 命令入门到放弃">30 分钟 git 命令入门到放弃</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">4</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103342/" title="自学的程序员通常缺少哪些技能？">自学的程序员通常缺少哪些技能？</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">5</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103538/" title="魔都 3 年，从程序员到 CTO">魔都 3 年，从程序员到 CTO</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">6</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103098/" title="一个知乎重度用户眼中的知乎">一个知乎重度用户眼中的知乎</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">7</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103427/" title="编程老手的哪些特点，是值得新手程序员学习的？">编程老手的哪些特点，是值得新手程序...</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">8</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/102601/" title="身份证号码验证算法">身份证号码验证算法</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                
+                    
+                    <!-- BEGIN .post-meta -->
+                    <div class="post-meta  no-thumb">
+
+                        <p>
+                            <span class="numb">9</span>
+                            <a class="meta-title" target="_blank" href="http://blog.jobbole.com/103205/" title="国外程序员的办公桌是什么样的？">国外程序员的办公桌是什么样的？</a><br>
+                        </p>
+
+                    </div>
+                    <!-- END .post-meta -->
+
+                    <div class="clear"></div>
+
+                </div></div><div id="tab3" class="tab" style="display: none;"><p><a href="http://blog.jobbole.com/tag/net/" class="tag-link-1636 tag-link-position-1" title="268个话题" style="font-size: 16.711111111111px;">.Net</a>
+<a href="http://blog.jobbole.com/tag/android/" class="tag-link-4884 tag-link-position-2" title="149个话题" style="font-size: 14.118518518519px;">Android</a>
+<a href="http://blog.jobbole.com/tag/app/" class="tag-link-1941 tag-link-position-3" title="92个话题" style="font-size: 11.940740740741px;">App</a>
+<a href="http://blog.jobbole.com/tag/bug/" class="tag-link-218 tag-link-position-4" title="67个话题" style="font-size: 10.488888888889px;">Bug</a>
+<a href="http://blog.jobbole.com/tag/cpp/" class="tag-link-807 tag-link-position-5" title="84个话题" style="font-size: 11.525925925926px;">C++</a>
+<a href="http://blog.jobbole.com/tag/c-sharp/" class="tag-link-2197 tag-link-position-6" title="99个话题" style="font-size: 12.251851851852px;">C sharp</a>
+<a href="http://blog.jobbole.com/tag/css/" class="tag-link-711 tag-link-position-7" title="68个话题" style="font-size: 10.592592592593px;">CSS</a>
+<a href="http://blog.jobbole.com/tag/c/" class="tag-link-757 tag-link-position-8" title="198个话题" style="font-size: 15.362962962963px;">C语言</a>
+<a href="http://blog.jobbole.com/tag/facebook/" class="tag-link-164 tag-link-position-9" title="109个话题" style="font-size: 12.666666666667px;">Facebook</a>
+<a href="http://blog.jobbole.com/tag/featuredpost/" class="tag-link-2241 tag-link-position-10" title="622个话题" style="font-size: 20.444444444444px;">featuredpost</a>
+<a href="http://blog.jobbole.com/tag/git/" class="tag-link-885 tag-link-position-11" title="81个话题" style="font-size: 11.318518518519px;">Git</a>
+<a href="http://blog.jobbole.com/tag/github/" class="tag-link-1253 tag-link-position-12" title="67个话题" style="font-size: 10.488888888889px;">Github</a>
+<a href="http://blog.jobbole.com/tag/go/" class="tag-link-4888 tag-link-position-13" title="41个话题" style="font-size: 8.3111111111111px;">Go</a>
+<a href="http://blog.jobbole.com/tag/google/" class="tag-link-198 tag-link-position-14" title="284个话题" style="font-size: 16.918518518519px;">Google</a>
+<a href="http://blog.jobbole.com/tag/hadoop/" class="tag-link-862 tag-link-position-15" title="38个话题" style="font-size: 8px;">Hadoop</a>
+<a href="http://blog.jobbole.com/tag/html5/" class="tag-link-182 tag-link-position-16" title="84个话题" style="font-size: 11.525925925926px;">HTML5</a>
+<a href="http://blog.jobbole.com/tag/ios/" class="tag-link-4887 tag-link-position-17" title="232个话题" style="font-size: 16.088888888889px;">iOS</a>
+<a href="http://blog.jobbole.com/tag/it/" class="tag-link-513 tag-link-position-18" title="43个话题" style="font-size: 8.5185185185185px;">IT</a>
+<a href="http://blog.jobbole.com/tag/java/" class="tag-link-457 tag-link-position-19" title="165个话题" style="font-size: 14.533333333333px;">java</a>
+<a href="http://blog.jobbole.com/tag/javascript/" class="tag-link-683 tag-link-position-20" title="276个话题" style="font-size: 16.814814814815px;">Javascript</a>
+<a href="http://blog.jobbole.com/tag/jquery/" class="tag-link-459 tag-link-position-21" title="56个话题" style="font-size: 9.762962962963px;">jQuery</a>
+<a href="http://blog.jobbole.com/tag/linux/" class="tag-link-190 tag-link-position-22" title="380个话题" style="font-size: 18.266666666667px;">Linux</a>
+<a href="http://blog.jobbole.com/tag/mysql/" class="tag-link-191 tag-link-position-23" title="113个话题" style="font-size: 12.874074074074px;">MySQL</a>
+<a href="http://blog.jobbole.com/tag/nginx/" class="tag-link-1172 tag-link-position-24" title="40个话题" style="font-size: 8.2074074074074px;">Nginx</a>
+<a href="http://blog.jobbole.com/tag/node-js/" class="tag-link-896 tag-link-position-25" title="45个话题" style="font-size: 8.7259259259259px;">Node.js</a>
+<a href="http://blog.jobbole.com/tag/nosql/" class="tag-link-967 tag-link-position-26" title="48个话题" style="font-size: 9.037037037037px;">NoSQL</a>
+<a href="http://blog.jobbole.com/tag/php/" class="tag-link-168 tag-link-position-27" title="149个话题" style="font-size: 14.118518518519px;">php</a>
+<a href="http://blog.jobbole.com/tag/python/" class="tag-link-4886 tag-link-position-28" title="172个话题" style="font-size: 14.740740740741px;">Python</a>
+<a href="http://blog.jobbole.com/tag/redis/" class="tag-link-2221 tag-link-position-29" title="49个话题" style="font-size: 9.1407407407407px;">Redis</a>
+<a href="http://blog.jobbole.com/tag/ruby/" class="tag-link-4885 tag-link-position-30" title="39个话题" style="font-size: 8.1037037037037px;">Ruby</a>
+<a href="http://blog.jobbole.com/tag/shell/" class="tag-link-1714 tag-link-position-31" title="63个话题" style="font-size: 10.281481481481px;">shell</a>
+<a href="http://blog.jobbole.com/tag/soho/" class="tag-link-153 tag-link-position-32" title="40个话题" style="font-size: 8.2074074074074px;">soho</a>
+<a href="http://blog.jobbole.com/tag/sql/" class="tag-link-857 tag-link-position-33" title="57个话题" style="font-size: 9.762962962963px;">SQL</a>
+<a href="http://blog.jobbole.com/tag/sql-server/" class="tag-link-2681 tag-link-position-34" title="93个话题" style="font-size: 11.940740740741px;">SQL Server</a>
+<a href="http://blog.jobbole.com/tag/ui/" class="tag-link-1143 tag-link-position-35" title="55个话题" style="font-size: 9.6592592592593px;">UI</a>
+<a href="http://blog.jobbole.com/tag/ui%e8%ae%be%e8%ae%a1/" class="tag-link-2548 tag-link-position-36" title="142个话题" style="font-size: 13.911111111111px;">UI设计</a>
+<a href="http://blog.jobbole.com/tag/web/" class="tag-link-404 tag-link-position-37" title="46个话题" style="font-size: 8.8296296296296px;">Web</a>
+<a href="http://blog.jobbole.com/tag/web-fundamentals/" class="tag-link-3560 tag-link-position-38" title="38个话题" style="font-size: 8px;">web fundamentals</a>
+<a href="http://blog.jobbole.com/tag/web%e5%bc%80%e5%8f%91/" class="tag-link-493 tag-link-position-39" title="118个话题" style="font-size: 13.081481481481px;">Web开发</a>
+<a href="http://blog.jobbole.com/tag/book/" class="tag-link-1022 tag-link-position-40" title="52个话题" style="font-size: 9.3481481481481px;">书籍</a>
+<a href="http://blog.jobbole.com/tag/%e4%ba%92%e8%81%94%e7%bd%91/" class="tag-link-40 tag-link-position-41" title="85个话题" style="font-size: 11.525925925926px;">互联网</a>
+<a href="http://blog.jobbole.com/tag/%e4%ba%a4%e4%ba%92%e8%ae%be%e8%ae%a1/" class="tag-link-648 tag-link-position-42" title="121个话题" style="font-size: 13.185185185185px;">交互设计</a>
+<a href="http://blog.jobbole.com/tag/%e4%ba%a7%e5%93%81/" class="tag-link-522 tag-link-position-43" title="92个话题" style="font-size: 11.940740740741px;">产品</a>
+<a href="http://blog.jobbole.com/tag/%e4%ba%a7%e5%93%81%e7%bb%8f%e7%90%86/" class="tag-link-549 tag-link-position-44" title="57个话题" style="font-size: 9.762962962963px;">产品经理</a>
+<a href="http://blog.jobbole.com/tag/%e4%bb%a3%e7%a0%81/" class="tag-link-489 tag-link-position-45" title="110个话题" style="font-size: 12.77037037037px;">代码</a>
+<a href="http://blog.jobbole.com/tag/startup/" class="tag-link-4878 tag-link-position-46" title="207个话题" style="font-size: 15.57037037037px;">创业</a>
+<a href="http://blog.jobbole.com/tag/%e5%89%8d%e7%ab%af/" class="tag-link-1138 tag-link-position-47" title="68个话题" style="font-size: 10.592592592593px;">前端</a>
+<a href="http://blog.jobbole.com/tag/%e5%9b%a2%e9%98%9f/" class="tag-link-551 tag-link-position-48" title="64个话题" style="font-size: 10.281481481481px;">团队</a>
+<a href="http://blog.jobbole.com/tag/%e5%a4%a7%e6%95%b0%e6%8d%ae/" class="tag-link-884 tag-link-position-49" title="55个话题" style="font-size: 9.6592592592593px;">大数据</a>
+<a href="http://blog.jobbole.com/tag/%e5%a5%b3%e7%a8%8b%e5%ba%8f%e5%91%98/" class="tag-link-1460 tag-link-position-50" title="54个话题" style="font-size: 9.5555555555556px;">女程序员</a>
+<a href="http://blog.jobbole.com/tag/%e5%a8%81%e5%ae%a2/" class="tag-link-129 tag-link-position-51" title="40个话题" style="font-size: 8.2074074074074px;">威客</a>
+<a href="http://blog.jobbole.com/tag/%e5%ad%a6%e4%b9%a0/" class="tag-link-442 tag-link-position-52" title="47个话题" style="font-size: 8.9333333333333px;">学习</a>
+<a href="http://blog.jobbole.com/tag/%e5%ae%89%e5%85%a8/" class="tag-link-1214 tag-link-position-53" title="145个话题" style="font-size: 13.911111111111px;">安全</a>
+<a href="http://blog.jobbole.com/tag/%e5%ae%89%e5%8d%93%e5%bc%80%e5%8f%91/" class="tag-link-3362 tag-link-position-54" title="59个话题" style="font-size: 9.9703703703704px;">安卓开发</a>
+<a href="http://blog.jobbole.com/tag/%e5%ae%a2%e6%88%b7/" class="tag-link-174 tag-link-position-55" title="53个话题" style="font-size: 9.4518518518519px;">客户</a>
+<a href="http://blog.jobbole.com/tag/%e5%b7%a5%e5%85%b7/" class="tag-link-18 tag-link-position-56" title="131个话题" style="font-size: 13.496296296296px;">工具</a>
+<a href="http://blog.jobbole.com/tag/%e5%b7%a5%e7%a8%8b%e5%b8%88/" class="tag-link-470 tag-link-position-57" title="38个话题" style="font-size: 8px;">工程师</a>
+<a href="http://blog.jobbole.com/tag/%e5%bc%80%e5%8f%91%e4%ba%ba%e5%91%98/" class="tag-link-370 tag-link-position-58" title="121个话题" style="font-size: 13.185185185185px;">开发人员</a>
+<a href="http://blog.jobbole.com/tag/%e5%bc%80%e6%ba%90/" class="tag-link-196 tag-link-position-59" title="95个话题" style="font-size: 12.044444444444px;">开源</a>
+<a href="http://blog.jobbole.com/tag/%e5%be%ae%e8%bd%af/" class="tag-link-429 tag-link-position-60" title="93个话题" style="font-size: 11.940740740741px;">微软</a>
+<a href="http://blog.jobbole.com/tag/%e6%8a%80%e6%9c%af%e9%9d%a2%e8%af%95/" class="tag-link-1876 tag-link-position-61" title="58个话题" style="font-size: 9.8666666666667px;">技术面试</a>
+<a href="http://blog.jobbole.com/tag/%e6%8b%9b%e8%81%98/" class="tag-link-326 tag-link-position-62" title="45个话题" style="font-size: 8.7259259259259px;">招聘</a>
+<a href="http://blog.jobbole.com/tag/%e6%95%88%e7%8e%87/" class="tag-link-415 tag-link-position-63" title="59个话题" style="font-size: 9.9703703703704px;">效率</a>
+<a href="http://blog.jobbole.com/tag/%e6%95%99%e7%a8%8b/" class="tag-link-600 tag-link-position-64" title="53个话题" style="font-size: 9.4518518518519px;">教程</a>
+<a href="http://blog.jobbole.com/tag/%e6%95%b0%e5%ad%a6/" class="tag-link-495 tag-link-position-65" title="40个话题" style="font-size: 8.2074074074074px;">数学</a>
+<a href="http://blog.jobbole.com/tag/database/" class="tag-link-353 tag-link-position-66" title="339个话题" style="font-size: 17.748148148148px;">数据库</a>
+<a href="http://blog.jobbole.com/tag/time-management/" class="tag-link-271 tag-link-position-67" title="53个话题" style="font-size: 9.4518518518519px;">时间管理</a>
+<a href="http://blog.jobbole.com/tag/%e6%9c%8d%e5%8a%a1%e5%99%a8/" class="tag-link-311 tag-link-position-68" title="47个话题" style="font-size: 8.9333333333333px;">服务器</a>
+<a href="http://blog.jobbole.com/tag/machinelearning/" class="tag-link-1910 tag-link-position-69" title="78个话题" style="font-size: 11.214814814815px;">机器学习</a>
+<a href="http://blog.jobbole.com/tag/architecture/" class="tag-link-603 tag-link-position-70" title="111个话题" style="font-size: 12.77037037037px;">架构</a>
+<a href="http://blog.jobbole.com/tag/%e6%b5%8b%e8%af%95/" class="tag-link-678 tag-link-position-71" title="93个话题" style="font-size: 11.940740740741px;">测试</a>
+<a href="http://blog.jobbole.com/tag/%e6%b5%8f%e8%a7%88%e5%99%a8/" class="tag-link-63 tag-link-position-72" title="52个话题" style="font-size: 9.3481481481481px;">浏览器</a>
+<a href="http://blog.jobbole.com/tag/%e6%b8%b8%e6%88%8f/" class="tag-link-797 tag-link-position-73" title="75个话题" style="font-size: 11.007407407407px;">游戏</a>
+<a href="http://blog.jobbole.com/tag/%e7%94%a8%e6%88%b7/" class="tag-link-460 tag-link-position-74" title="59个话题" style="font-size: 9.9703703703704px;">用户</a>
+<a href="http://blog.jobbole.com/tag/%e7%94%a8%e6%88%b7%e4%bd%93%e9%aa%8c/" class="tag-link-580 tag-link-position-75" title="197个话题" style="font-size: 15.362962962963px;">用户体验</a>
+<a href="http://blog.jobbole.com/tag/%e7%95%8c%e9%9d%a2/" class="tag-link-4190 tag-link-position-76" title="47个话题" style="font-size: 8.9333333333333px;">界面</a>
+<a href="http://blog.jobbole.com/tag/%e7%a0%81%e5%86%9c%e6%95%85%e4%ba%8b/" class="tag-link-2863 tag-link-position-77" title="54个话题" style="font-size: 9.5555555555556px;">码农故事</a>
+<a href="http://blog.jobbole.com/tag/%e7%a7%bb%e5%8a%a8%e5%ba%94%e7%94%a8/" class="tag-link-654 tag-link-position-78" title="70个话题" style="font-size: 10.696296296296px;">移动应用</a>
+<a href="http://blog.jobbole.com/tag/%e7%a7%bb%e5%8a%a8%e7%ab%af/" class="tag-link-3904 tag-link-position-79" title="45个话题" style="font-size: 8.7259259259259px;">移动端</a>
+<a href="http://blog.jobbole.com/tag/%e7%a8%8b%e5%ba%8f%e5%91%98/" class="tag-link-368 tag-link-position-80" title="869个话题" style="font-size: 22px;">程序员</a>
+<a href="http://blog.jobbole.com/tag/algorithm/" class="tag-link-650 tag-link-position-81" title="242个话题" style="font-size: 16.296296296296px;">算法</a>
+<a href="http://blog.jobbole.com/tag/management/" class="tag-link-4880 tag-link-position-82" title="42个话题" style="font-size: 8.4148148148148px;">管理</a>
+<a href="http://blog.jobbole.com/tag/%e7%bc%96%e7%a8%8b/" class="tag-link-389 tag-link-position-83" title="140个话题" style="font-size: 13.807407407407px;">编程</a>
+<a href="http://blog.jobbole.com/tag/%e7%bc%96%e7%a8%8b%e8%af%ad%e8%a8%80/" class="tag-link-596 tag-link-position-84" title="119个话题" style="font-size: 13.081481481481px;">编程语言</a>
+<a href="http://blog.jobbole.com/tag/%e7%bd%91%e7%ab%99/" class="tag-link-150 tag-link-position-85" title="83个话题" style="font-size: 11.422222222222px;">网站</a>
+<a href="http://blog.jobbole.com/tag/%e7%bd%91%e9%a1%b5%e8%ae%be%e8%ae%a1/" class="tag-link-454 tag-link-position-86" title="243个话题" style="font-size: 16.296296296296px;">网页设计</a>
+<a href="http://blog.jobbole.com/tag/%e8%81%8c%e5%9c%ba/" class="tag-link-253 tag-link-position-87" title="384个话题" style="font-size: 18.37037037037px;">职场</a>
+<a href="http://blog.jobbole.com/tag/%e8%87%aa%e7%94%b1%e8%81%8c%e4%b8%9a/" class="tag-link-315 tag-link-position-88" title="131个话题" style="font-size: 13.496296296296px;">自由职业</a>
+<a href="http://blog.jobbole.com/tag/translation/" class="tag-link-4882 tag-link-position-89" title="39个话题" style="font-size: 8.1037037037037px;">英语</a>
+<a href="http://blog.jobbole.com/tag/%e8%8b%b9%e6%9e%9c/" class="tag-link-183 tag-link-position-90" title="52个话题" style="font-size: 9.3481481481481px;">苹果</a>
+<a href="http://blog.jobbole.com/tag/%e8%ae%be%e8%ae%a1/" class="tag-link-431 tag-link-position-91" title="132个话题" style="font-size: 13.496296296296px;">设计</a>
+<a href="http://blog.jobbole.com/tag/%e8%ae%be%e8%ae%a1%e5%b8%88/" class="tag-link-436 tag-link-position-92" title="208个话题" style="font-size: 15.57037037037px;">设计师</a>
+<a href="http://blog.jobbole.com/tag/%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f/" class="tag-link-1845 tag-link-position-93" title="64个话题" style="font-size: 10.281481481481px;">设计模式</a>
+<a href="http://blog.jobbole.com/tag/%e8%b6%a3%e6%96%87/" class="tag-link-2105 tag-link-position-94" title="57个话题" style="font-size: 9.762962962963px;">趣文</a>
+<a href="http://blog.jobbole.com/tag/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b%e5%b8%88/" class="tag-link-400 tag-link-position-95" title="38个话题" style="font-size: 8px;">软件工程师</a>
+<a href="http://blog.jobbole.com/tag/%e8%bd%af%e4%bb%b6%e5%bc%80%e5%8f%91/" class="tag-link-38 tag-link-position-96" title="91个话题" style="font-size: 11.837037037037px;">软件开发</a>
+<a href="http://blog.jobbole.com/tag/%e9%9d%a2%e8%af%95/" class="tag-link-173 tag-link-position-97" title="112个话题" style="font-size: 12.77037037037px;">面试</a>
+<a href="http://blog.jobbole.com/tag/%e9%a1%b9%e7%9b%ae/" class="tag-link-177 tag-link-position-98" title="38个话题" style="font-size: 8px;">项目</a>
+<a href="http://blog.jobbole.com/tag/%e9%a1%b9%e7%9b%ae%e7%bb%8f%e7%90%86/" class="tag-link-1049 tag-link-position-99" title="38个话题" style="font-size: 8px;">项目经理</a>
+<a href="http://blog.jobbole.com/tag/%e9%bb%91%e5%ae%a2/" class="tag-link-617 tag-link-position-100" title="61个话题" style="font-size: 10.074074074074px;">黑客</a></p></div></div><div id="text-100" class="widget widget_text">			<div class="textwidget"><p><a href="http://blog.jobbole.com/99322/?utm_source=blog.jobbole.com&amp;utm_medium=sidebarBanner&amp;utm_content=2016.4.5" target="_blank"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/bfdcef89jw1f2lmtdfiyxj208c03cglx.jpg"></a></p>
+</div>
+		</div>
+        <h3 class="widget-title">
+            <a target="_blank" href="http://top.jobbole.com/category/news/">业界热点资讯</a>
+            <span style="float:right;"><a target="_blank" href="http://top.jobbole.com/category/news/">更多 »</a></span>
+        </h3>
+        <!-- BEGIN .container -->
+        <div class="container">
+            
+                <!-- BEGIN .grid-4 -->
+                <div class="grid-4 floated-thumb">
+
+                    
+                        <!-- BEGIN .post-thumb -->
+                        <div class="post-thumb">
+                            <a target="_blank" href="http://top.jobbole.com/35321/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-top-news"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/b7be03c21cffa111c4fa41db7c8fcfe9.png" alt="" width="50" height="50"></a>
+                        </div>
+                        <!-- END .post-thumb -->
+
+                        <!-- BEGIN .post-meta -->
+                        <div class="post-meta">
+
+                            <p>
+                                <a class="meta-title" title="2016 年 6 月 RedMonk 编程语言排行榜" target="_blank" href="http://top.jobbole.com/35321/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-top-news">2016 年 6 月 RedMonk 编程语言排行榜</a><br>
+                                18 小时前                                · <i class="fa fa-thumbs-o-up"></i> 7                                
+                            </p>
+
+                        </div>
+                        <!-- END .post-meta -->
+
+                        <div class="clear"></div>
+
+                    
+                        <!-- BEGIN .post-thumb -->
+                        <div class="post-thumb">
+                            <a target="_blank" href="http://top.jobbole.com/35314/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-top-news"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/565719730ba5cef93633ac3fb10cd4e5.jpg" alt="" width="50" height="50"></a>
+                        </div>
+                        <!-- END .post-thumb -->
+
+                        <!-- BEGIN .post-meta -->
+                        <div class="post-meta">
+
+                            <p>
+                                <a class="meta-title" title="PHP 、Python 等网站应用惊爆远程代理漏洞：httpoxy" target="_blank" href="http://top.jobbole.com/35314/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-top-news">PHP 、Python 等网站应用惊爆远程代理漏洞：httpoxy</a><br>
+                                1 天前                                · <i class="fa fa-thumbs-o-up"></i> 12                                
+                            </p>
+
+                        </div>
+                        <!-- END .post-meta -->
+
+                        <div class="clear"></div>
+
+                    
+                        <!-- BEGIN .post-thumb -->
+                        <div class="post-thumb">
+                            <a target="_blank" href="http://top.jobbole.com/35308/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-top-news"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/b8e4c2d8e5a5d036a6949fe8da1f4013.jpg" alt="" width="50" height="50"></a>
+                        </div>
+                        <!-- END .post-thumb -->
+
+                        <!-- BEGIN .post-meta -->
+                        <div class="post-meta">
+
+                            <p>
+                                <a class="meta-title" title="中国版心灵捕手：快递员解决数学难题" target="_blank" href="http://top.jobbole.com/35308/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-top-news">中国版心灵捕手：快递员解决数学难题</a><br>
+                                2 天前                                · <i class="fa fa-thumbs-o-up"></i> 13                                                                    ·  <a href="http://top.jobbole.com/35308/#comments" target="_blank"><i class="fa fa-comments-o"></i> 2</a>
+                                
+                            </p>
+
+                        </div>
+                        <!-- END .post-meta -->
+
+                        <div class="clear"></div>
+
+                    
+                        <!-- BEGIN .post-thumb -->
+                        <div class="post-thumb">
+                            <a target="_blank" href="http://top.jobbole.com/35325/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-top-news"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/9fd870742fd0f60d8984de2e17d7bbd9.jpg" alt="" width="50" height="50"></a>
+                        </div>
+                        <!-- END .post-thumb -->
+
+                        <!-- BEGIN .post-meta -->
+                        <div class="post-meta">
+
+                            <p>
+                                <a class="meta-title" title="[动图]能普及？瑞士学生开发新型无人机避障算法" target="_blank" href="http://top.jobbole.com/35325/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-top-news">[动图]能普及？瑞士学生开发新型无人机避障算法</a><br>
+                                11 小时前                                · <i class="fa fa-thumbs-o-up"></i> 2                                
+                            </p>
+
+                        </div>
+                        <!-- END .post-meta -->
+
+                        <div class="clear"></div>
+
+                    
+                        <!-- BEGIN .post-thumb -->
+                        <div class="post-thumb">
+                            <a target="_blank" href="http://top.jobbole.com/35310/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-top-news"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/263c701b8ce977ef0e5404053c2874b2.jpg" alt="" width="50" height="50"></a>
+                        </div>
+                        <!-- END .post-thumb -->
+
+                        <!-- BEGIN .post-meta -->
+                        <div class="post-meta">
+
+                            <p>
+                                <a class="meta-title" title="迄今最小硬盘实现单原子存储！超现有硬盘500倍" target="_blank" href="http://top.jobbole.com/35310/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-top-news">迄今最小硬盘实现单原子存储！超现有硬盘500倍</a><br>
+                                1 天前                                · <i class="fa fa-thumbs-o-up"></i> 6                                
+                            </p>
+
+                        </div>
+                        <!-- END .post-meta -->
+
+                        <div class="clear"></div>
+
+                    
+                </div>
+                <!-- END .grid-4 -->
+
+            
+            <div class="clear"></div>
+
+        </div>
+        <!-- END .container -->
+                    <h3 class="widget-title">
+                <a href="http://hao.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources-more" target="_blank">精选工具资源</a>
+                <span style="float:right;"><a target="_blank" href="http://hao.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources-more">更多资源 »</a></span>
+            </h3>
+            <div class="container">
+                <div class="grid-4">
+                
+                    <div class="floated-thumb">
+                        <div class="post-thumb">
+                            <a target="_blank" href="http://hao.jobbole.com/chardet/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources" title="Chardet：通用编码检测器"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/f2c9db001ad24f9b795f4d4c4601688d.png" alt="" width="50" height="50"></a>
+                        </div>
+                        <div class="post-meta">
+                            <p>
+                                <a class="meta-title" target="_blank" href="http://hao.jobbole.com/chardet/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources" title="Chardet：通用编码检测器">Chardet：通用编码检测器</a><br>
+                                <a href="http://hao.jobbole.com/category/python-tools/" rel="category tag">Python</a>, <a href="http://hao.jobbole.com/category/python-tools/python-text-manage/" rel="category tag">文本处理</a>
+                            </p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                
+                    <div class="floated-thumb">
+                        <div class="post-thumb">
+                            <a target="_blank" href="http://hao.jobbole.com/encrypted-core-data/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources" title="encrypted-core-data：使用 SQLClipher 对 CoreData 的 SQLite 存储进行加密"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/93bb239fece09a41dcc895549dc2c4e7.png" alt="" width="50" height="50"></a>
+                        </div>
+                        <div class="post-meta">
+                            <p>
+                                <a class="meta-title" target="_blank" href="http://hao.jobbole.com/encrypted-core-data/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources" title="encrypted-core-data：使用 SQLClipher 对 CoreData 的 SQLite 存储进行加密">encrypted-core-data：使用 SQLClipher 对 CoreDat...</a><br>
+                                <a href="http://hao.jobbole.com/category/ios/ios-libraries-and-frameworks/ios-core-data/" rel="category tag">Core Data</a>, <a href="http://hao.jobbole.com/category/ios/" rel="category tag">iOS</a>
+                            </p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                
+                    <div class="floated-thumb">
+                        <div class="post-thumb">
+                            <a target="_blank" href="http://hao.jobbole.com/apache-hadoop/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources" title="Apache Hadoop：在商用硬件集群上用来进行大规模数据存储的开源软件框架"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/111207e6b9c6b973d12b0300cacd19a6.png" alt="" width="50" height="50"></a>
+                        </div>
+                        <div class="post-meta">
+                            <p>
+                                <a class="meta-title" target="_blank" href="http://hao.jobbole.com/apache-hadoop/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources" title="Apache Hadoop：在商用硬件集群上用来进行大规模数据存储的开源软件框架">Apache Hadoop：在商用硬件集群上用来进行大规模数据存...</a><br>
+                                <a href="http://hao.jobbole.com/category/java/java-machine-learning/" rel="category tag">机器学习</a>
+                            </p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                
+                    <div class="floated-thumb">
+                        <div class="post-thumb">
+                            <a target="_blank" href="http://hao.jobbole.com/python-recsys/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources" title="python-recsys：一款实现推荐系统的python库"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/768a03d0c1bf96ce66579c707cbc779d.png" alt="" width="50" height="50"></a>
+                        </div>
+                        <div class="post-meta">
+                            <p>
+                                <a class="meta-title" target="_blank" href="http://hao.jobbole.com/python-recsys/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources" title="python-recsys：一款实现推荐系统的python库">python-recsys：一款实现推荐系统的python库</a><br>
+                                <a href="http://hao.jobbole.com/category/python-tools/" rel="category tag">Python</a>, <a href="http://hao.jobbole.com/category/python-tools/python-machine-learning/" rel="category tag">机器学习</a>
+                            </p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                
+                    <div class="floated-thumb">
+                        <div class="post-thumb">
+                            <a target="_blank" href="http://hao.jobbole.com/corestore/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources" title="CoreStore：使用Swift包装Core Data框架"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/4b4fcfd7b0ee30ff645ae052d2851eea.png" alt="" width="50" height="50"></a>
+                        </div>
+                        <div class="post-meta">
+                            <p>
+                                <a class="meta-title" target="_blank" href="http://hao.jobbole.com/corestore/?utm_source=blog.jobbole.com&amp;utm_medium=sidebar-resources" title="CoreStore：使用Swift包装Core Data框架">CoreStore：使用Swift包装Core Data框架</a><br>
+                                <a href="http://hao.jobbole.com/category/ios/ios-libraries-and-frameworks/ios-core-data/" rel="category tag">Core Data</a>, <a href="http://hao.jobbole.com/category/ios/" rel="category tag">iOS</a>
+                            </p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                                </div>
+            </div>
+        		<h3 class="widget-title">最新评论</h3>
+		<ul>
+		
+					
+			<li id="rc-comment-157640" class="rc-item rc-comment rc-clearfix">
+				<a target="_blank" href="http://www.jobbole.com/members/cnxm"><img class="rc-avatar rc-left" width="34" height="34" alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/8ad7d23ac27b4895cefe453bd80478c2.jpg"></a>
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" title="趣文：为什么有些程序员特别喜欢猫？" href="http://blog.jobbole.com/103658/#comment-157640" rel="nofollow">趣文：为什么有些程序员特别喜欢...</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				即使没写代码的时候也希望有人可以安静陪伴				</div>
+			</li>
+			
+					
+			<li id="rc-comment-157639" class="rc-item rc-comment rc-clearfix">
+				<a target="_blank" href="http://www.jobbole.com/members/liuhuoxingkong"><img class="rc-avatar rc-left" width="34" height="34" alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/100"></a>
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" title="趣文：为什么有些程序员特别喜欢猫？" href="http://blog.jobbole.com/103658/#comment-157639" rel="nofollow">趣文：为什么有些程序员特别喜欢...</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				孤独而忙碌，其实程序猿很希望在写代码的时候有人可以安静的陪伴~				</div>
+			</li>
+			
+					
+			<li id="rc-comment-157638" class="rc-item rc-comment rc-clearfix">
+				<a target="_blank" href="http://www.jobbole.com/members/sasha"><img class="rc-avatar rc-left" width="34" height="34" alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/8fbdaaa5ea6d3b49c8c1c825aafeb5d9.png"></a>
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" title="VS Code（1.2.0）最新亮点和特性全介绍" href="http://blog.jobbole.com/102406/#comment-157638" rel="nofollow">VS Code（1.2.0）最新亮点...</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				1.3有重大变化，期待1.3的翻译。				</div>
+			</li>
+			
+					
+			<li id="rc-comment-157637" class="rc-item rc-comment rc-clearfix">
+				<a target="_blank" href="http://www.jobbole.com/members/tcwhvi"><img class="rc-avatar rc-left" width="34" height="34" alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/8fbdaaa5ea6d3b49c8c1c825aafeb5d9.png"></a>
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" title="程序员离职后的代码没人敢接手 ：15 张令人喷饭的 IT 趣图（第4季）" href="http://blog.jobbole.com/103464/#comment-157637" rel="nofollow">程序员离职后的代码没人敢接手 ：...</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				笑死了，找图的好有才~				</div>
+			</li>
+			
+					
+			<li id="rc-comment-157636" class="rc-item rc-comment rc-clearfix">
+				<a target="_blank" href="http://www.jobbole.com/members/svgsfv"><img class="rc-avatar rc-left" width="34" height="34" alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/4a42952f5f2745ba0c5121ac1b1d6668-bpfull.jpg"></a>
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" title="C++指针详解" href="http://blog.jobbole.com/103710/#comment-157636" rel="nofollow">C++指针详解</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				这是c指针吧……还以为讲智能指针呢，别挂羊头卖狗肉啊……&nbsp;				</div>
+			</li>
+			
+					
+			<li id="rc-comment-157634" class="rc-item rc-comment rc-clearfix">
+				<a target="_blank" href="http://www.jobbole.com/members/disasm"><img class="rc-avatar rc-left" width="34" height="34" alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/100(1)"></a>
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" title="如何在 Linux 上录制你的终端操作" href="http://blog.jobbole.com/103737/#comment-157634" rel="nofollow">如何在 Linux 上录制你的终端...</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				为何忘却了 asciinema 这个神器。				</div>
+			</li>
+			
+					
+			<li id="rc-comment-157633" class="rc-item rc-comment rc-clearfix">
+				<a target="_blank" href="http://www.jobbole.com/members/q2927385086"><img class="rc-avatar rc-left" width="34" height="34" alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/100(2)"></a>
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" title="趣文：为什么有些程序员特别喜欢猫？" href="http://blog.jobbole.com/103658/#comment-157633" rel="nofollow">趣文：为什么有些程序员特别喜欢...</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				我不喜欢猫。我喜欢养狗，边牧和金毛是我的最爱				</div>
+			</li>
+			
+					
+			<li id="rc-comment-157632" class="rc-item rc-comment rc-clearfix">
+				<a target="_blank" href="http://www.jobbole.com/members/LaoJiu"><img class="rc-avatar rc-left" width="34" height="34" alt="" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/f74674c9ee64434ec553cb7844815c8a.jpg"></a>
+				<div class="rc-info">
+				Re:
+				<a class="rc-post" target="_blank" title="GeoHash核心原理解析" href="http://blog.jobbole.com/80633/#comment-157632" rel="nofollow">GeoHash核心原理解析</a>
+				</div>
+				<div class="rc-timestamp"></div>
+				<div class="rc-excerpt">
+				强				</div>
+			</li>
+			
+				
+		</ul>
+        	
+	<!-- BEGIN .container -->
+	<div class="container">
+	
+		<!-- BEGIN .grid-2 -->
+		<div class="grid-2">
+			
+						
+		</div>
+		<!-- END .grid-2 -->
+		
+		<!-- BEGIN .grid-2 -->
+		<div class="grid-2">
+			
+						
+		</div>
+		<!-- END .grid-2 -->
+		
+		<div class="clear"></div>
+			
+	</div>
+	<!-- END .container -->
+
+</div>
+<!-- END #sidebar -->
+<div class="clear"></div>	
+
+
+</div>
+<!-- END #wrapper -->
+
+<!-- BEGIN footer -->
+
+    <footer>
+
+        <!-- BEGIN .container -->
+        <div class="container">
+
+            <!-- BEGIN .grid-4 -->
+            <div class="grid-4">
+
+                <div id="text-3" class="widget widget_text"><h3 class="widget-title">关于伯乐在线博客</h3>			<div class="textwidget"><p>在这个信息爆炸的时代，人们已然被大量、快速并且简短的信息所包围。然而，我们相信：过多“快餐”式的阅读只会令人“虚胖”，缺乏实质的内涵。伯乐在线内容团队正试图以我们微薄的力量，把优秀的原创文章和译文分享给读者，为“快餐”添加一些“营养”元素。</p>
+<p><b>快速链接</b><br>
+<a target="_blank" href="http://group.jobbole.com/category/feedback/thanks">问题反馈与求助 » </a><br>
+<a target="_blank" href="http://group.jobbole.com/category/feedback/trans-team/">加入伯乐翻译小组 » </a><br>
+<a target="_blank" href="http://blog.jobbole.com/99322">加入专栏作者 » </a></p>
+</div>
+		</div>
+            </div>
+            <!-- END .grid-4 -->
+
+            <!-- BEGIN .grid-4 -->
+            <div class="grid-4">
+
+                <div id="text-4" class="widget widget_text"><h3 class="widget-title">关注我们</h3>			<div class="textwidget"><p>新浪微博：<a href="http://weibo.com/jobbole" target="_blank">@伯乐在线官方微博</a><br>
+RSS：<a href="http://blog.jobbole.com/feed/" target="_blank">订阅地址</a><br>
+推荐微信号 <br>
+<img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/iprogrammer_weixin.png" width="100" height="110"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/ui_weixin.png" width="100" height="110"><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/geekfan_weixin.png" width="100" height="110"></p>
+<p><strong>合作联系</strong><br>
+Email：<a href="mailto:bd@jobbole.com">bd@Jobbole.com</a><br>
+QQ： 2302462408  （加好友请注明来意）</p>
+</div>
+		</div>
+            </div>
+            <!-- END .grid-4 -->
+
+            <!-- BEGIN .grid-4 -->
+            <div class="grid-4">
+
+                <div id="text-7" class="widget widget_text"><h3 class="widget-title">更多频道</h3>			<div class="textwidget"><p><a href="http://group.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">小组</a> – 好的话题、有启发的回复、值得信赖的圈子<br>
+<a href="http://top.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">头条</a> – 分享和发现有价值的内容与观点<br>
+<a href="http://date.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">相亲</a> – 为IT单身男女服务的征婚传播平台<br>
+<a href="http://hao.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">资源</a> – 优秀的工具资源导航<br>
+<a href="http://fanyi.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">翻译</a> – 翻译传播优秀的外文文章<br>
+<a href="http://blog.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">文章</a> – 国内外的精选文章<br>
+<a href="http://design.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">设计</a> – UI,网页，交互和用户体验<br>
+<a href="http://ios.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">iOS</a> – 专注iOS技术分享<br>
+<a href="http://android.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">安卓</a> – 专注Android技术分享<br>
+<a href="http://web.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">前端</a> – JavaScript, HTML5, CSS<br>
+<a href="http://www.importnew.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">Java</a> – 专注Java技术分享<br>
+<a href="http://python.jobbole.com/?utm_source=blog.jobbole.com&amp;utm_medium=bottomText" target="_blank">Python</a> – 专注Python技术分享</p>
+</div>
+		</div>
+            </div>
+            <!-- END .grid-4 -->
+
+            <div class="clear"></div>
+
+        </div>
+        <!-- END .container -->
+
+        <!-- BEGIN #bottom -->
+        <div id="bottom">
+
+            <!-- BEGIN .container -->
+            <div class="container">
+
+                <!-- BEGIN .grid-12 -->
+                <div class="grid-12">
+
+                    <p>© 2016 伯乐在线
+                    <span style="margin-left: 40px;">
+                        <a href="http://www.jobbole.com/">首页</a>&nbsp;&nbsp;
+                        <a href="http://blog.jobbole.com/">博客</a>&nbsp;&nbsp;
+                        <a href="http://hao.jobbole.com/">资源</a>&nbsp;&nbsp;
+                        <a href="http://group.jobbole.com/">小组</a>&nbsp;&nbsp;
+                        <a href="http://date.jobbole.com/">相亲</a>&nbsp;&nbsp;
+                        <a href="http://group.jobbole.com/category/feedback/thanks/"><i class="fa fa-bullhorn"></i> 反馈</a>
+                    </span>
+                    </p>
+
+                </div>
+                <!-- END .grid-12 -->
+
+                <div class="clear"></div>
+
+            </div>
+            <!-- END .container -->
+
+        </div>
+        <!-- END #bottom -->
+    </footer>
+
+    
+<!-- END footer -->
+
+
+
+<script type="text/javascript">
+/* <![CDATA[ */
+var thickboxL10n = {"next":"\u4e0b\u4e00\u9875 >","prev":"< \u4e0a\u4e00\u9875","image":"\u56fe\u50cf","of":"\/","close":"\u5173\u95ed","noiframes":"\u8fd9\u4e2a\u529f\u80fd\u9700\u8981iframe\u7684\u652f\u6301\u3002\u60a8\u53ef\u80fd\u7981\u6b62\u4e86iframe\u7684\u663e\u793a\uff0c\u6216\u60a8\u7684\u6d4f\u89c8\u5668\u4e0d\u652f\u6301\u6b64\u529f\u80fd\u3002","loadingAnimation":"http:\/\/blog.jobbole.com\/wp-includes\/js\/thickbox\/loadingAnimation.gif"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/thickbox.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/underscore.min.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/shortcode.min.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/media-upload.min.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/comment-reply.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var quicktagsL10n = {"closeAllOpenTags":"\u5173\u95ed\u6240\u6709\u6253\u5f00\u7684\u6807\u7b7e","closeTags":"\u5173\u95ed\u6807\u7b7e","enterURL":"\u8f93\u5165URL","enterImageURL":"\u8f93\u5165\u56fe\u50cfURL","enterImageDescription":"\u4e3a\u56fe\u50cf\u8f93\u5165\u63cf\u8ff0","textdirection":"\u6587\u672c\u65b9\u5411","toggleTextdirection":"\u5207\u6362\u7f16\u8f91\u5668\u6587\u672c\u4e66\u5199\u65b9\u5411","dfw":"\u514d\u6253\u6270\u5199\u4f5c\u6a21\u5f0f","strong":"\u7c97\u4f53","strongClose":"\u5173\u95ed\u7c97\u4f53\u6807\u7b7e","em":"\u659c\u4f53","emClose":"\u5173\u95ed\u659c\u4f53\u6807\u7b7e","link":"\u63d2\u5165\u94fe\u63a5","blockquote":"\u5757\u5f15\u7528","blockquoteClose":"\u5173\u95ed\u5757\u5f15\u7528\u6807\u7b7e","del":"\u5220\u9664\u7684\u6587\u5b57\uff08\u5220\u9664\u7ebf\uff09","delClose":"\u5173\u95ed\u5220\u9664\u7ebf\u6807\u7b7e","ins":"\u63d2\u5165\u7684\u6587\u5b57","insClose":"\u5173\u95ed\u63d2\u5165\u7684\u6587\u5b57\u6807\u7b7e","image":"\u63d2\u5165\u56fe\u50cf","ul":"\u9879\u76ee\u7b26\u53f7\u5217\u8868","ulClose":"\u5173\u95ed\u9879\u76ee\u7b26\u53f7\u5217\u8868\u6807\u7b7e","ol":"\u7f16\u53f7\u5217\u8868","olClose":"\u5173\u95ed\u7f16\u53f7\u5217\u8868\u6807\u7b7e","li":"\u5217\u8868\u9879\u76ee","liClose":"\u5173\u95ed\u5217\u8868\u9879\u76ee\u6807\u7b7e","code":"\u4ee3\u7801","codeClose":"\u5173\u95ed\u4ee3\u7801\u6807\u7b7e","more":"\u63d2\u5165\u201cMore\u201d\u6807\u7b7e"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/quicktags.min.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/crayon_qt.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var viewsCacheL10n = {"admin_ajax_url":"http:\/\/blog.jobbole.com\/wp-admin\/admin-ajax.php","post_id":"93923"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/postviews-cache.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/ready.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/easing.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/validate.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/touchwipe.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/caroufredsel.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/flexslider.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/jplayer.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/fitvids.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/selectnav.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/effects.js"></script>
+<script type="text/javascript" src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/wp-embed.min.js"></script>
+
+
+<div id="full-btm">
+<a><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/back-btm.png" width="20" border="0" alt="跳到底部" title="跳到底部"></a>
+</div>
+
+<script type="text/javascript">
+jQuery('#full-btm').click(function(){
+    jQuery('html, body').animate({scrollTop:jQuery(document).height()}, 'slow');
+    return false;
+});
+</script>
+
+<div id="full-top">
+<a><img src="./比葫芦娃还可怕的百度全系APP SDK漏洞 - WormHole虫洞漏洞分析报告 - 文章 - 伯乐在线_files/back-top.png" width="20" border="0" alt="返回顶部" title="返回顶部"></a>
+</div>
+
+<script type="text/javascript">
+jQuery('#full-top').click(function(){
+    jQuery('html, body').animate({scrollTop:0}, 'slow');
+    return false;
+});
+
+</script>
+
+
+<!-- END body -->
+
+
+<!-- END html --><div id="cboxOverlay" style="display: none;"></div><div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none;"><div id="cboxWrapper"><div><div id="cboxTopLeft" style="float: left;"></div><div id="cboxTopCenter" style="float: left;"></div><div id="cboxTopRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxMiddleLeft" style="float: left;"></div><div id="cboxContent" style="float: left;"><div id="cboxTitle" style="float: left;"></div><div id="cboxCurrent" style="float: left;"></div><button type="button" id="cboxPrevious"></button><button type="button" id="cboxNext"></button><button id="cboxSlideshow"></button><div id="cboxLoadingOverlay" style="float: left;"></div><div id="cboxLoadingGraphic" style="float: left;"></div></div><div id="cboxMiddleRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxBottomLeft" style="float: left;"></div><div id="cboxBottomCenter" style="float: left;"></div><div id="cboxBottomRight" style="float: left;"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none; max-width: none;"></div></div></body></html>

@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<!-- saved from url=(0092)https://jaq.alibaba.com/community/art/show?spm=a313e.7916646.24000001.8.pqy3rQ&articleid=378 -->
+<html class="ks-webkit537 ks-webkit ks-chrome51 ks-chrome"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/index.js"></script><script type="text/javascript" async="" src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/agp_heat.min.js"></script><script charset="utf-8" src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/saved_resource" async=""></script>
+    
+    <title>安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全</title>
+    <meta name="data-spm" content="a313e">
+    <meta name="author" content="阿里聚安全@jaq.alibaba.com">
+    <meta name="copyright" content="版权公告©1999-2016 阿里巴巴集团控股有限公司及或其关联公司及特许人版权所有。">
+    <meta name="baidu-site-verification" content="HkIy23Spsd">
+    <meta name="description" content="分享一些经常用或原创的调试工具以及手段，希望能对国内移动安全的研究起到一些催化剂的作用">
+    <meta name="keywords" content="Hooking,Android,调试,工具">
+    <link rel="shortcut icon" href="https://jaq.alibaba.com/favicon.ico">
+    <link rel="stylesheet" href="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/base.css">
+    <link rel="stylesheet" type="text/css" href="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/common-min.css">
+    <link rel="stylesheet" type="text/css" href="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/community-min.css">
+    <link rel="stylesheet" type="text/css" href="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/font_1460200850_9647107.css">
+    
+    
+    <script>/* 2016-05-09 11:29:44 */
+!function e(t,a,r){function n(o,s){if(!a[o]){if(!t[o]){var c="function"==typeof require&&require;if(!s&&c)return c(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var l=a[o]={exports:{}};t[o][0].call(l.exports,function(e){var a=t[o][1][e];return n(a?a:e)},l,l.exports,e,t,a,r)}return a[o].exports}for(var i="function"==typeof require&&require,o=0;o<r.length;o++)n(r[o]);return n}({1:[function(e,t,a){"use strict";var r=location.search,n={VERSION:{DEFAULT:"7",MANUAL:9,MANUAL_TIMEOUT:7},TIME:{MANUAL_TIMEOUT:6e3},RATE:{AHOT_SAMPLING:.1},DEBUG:{AHOT:r.indexOf("ap-debug-ahot")>-1,ANTI_SPAM:r.indexOf("ap-debug-antispam")>-1,LS_PROXY:r.indexOf("ap-debug-lsproxy")>-1}},i={NAME_STORAGE:{REFERRER:"wm_referrer",REFERRER_PV_ID:"refer_pv_id"}};a.COMFIG=n,a.KEY=i},{}],2:[function(require,module,exports){!function(){function tryToDecodeURIComponent(e,t){var a=t||"";if(e)try{a=decodeURIComponent(e)}catch(r){}return a}function obj2param(e){var t,a,r=[];for(t in e)e.hasOwnProperty(t)&&(a=""+e[t],r.push(util.isStartWith(t,s_plain_obj)?a:t+"="+encodeURIComponent(a)));return r.join("&")}function arr2param(e){var t,a,r,n=[],i=e.length;for(r=0;i>r;r++)t=e[r][0],a=e[r][1],n.push(util.isStartWith(t,s_plain_obj)?a:t+"="+encodeURIComponent(a));return n.join("&")}function arr2obj(e){var t,a,r,n={},i=e.length;for(r=0;i>r;r++)t=e[r][0],a=e[r][1],n[t]=a;return n}function objSimpleClone(e){var t,a={};for(t in e)e.hasOwnProperty(t)&&(a[t]=e[t]);return a}function param2obj(e){for(var t=e.split("&"),a=0,r=t.length,n={};r>a;a++){var i=t[a],o=i.indexOf("="),s=i.substring(0,o),c=i.substring(o+1);n[s]=tryToDecodeURIComponent(c)}return n}function isNumber(e){return"number"==typeof e}function isUnDefined(e){return"undefined"==typeof e}function isString(e){return"string"==typeof e}function isArray(e){return"[object Array]"===Object.prototype.toString.call(e)}function tryToGetAttribute(e,t){return e&&e.getAttribute?e.getAttribute(t)||"":""}function tryToGetHref(e){var t;try{t=util.trim(e.getAttribute("href",2))}catch(a){}return t||""}function parseMetaContent(e,t){var a,r,n=e.split(";"),i=n.length;for(a=0;i>a;a++)r=n[a].split("="),t[util.trim(r[0])||s_plain_obj]=tryToDecodeURIComponent(util.trim(r.slice(1).join("=")))}function getCookie(e){var t=doc.cookie.match(new RegExp("(?:^|;)\\s*"+e+"=([^;]+)"));return t?t[1]:""}function makeCacheNum(){return Math.floor(268435456*Math.random()).toString(16)}function init_getMetaMicroscopeData(){var e,t,a,r=util.getMetaTags(),n=r.length;for(e=0;n>e;e++)t=r[e],"microscope-data"==tryToGetAttribute(t,"name")&&(a=tryToGetAttribute(t,"content"),parseMetaContent(a,_microscope_data),is_head_has_meta_microscope_data=s_true);_microscope_data_params=obj2param(_microscope_data),ms_data_page_id=_microscope_data.pageId,ms_data_shop_id=_microscope_data.shopId,ms_data_instance_id=_microscope_data.siteInstanceId,ms_data_siteCategoryId=_microscope_data.siteCategory,ms_prototype_id=_microscope_data.prototypeId,site_instance_id_or_shop_id=ms_data_instance_id||ms_data_shop_id}function getMetaAtpData(){var e,t,a,r=util.getMetaTags(),n=r.length;for(e=0;n>e;e++)t=r[e],"atp-beacon"==tryToGetAttribute(t,"name")&&(a=tryToGetAttribute(t,"content"),parseMetaContent(a,_atp_beacon_data));_atp_beacon_data_params=obj2param(_atp_beacon_data)}function getMetaWaiting(){return util.getMetaCnt("aplus-waiting")}function getMetaTerminal(){return util.getMetaCnt("aplus-terminal")}function getMetaRateAhot(){var e=util.getMetaCnt("aplus-rate-ahot");return parseFloat(e)||0}function getMetaAhot(){return util.getMetaCnt("ahot-aplus")}function isOnePage(){return util.getMetaCnt("isonepage")||"-1"}function getSPMProtocolFromMeta(){var e,t,a,r,n=util.getMetaTags();for(e=0,t=n.length;t>e;e++)a=n[e],r=tryToGetAttribute(a,"name"),r==s_SPM_ATTR_NAME&&(spm_protocol=tryToGetAttribute(a,s_SPM_DATA_PROTOCOL))}function getMetaSPMData(e){var t,a,r,n,i,o,s=util.getMetaTags();if(s)for(t=0,a=s.length;a>t;t++)if(n=s[t],i=tryToGetAttribute(n,"name"),i==e)return page_global_spm_id_origin=tryToGetAttribute(n,"content"),page_global_spm_id_origin.indexOf(":")>=0&&(r=page_global_spm_id_origin.split(":"),spm_protocol="i"==r[0]?"i":"u",page_global_spm_id_origin=r[1]),o=tryToGetAttribute(n,s_SPM_DATA_PROTOCOL),o&&(spm_protocol="i"==o?"i":"u"),page_global_is_wangpu=util.isStartWith(page_global_spm_id_origin,"110"),spm_ab=page_global_is_wangpu?default_ab:page_global_spm_id_origin,s_true;return s_false}function init_getGlobalSPMId(){if(!isUnDefined(spm_ab))return spm_ab;if(spm_a&&spm_b)return spm_a=spm_a.replace(/^{(\w+\/)}$/g,"$1"),spm_b=spm_b.replace(/^{(\w+\/)}$/g,"$1"),wh_in_page=s_true,spm_ab=spm_a+"."+spm_b,getSPMProtocolFromMeta(),goldlog.spm_ab=[spm_a,spm_b],spm_ab;var e;if(getMetaSPMData(s_SPM_ATTR_NAME)||getMetaSPMData("spm-id"),spm_ab=spm_ab||default_ab,!spm_ab)return spm_ab;var t,a=doc.getElementsByTagName("body");return e=spm_ab.split("."),goldlog.spm_ab=e,a=a&&a.length?a[0]:null,a&&(t=tryToGetAttribute(a,s_SPM_ATTR_NAME),t?(spm_ab=e[0]+"."+t,goldlog.spm_ab=[e[0],t]):1==e.length&&(spm_ab=default_ab)),spm_ab}function makePVId(){function e(e){var t="0123456789abcdefhijklmnopqrstuvwxyzABCDEFHIJKLMNOPQRSTUVWXYZ",a="0123456789abcdefghijkmnopqrstuvwxyzABCDEFGHIJKMNOPQRSTUVWXYZ";return 1==e?t.substr(Math.floor(60*Math.random()),1):2==e?a.substr(Math.floor(60*Math.random()),1):"0"}for(var t,a="",r="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",n=!1;a.length<6;)t=r.substr(Math.floor(62*Math.random()),1),!n&&a.length<=2&&("g"==t.toLowerCase()||"l"==t.toLowerCase())&&(0===a.length&&"g"==t.toLowerCase()?Math.random()<.5&&(t=e(1),n=!0):1==a.length&&"l"==t.toLowerCase()&&"g"==a.charAt(0).toLowerCase()&&(t=e(2),n=!0)),a+=t;return win[s_pv_id_key]=a,a}function init_aplusQueue(){var e,t=win[s_aplus_queue];t.push=e=function(){for(var e,a,r=0,n=arguments.length;n>r;r++)e=arguments[r],isString(e)?goldlog.send(hjlj_beacon_base+e):isArray(e)&&"push"!=(a=e[0])&&(t[a]=t[a]||[]).push(e.slice(1))};for(var a;a=t.shift();)e(a)}function recordValInWindowName(){var e,t;!is_in_iframe&&is_https&&(is_login_page&&page_referrer?(e=page_referrer,t=nameStorage.getItem(KEY.NAME_STORAGE.REFERRER_PV_ID)):(e=page_url,t=pvid),nameStorage.setItem(KEY.NAME_STORAGE.REFERRER,e),nameStorage.setItem(KEY.NAME_STORAGE.REFERRER_PV_ID,t))}function processGoldlogQueue(){function e(){var e,t,a,r=win[s_GOLDMINER_QUEUE];if(r&&isArray(r)&&r.length)for(;e=r.shift();)if(e&&e.action&&isString(e.action)&&e.arguments&&isArray(e.arguments)){for(a=e.action.split("."),t=win;a.length;)if(t=t[a.shift()],!t)return;if("function"==typeof t)try{t.apply(t,e.arguments)}catch(n){}}}try{e()}catch(t){}}function init_watchGoldlogQueue(){var e=function(){try{processGoldlogQueue(),setTimeout(e,200)}catch(t){}};e(),util.on(win,"beforeunload",processGoldlogQueue)}function cleanParams(e){var t,a,r,n,i=[],o={};for(t=e.length-1;t>=0;t--)a=e[t],r=a[0],r!=s_plain_obj&&o.hasOwnProperty(r)||(n=a[1],("aplus"==r||n)&&(i.unshift([r,n]),o[r]=1));return i}function cleanParamsForWindvane(e){var t,a,r,n,i=[],o={logtype:!0,cache:!0,scr:!0,"spm-cnt":!0};for(t=e.length-1;t>=0;t--)a=e[t],r=a[0],n=a[1],util.isStartWith(r,s_plain_obj)||o[r]||i.unshift([r,n]);return i}function tblogSend(e,t){var a,r;if(t){if(isWindVane&&isTerminal){r=cleanParamsForWindvane(cleanParams(t));var n,i={},o=getSPMFromUrl(page_referrer),s=isOnePage(),c=s.split("|"),l=c[0],u=c[1]?c[1]:"";try{a=arr2obj(r),n=JSON.stringify(a),"{}"==n&&(n="")}catch(m){n=""}if(i.functype="2001",i.urlpagename=u,i.url=loc.href,i.spmcnt=(spm_ab||"0.0")+".0.0",i.spmpre=o||"",i.lzsid="",i.cna=acookie_cna||"",i.extendargs=n,i.isonepage=l,WindVane.call("WVTBUserTrack","toUT",i),win[s_goldlog].windVaneData=i,-1!=hostname.indexOf("tmall.com"))return}return isUseLSProxy()?useLSProxy({url:makeUrl(e,t),js:js_fdc_lsproxy,referrer:loc.href}):goldlog.send(e,t)}}function mkPlainKey(){return s_plain_obj+Math.random()}function wp_bucketId(e,t){var a,r=2146271213;for(a=0;a<e.length;a++)r=(r<<5)+r+e.charCodeAt(a);return(65535&r)%t}function getSPMFromUrl(e){var t,a=e.match(new RegExp("\\?.*spm=([\\w\\.\\-\\*/]+)"));return a&&(t=a[1])&&5==t.split(".").length?t:null}function ifAdd(e,t){var a,r,n,i,o=t.length;for(a=0;o>a;a++)r=t[a],n=r[0],i=r[1],i&&e.push([n,i])}function init_loadScripts(){var e=(new Date).getTime(),t=Math.floor(e/72e5);Math.random()<.01&&addScript(url_alicdn+"/alilog/stat/a.js?t="+t);var a="laiwang",r="/ilw/a/lwlog.js?v=140709";isContain(loc.href.split("?")[0],a)&&addScript(url_alicdn+r);var n="/alilog/mlog/xwj_heat.js?v=151116b",i=getMetaRateAhot()||CONFIG.RATE.AHOT_SAMPLING;(Math.random()<i||isAhot||CONFIG.DEBUG.AHOT)&&addScript(url_alicdn+n),ms_data_instance_id&&ms_prototype_id&&ms_prototype_id.match(/^[124]$/)&&ms_data_shop_id&&addScriptFromFDC("wp-beacon.js?v=131014"),util.DOMReady(function(){setTimeout(function(){var e=doc.getElementById("aplus-sufei");e&&"script"==e.tagName.toLowerCase()||addScript("//g.alicdn.com/secdev/entry/index.js")},1e3)}),util.onload(function(){var e=url_alicdn+"/pecdn/mlog/agp_heat.min.js?t="+t;addScript(e)})}function compareVersion(e,t){e=e.toString().split("."),t=t.toString().split(".");for(var a=0;a<e.length||a<t.length;a++){var r=parseInt(e[a],10),n=parseInt(t[a],10);if(window.isNaN(r)&&(r=0),window.isNaN(n)&&(n=0),n>r)return-1;if(r>n)return 1}return 0}function callback(e,t){isAndroid&&compareVersion(osVersion,"2.4.0")<0?setTimeout(function(){e&&e(t)},1):e&&e(t)}function init_windVane(){var WV_Core={call:function(e,t,a,r,n,i){var o,s;return lib.promise&&(lib.promise.deferred?s=lib.promise.deferred():lib.promise.defer&&(s=lib.promise.defer())),o=i>0?setTimeout(function(){WV_Core.onFailure(o,{ret:"TIMEOUT"})},i):WV_Private.getSid(),a.sid=o,WV_Private.registerCall(o,r,n,s),isAndroid?compareVersion(wvVersion,"2.7.0")>=0?WV_Private.callMethodByPrompt(e,t,WV_Private.buildParam(a),o+""):WindVane_Native&&WindVane_Native.callMethod&&WindVane_Native.callMethod(e,t,WV_Private.buildParam(a),o+""):isIOS&&WV_Private.callMethodByIframe(e,t,WV_Private.buildParam(a),o+""),s?s.promise():void 0},fireEvent:function(e,t){var a=doc.createEvent("HTMLEvents");a.initEvent(e,!1,!0),a.param=WV_Private.parseParam(t),doc.dispatchEvent(a)},getParam:function(e){return WV_Private.params[PARAM_PREFIX+e]||""},onSuccess:function(e,t){clearTimeout(e);var a=WV_Private.unregisterCall(e),r=a.success,n=a.deferred,i=WV_Private.parseParam(t);callback(function(e){r&&r(e),n&&n.resolve(e)},i.value||i),WV_Private.onComplete(e)},onFailure:function(e,t){clearTimeout(e);var a=WV_Private.unregisterCall(e),r=a.failure,n=a.deferred,i=WV_Private.parseParam(t);callback(function(e){r&&r(e),n&&n.reject(e)},i),WV_Private.onComplete(e)}},WV_Private={params:{},buildParam:function(e){return e&&"object"==typeof e?JSON.stringify(e):e||""},parseParam:function(str){var obj;if(str&&"string"==typeof str)try{obj=JSON.parse(str)}catch(e){obj=eval("("+str+")")}else obj=str||{};return obj},getSid:function(){return Math.floor(Math.random()*(1<<50))+""+inc++},registerCall:function(e,t,a,r){t&&(callbackMap[SUCCESS_PREFIX+e]=t),a&&(callbackMap[FAILURE_PREFIX+e]=a),r&&(callbackMap[DEFERRED_PREFIX+e]=r)},unregisterCall:function(e){var t=SUCCESS_PREFIX+e,a=FAILURE_PREFIX+e,r=DEFERRED_PREFIX+e,n={success:callbackMap[t],failure:callbackMap[a],deferred:callbackMap[r]};return delete callbackMap[t],delete callbackMap[a],n.deferred&&delete callbackMap[r],n},useIframe:function(e,t){var a=IFRAME_PREFIX+e,r=iframePool.pop();r||(r=doc.createElement("iframe"),r.setAttribute("frameborder","0"),r.style.cssText="width:0;height:0;border:0;display:none;"),r.setAttribute("id",a),r.setAttribute("src",t),r.parentNode||setTimeout(function(){doc.body.appendChild(r)},5)},retrieveIframe:function(e){var t=IFRAME_PREFIX+e,a=doc.querySelector("#"+t);iframePool.length>=iframeLimit?doc.body.removeChild(a):iframePool.push(a)},callMethodByIframe:function(e,t,a,r){var n={"selfParam=1":1,sid:this.parseParam(a).sid};n=this.buildParam(n);var i=LOCAL_PROTOCOL+"://"+e+":"+r+"/"+t+"?"+n;this.params[PARAM_PREFIX+r]=a,this.useIframe(r,i)},callMethodByPrompt:function(e,t,a,r){var n=LOCAL_PROTOCOL+"://"+e+":"+r+"/"+t+"?"+a,i=WV_PROTOCOL+":";this.params[PARAM_PREFIX+r]=a,window.prompt(n,i)},onComplete:function(e){isIOS&&this.retrieveIframe(e),delete this.params[PARAM_PREFIX+e]}};for(var key in WV_Core)WV_Core.hasOwnProperty(key)&&(win[s_goldlog][key]=WindVane[key]=WV_Core[key])}function addScript(e,t){var a="script",r=doc.createElement(a);r.type="text/javascript",r.async=!0,r.src=is_https?t||e:e;var n=doc.getElementsByTagName(a)[0];n.parentNode.insertBefore(r,n)}function addScriptFromFDC(e){var t="//assets.alicdn.com/s/fdc/",a="//assets.alicdn.com/s/fdc/";addScript(t+e,a+e)}function createIframe(e,t){var a=document.createElement("iframe");a.style.width="1px",a.style.height="1px",a.style.position="absolute",a.style.display="none",a.src=e,t&&(a.name=t);var r=doc.getElementsByTagName("body")[0];return r.appendChild(a),a}function checkLS(){var e=!1;try{"localStorage"in win&&win.localStorage&&(localStorage.setItem("test","test"),localStorage.removeItem("test"),e=!0)}catch(t){}return e}function isUseLSProxy(){if(CONFIG.DEBUG.LS_PROXY)return!0;var e=navigator.userAgent;if(is_ali_app)return!1;var t=e.split(" Safari/");return 2!=t.length?!1:checkLS()&&win.postMessage&&t[1].match(/[\d\.]+/)&&e.indexOf("AppleWebKit")>-1&&e.match(/\bVersion\/\d+/)&&!e.match(/\bChrome\/\d+/)&&!e.match(/TencentTraveler|QQBrowser/)&&!e.match(/UCBrowser|UCWEB/)}function useLSProxy(e){var t="//mmstat.alicdn.com/aplus-proxy.html?v=20130115";createIframe(t,JSON.stringify(e)),win.addEventListener&&win.JSON&&win.addEventListener("message",function(e){function t(){var e=hostname.split("."),t=e.length;return t>1?e[t-2]+"."+e[t-1]:hostname}var a=e.data;try{a=JSON.parse(a)}catch(r){return}if(a[0]&&"cna"==a[0].k)for(var n,i,o,s=0,c=a.length;c>s;s++)n=a[s],o=n.k,i=encodeURIComponent(o)+"="+("cna"==o?n.v:encodeURIComponent(n.v))+"; domain=."+t()+"; path=/; expires="+new Date(n.t).toGMTString(),doc.cookie=i})}function makeUrl(e,t){var a=-1==e.indexOf("?")?"?":"&",r=t?isArray(t)?arr2param(t):obj2param(t):"";return r?e+a+r:e}function isDpp(){return isContain(mms.getExParams(),"atp_isdpp")}function inAntiSpamWhiteList(){for(var e=!1,t=["item.taobao.com","detail.tmall.com","list.tmall.com","s.taobao.com","list.taobao.com","tw.taobao.com","detail.tmall.hk","chaoshi.tmall.com"],a=0;a<t.length;a++){var r=t[a];if(hostname.indexOf(r)>-1){e=!0;break}}return isDpp()&&(e=!0),e}function chkFPPage(){return!isTerminal&&!is_ali_app&&!/iPhone|iPad|iPod|Android/i.test(ua)}function try2AddFingerPrint(e){if(chkFPPage()){var t,a,r=require("./lib/fingerprint").get(),n=["fp","fp2"];for(t=0;t<n.length;t++)a=n[t],r.hasOwnProperty(a)&&e.push([a,r[a]])}}var script_name="aplus_v2";require("./lib/client");var win=window,doc=document,time_start=(new Date).getTime(),s_aplus_queue="_ap",_k="g_tb_aplus_loaded",_launch="g_tb_aplus_launch",url_alicdn="//g.alicdn.com";if(win[s_aplus_queue]||(win[s_aplus_queue]=[]),!doc.getElementsByTagName("body").length)return void setTimeout(arguments.callee,50);if(!win[_k]){win[_k]=1;var s_goldlog="goldlog",goldlog=win[s_goldlog]||{};win[s_goldlog]=goldlog;var js_fdc_lsproxy=url_alicdn+"/alilog/mlog/lsproxy.js?v=20150514",_ali_analytics="ali_analytics",util=require("./lib/util"),isContain=util.isContain,m_rule=require("./lib/rule"),mms=require("./lib/misc"),f_makePageId=require("./lib/makeid").makePageId,st_page_id,m_config=require("./config"),CONFIG=m_config.COMFIG,KEY=m_config.KEY,VERSION=CONFIG.VERSION.DEFAULT,loc=location,loc_protocol=loc.protocol,is_https="https:"==loc_protocol,is_in_iframe=parent!==win.self,use_protocol=is_https?loc_protocol:"http:",default_ab="0.0",hostname=loc.hostname,isAhot=getMetaAhot(),isPad=/TB\-PD/i.test(navigator.userAgent),isTerminal=isPad?!0:getMetaTerminal(),tblog_beacon_base=use_protocol+"//log.mmstat.com/",hjlj_beacon_base=is_https?tblog_beacon_base:use_protocol+(isTerminal?"//wgo.mmstat.com/":"//gm.mmstat.com/"),tblog_beacon_url=tblog_beacon_base+m_rule.getBeaconSrc(loc.hostname,isTerminal,is_in_iframe)+".gif",tblog_data=[["logtype",is_in_iframe?0:1]],tblog_extra_data=[],page_url=loc.href,loc_hash=loc.hash,page_referrer=doc.referrer,is_login_page=is_https&&(page_url.indexOf("login.taobao.com")>=0||page_url.indexOf("login.tmall.com")>=0),s_false=!1,s_true=!0,s_plain_obj="::-plain-::",s_SPM_ATTR_NAME="data-spm",s_SPM_DATA_PROTOCOL="data-spm-protocol",s_GOLDMINER_QUEUE="goldlog_queue",s_pv_id_key="g_aplus_pv_id",pvid=makePVId(),acookie_cna=getCookie("cna"),_microscope_data={},_microscope_data_params,_atp_beacon_data={},_atp_beacon_data_params,site_instance_id_or_shop_id,ms_data_shop_id,ms_data_instance_id,ms_data_page_id,ms_data_siteCategoryId,ms_prototype_id,wh_in_page=s_false,spm_a=win._SPM_a,spm_b=win._SPM_b,spm_protocol,spm_ab,page_global_spm_id_origin,page_global_is_wangpu,is_head_has_meta_microscope_data=s_false,ua=navigator.userAgent,lib=win.lib||(win.lib={}),isIOS=/iPhone|iPad|iPod/i.test(ua),isAndroid=/Android/i.test(ua),isWindVane=/WindVane/i.test(ua),osVersion=ua.match(/(?:OS|Android)[\/\s](\d+[._]\d+(?:[._]\d+)?)/i),wvVersion=ua.match(/WindVane[\/\s](\d+[._]\d+[._]\d+)/),WindVane={},WindVane_Native=win.WindVane_Native,callbackMap={},inc=1,iframePool=[],iframeLimit=3,LOCAL_PROTOCOL="hybrid",WV_PROTOCOL="wv_hybrid",IFRAME_PREFIX="iframe_",SUCCESS_PREFIX="suc_",FAILURE_PREFIX="err_",DEFERRED_PREFIX="defer_",PARAM_PREFIX="param_",waitingMeta=getMetaWaiting(),hasWaitingMeta=1==waitingMeta,m_log=require("./lib/log"),is_ali_app;ua.match(/AliApp\(([A-Z\-]+)\/([\d\.]+)\)/i)&&(is_ali_app=!0);var nameStorage=require("./lib/nameStorage").nameStorage;if(page_referrer=doc.referrer||nameStorage.getItem(KEY.NAME_STORAGE.REFERRER)||"",osVersion=osVersion?(osVersion[1]||"0.0.0").replace(/_/g,"."):"0.0.0",wvVersion=wvVersion?(wvVersion[1]||"0.0.0").replace(/_/g,"."):"0.0.0",goldlog.version=VERSION,goldlog.pvid=pvid,goldlog.referrer=page_referrer,goldlog._d={},goldlog._microscope_data=_microscope_data,goldlog.on=util.on,goldlog.DOMReady=util.DOMReady,goldlog.getCookie=getCookie,goldlog.tryToGetAttribute=tryToGetAttribute,goldlog.tryToGetHref=tryToGetHref,goldlog.isNumber=isNumber,goldlog.nameStorage=nameStorage,goldlog.send=function(e,t){var a=new Image,r="_img_"+Math.random(),n=makeUrl(e,t);return win[r]=a,a.onload=a.onerror=function(){win[r]=null},a.src=n,a=null,n},goldlog.emit=function(e,t){var a,r="ued.1.1.2?type=9";return isArray(t)?a=[["_gm:id",e]].concat(t):(a=objSimpleClone(t),a["_gm:id"]=e),goldlog.send(hjlj_beacon_base+r,a)},goldlog.trace=function(e,t,a,r){goldlog.record(e,t,a,r)},goldlog.record=function(e,t,a,r){r=(arguments[3]||"")+"";var n,i,o="?",s=s_false,c="",l=(spm_ab||"0.0")+".0.0."+pvid,u="//ac.mmstat.com/";if("ac"==e)n=u+"1.gif",s=util.isStartWith(r,"A")&&r.substr(1)==util.makeChkSum(e);else if(util.isStartWith(e,"ac-"))n=u+e.substr(3),s=util.isStartWith(r,"A")&&r.substr(1)==util.makeChkSum(e);else if(util.isStartWith(e,"/"))s=util.isStartWith(r,"H")&&r.substr(1)==util.makeChkSum(e),n=hjlj_beacon_base+e.substr(1),i=s_true,c+="&spm-cnt="+l;else{if(!util.isEndWith(e,".gif"))return s_false;n=tblog_beacon_base+e}if(!s&&"%"!=r&&util.makeChkSum(page_url)!=r)return s_false;if(st_page_id=st_page_id||f_makePageId(),st_page_id&&(a+=(a?"&":"")+"st_page_id="+st_page_id),n+=o+"cache="+makeCacheNum()+"&gmkey="+encodeURIComponent(t)+"&gokey="+encodeURIComponent(a)+"&cna="+acookie_cna+"&isbeta="+VERSION+c,i&&(n+="&logtype=2"),isWindVane&&isTerminal){var m,d={},p={gmkey:t,gokey:a,isbeta:VERSION},g=isOnePage(),f=g.split("|"),_=f[0],h=f[1]?f[1]:"";try{m=JSON.stringify(p),"{}"==m&&(m="")}catch(b){m=""}d.functype="2101",d.logkey=e,d.logkeyargs=m,d.urlpagename=h,d.url=loc.href,d.cna=acookie_cna||"",d.extendargs="",d.isonepage=_,WindVane.call("WVTBUserTrack","toUT",d)}return isUseLSProxy()?useLSProxy({url:n,js:js_fdc_lsproxy,referrer:loc.href}):goldlog.send(n)},goldlog.launch=function(e,t){if(!win[_launch]||t){win[_launch]=s_true;var a,r,n=VERSION,i=mms.getExParams(),o=tblog_data.slice(0);if(hasWaitingMeta&&(n=CONFIG.VERSION.MANUAL,e&&e.isWait&&(n=CONFIG.VERSION.MANUAL_TIMEOUT)),e)for(a in e)e.hasOwnProperty(a)&&(r=e[a])&&o.push([a,r]);o.push([mkPlainKey(),i]),o.push(["isbeta",n]),o=o.concat(tblog_extra_data);var s=makeCacheNum();m_log.updateKey(o,"cache",s);var c;if(t){pvid=makePVId(),goldlog.pvid=pvid,c=t.page_id,o.push([s_plain_obj,t.gokey]),m_log.updateSPMCnt(o,c,pvid),m_log.updateSPMUrl(o,pvid);var l=goldlog.spm_ab?goldlog.spm_ab[1]:"";l&&(l=c?l.split("/")[0]+"/"+c:l.split("/")[0],spm_ab=goldlog.spm_ab[0]+"."+l,goldlog.spm_ab[1]=l)}if(page_url!=location.href&&(page_referrer=page_url,page_url=location.href),t&&t.referrer&&(page_referrer=t.referrer),page_referrer&&m_log.updateKey(o,"pre",page_referrer),goldlog.req=win.g_aplus_pv_req=tblogSend(tblog_beacon_url,o),inAntiSpamWhiteList()||CONFIG.DEBUG.ANTI_SPAM){var u=param2obj(i).asid,m=obj2param({asid:u,pre:page_referrer});goldlog.record("/ahot.1.9","",m,"H1733420")}}},goldlog.sendPV=m_log.sendPV,win.goldminer={record:goldlog.emit},win[s_GOLDMINER_QUEUE]&&isArray(win[s_GOLDMINER_QUEUE])||(win[s_GOLDMINER_QUEUE]=[]),isTerminal||init_watchGoldlogQueue(),init_getMetaMicroscopeData(),init_getGlobalSPMId(),init_aplusQueue(),init_loadScripts(),isWindVane&&isTerminal&&init_windVane(),"aplus_int"!=script_name){var etag=require("./lib/etag");etag.init(acookie_cna),tblogSend=etag.inject(tblogSend,mkPlainKey)}!function(){var e,t,a,r=getCookie("tracknick"),n=getCookie("thw"),i=/\btanx\.com$/.test(hostname)?getCookie("cnaui"):"",o=getSPMFromUrl(page_url),s=getSPMFromUrl(page_referrer),c=win[_ali_analytics]&&win[_ali_analytics].ua&&win[_ali_analytics].ua.ua_info||{};if(loc_hash&&0===loc_hash.indexOf("#")&&(loc_hash=loc_hash.substr(1)),!is_in_iframe||m_rule.is_iframeExcption(page_referrer)){("3"==ms_prototype_id||"5"==ms_prototype_id)&&(t=getCookie("t"),a=t?wp_bucketId(t,20):""),e=[[mkPlainKey(),"title="+escape(doc.title)],["pre",page_referrer],["cache",makeCacheNum()],["scr",screen.width+"x"+screen.height]],acookie_cna&&e.push([mkPlainKey(),"cna="+acookie_cna]),r&&e.push([mkPlainKey(),"nick="+r]),ifAdd(e,[["wm_pageid",ms_data_page_id],["wm_prototypeid",ms_prototype_id],["wm_sid",ms_data_shop_id],["spm-url",o],["spm-pre",s],["cnaui",i]]),e.push(["spm-cnt",(spm_ab||"0.0")+".0.0."+pvid]),tblog_data=tblog_data.concat(e),ifAdd(tblog_extra_data,[["thw",n],["bucket_id",a],["urlokey",loc_hash],["wm_instanceid",ms_data_instance_id],["p",c.p],["o",c.o],["b",c.b],["s",c.s],["w",c.w],["mx",c.mx],["ism",c.ism],["st_page_id",st_page_id||f_makePageId()],["lver",goldlog.lver],["jsver",script_name]]),try2AddFingerPrint(tblog_extra_data),hasWaitingMeta?setTimeout(function(){goldlog.launch({isWait:!0})},CONFIG.TIME.MANUAL_TIMEOUT):goldlog.launch();var l=spm_ab.split(".")[0];is_in_iframe||isTerminal||"a21bo.7724922"!=spm_ab&&"2013"!=l&&"a220o"!=l||createIframe("//cookiemapping.wrating.com/link.html")}if(is_in_iframe){getMetaAtpData();var u,m=_atp_beacon_data.on,d="1"==m?"//ac.mmstat.com/y.gif":tblog_beacon_url;d=isContain(hostname,"wrating.com")?tblog_beacon_url:d,"1"!=m&&"2"!=m||!(u=_atp_beacon_data.chksum)||u!==util.makeChkSum(page_url).toString()||tblogSend(d,tblog_data)}util.on(win,"beforeunload",function(){recordValInWindowName()})}();var time_end=(new Date).getTime();setTimeout(function(){Math.random()>1e-4||goldlog.emit("global_sample",{type:"timer",t:time_end-time_start})},1)}}(),function(){function e(e){var t,a;try{return t=[].slice.call(e)}catch(r){t=[],a=e.length;for(var n=0;a>n;n++)t.push(e[n]);return t}}function t(e,t){return e&&e.getAttribute?e.getAttribute(t)||"":""}function a(e,t,a){if(e&&e.setAttribute)try{e.setAttribute(t,a)}catch(r){}}function r(e,t){if(e&&e.removeAttribute)try{e.removeAttribute(t)}catch(r){a(e,t,"")}}function n(e){var t,a=e.match(new RegExp("\\?.*spm=([\\w\\.\\-\\*/]+)"));return a&&(t=a[1])&&5==t.split(".").length?t:null}function i(e,t){return 0===e.indexOf(t)}function o(e){for(var t=["javascript:","tel:","sms:","mailto:","tmall://"],a=0,r=t.length;r>a;a++)if(i(e,t[a]))return!0}function s(e){return"string"==typeof e}function c(e){return"[object Array]"===Object.prototype.toString.call(e)}function l(e){return"number"==typeof e}function u(e,t){return e.indexOf(t)>=0}function m(e,t){return e.indexOf(t)>-1}function d(e,t){for(var a=0,r=t.length;r>a;a++)if(m(e,t[a]))return ve;return Ee}function p(e){return s(e)?e.replace(/^\s+|\s+$/g,""):""}function g(e){return"undefined"==typeof e}function f(e,t){var a=t||"";if(e)try{a=decodeURIComponent(e)}catch(r){}return a}function _(){return de=de||he.getElementsByTagName("head")[0],pe||(de?pe=de.getElementsByTagName("meta"):[])}function h(e,t){var a,r,n=e.split(";"),i=n.length;for(a=0;i>a;a++)r=n[a].split("="),t[p(r[0])||Fe]=f(p(r.slice(1).join("=")))}function b(){var e,a,r,n=_(),i=n.length;for(e=0;i>e;e++)if(a=n[e],"aplus-terminal"==t(a,"name")){r=t(a,"content");break}return r}function v(){var e,a,r,n,i=_();for(e=0,a=i.length;a>e;e++)r=i[e],n=t(r,"name"),n==Xe&&(ge=t(r,ze))}function E(e){var a,r,n,o,s,c,l=_();if(l)for(a=0,r=l.length;r>a;a++)if(o=l[a],s=t(o,"name"),s==e)return le=t(o,"content"),le.indexOf(":")>=0&&(n=le.split(":"),ge="i"==n[0]?"i":"u",le=n[1]),c=t(o,ze),c&&(ge="i"==c?"i":"u"),ue=i(le,"110"),ce=ue?ke:le,ve;return Ee}function S(){var e,a,r,n=_(),i=n.length;for(e=0;i>e;e++)if(a=n[e],"aplus-touch"==t(a,"name")){r=t(a,"content");break}return r}function A(){return Math.floor(268435456*Math.random()).toString(16)}function y(e){var t,a,r=[];for(t in e)e.hasOwnProperty(t)&&(a=""+e[t],r.push(i(t,Fe)?a:t+"="+encodeURIComponent(a)));return r.join("&")}function T(e){var t,a,r,n=[],o=e.length;for(r=0;o>r;r++)t=e[r][0],a=e[r][1],n.push(i(t,Fe)?a:t+"="+encodeURIComponent(a));return n.join("&")}function P(e){var t;try{t=p(e.getAttribute("href",2))}catch(a){}return t||""}function M(e,t,a){return"tap"==t?void w(e,a):void e[We]((Ve?"on":"")+t,function(e){e=e||_e.event;var t=e.target||e.srcElement;a(t)},Ee)}function w(e,t){var a="ontouchend"in document.createElement("div"),r=a?"touchstart":"mousedown";M(e,r,function(e){t&&t(e)})}function R(e){var t=_e.KISSY;t?t.ready(e):_e.jQuery?jQuery(he).ready(e):"complete"===he.readyState?e():M(_e,"load",e)}function I(e,t){var a,r=new Image,n="_img_"+Math.random(),i=-1==e.indexOf("?")?"?":"&",o=t?c(t)?T(t):y(t):"";return _e[n]=r,r.onload=r.onerror=function(){_e[n]=null},r.src=a=o?e+i+o:e,r=null,a}function O(){var e;if(xe&&!Je&&(e=Se.match(/^[^?]+\?[^?]*spm=([^&#?]+)/),e&&(Je=e[1]+"_")),!g(ce))return ce;if(_e._SPM_a&&_e._SPM_b&&(oe=_e._SPM_a.replace(/^{(\w*|-\/)}$/g,"$1"),se=_e._SPM_b.replace(/^{(\w*|-\/)}$/g,"$1"),oe&&"-"!=oe&&se&&"-"!=se))return Ge=ve,ce=oe+"."+se,v(),ce;if(E(Xe)||E("spm-id"),!ce)return Ce=!0,ce=ke,ke;var a,r,n=he.getElementsByTagName("body");return n=n&&n.length?n[0]:null,n&&(a=t(n,Xe),a&&(r=ce.split("."),ce=r[0]+"."+a)),m(ce,".")||(Ce=!0,ce=ke),ce}function x(a,r){var n,i,o,s,c,l,u,m,d,p=[];for(n=e(a.getElementsByTagName("a")),i=e(a.getElementsByTagName("area")),s=n.concat(i),u=0,m=s.length;m>u;u++){for(l=!1,c=o=s[u];(c=c.parentNode)&&c!=a;)if(t(c,Xe)){l=!0;break}l||(d=t(o,Ke),r||"t"==d?r&&"t"==d&&p.push(o):p.push(o))}return p}function N(e,a,r,n){var o,c,m,d,p,g,f,_,h,b,v,E,S,A,y,T,M,w;if(a=a||e.getAttribute(Xe)||"",a&&(o=x(e,n),0!==o.length)){if(m=a.split("."),T=i(a,"110")&&3==m.length,T&&(M=m[2],m[2]="w"+(M||"0"),a=m.join(".")),s(E=O())&&E.match(/^[\w\-\*]+(\.[\w\-\*\/]+)?$/))if(u(a,".")){if(!i(a,E)){for(d=E.split("."),m=a.split("."),A=0,S=d.length;S>A;A++)m[A]=d[A];a=m.join(".")}}else u(E,".")||(E+=".0"),a=E+"."+a;if(a.match&&a.match(/^[\w\-\*]+\.[\w\-\*\/]+\.[\w\-\*\/]+$/)){var R=n?Ye:$e;for(w=parseInt(t(e,R))||0,y=0,p=w,S=o.length;S>y;y++)c=o[y],g=P(c),(n||g)&&(T&&c.setAttribute(Ze,M),f=c.getAttribute(et),f&&z(f)?j(c,f,r):(h=H(c.parentNode),h.a_spm_ab?(v=h.a_spm_ab,b=h.ab_idx):(v=void 0,p++,b=p),_=W(c)||b,n&&(_="at"+((l(_)?1e3:"")+_)),f=v?a+"-"+v+"."+_:a+"."+_,j(c,f,r)));e.setAttribute(R,p)}}}function k(e){var t,a=["mclick.simba.taobao.com","click.simba.taobao.com","click.tanx.com","click.mz.simba.taobao.com","click.tz.simba.taobao.com","redirect.simba.taobao.com","rdstat.tanx.com","stat.simba.taobao.com","s.click.taobao.com"],r=a.length;for(t=0;r>t;t++)if(-1!=e.indexOf(a[t]))return!0;return!1}function C(e){return e?!!e.match(/^[^\?]*\balipay\.(?:com|net)\b/i):Ee}function F(e){return e?!!e.match(/^[^\?]*\balipay\.(?:com|net)\/.*\?.*\bsign=.*/i):Ee}function D(e){for(var a;(e=e.parentNode)&&e.tagName!=Le;)if(a=t(e,ze))return a;return""}function L(e,t){if(e&&/&?\bspm=[^&#]*/.test(e)&&(e=e.replace(/&?\bspm=[^&#]*/g,"").replace(/&{2,}/g,"&").replace(/\?&/,"?").replace(/\?$/,"")),!t)return e;var a,r,n,i,o,s,c,l="&";if(-1!=e.indexOf("#")&&(n=e.split("#"),e=n.shift(),r=n.join("#")),i=e.split("?"),o=i.length-1,n=i[0].split("//"),n=n[n.length-1].split("/"),s=n.length>1?n.pop():"",o>0&&(a=i.pop(),e=i.join("?")),a&&o>1&&-1==a.indexOf("&")&&-1!=a.indexOf("%")&&(l="%26"),e=e+"?spm="+Je+t+(a?l+a:"")+(r?"#"+r:""),c=m(s,".")?s.split(".").pop().toLowerCase():""){if({png:1,jpg:1,jpeg:1,gif:1,bmp:1,swf:1}.hasOwnProperty(c))return 0;!a&&1>=o&&(r||{htm:1,html:1,php:1,aspx:1}.hasOwnProperty(c)||(e+="&file="+s))}return e}function V(e){return e&&Se.split("#")[0]==e.split("#")[0]}function j(e,a,r){if(e.setAttribute(et,a),!r&&!t(e,Qe)&&(me=_e.g_aplus_pv_id,me&&(a+="."+me),me||ce&&ce!=ke)){var n=P(e),s="i"==(t(e,ze)||D(e)||ge),c=Ie+"tbspm.1.1?logtype=2&spm=";n&&!k(n)&&(s||!(i(n,"#")||V(n)||o(n.toLowerCase())||C(n)||F(n)))&&(s?(c+=a+"&url="+encodeURIComponent(n)+"&cache="+A(),fe==e&&I(c)):r||(n=L(n,a))&&U(e,n))}}function U(e,t){var a,r=e.innerHTML;r&&-1==r.indexOf("<")&&(a=he.createElement("b"),a.style.display="none",e.appendChild(a)),e.href=t,a&&e.removeChild(a)}function W(e){var a;return Ce?a="0":(a=t(e,Xe),a&&a.match(/^d\w+$/)||(a="")),a}function G(e){for(var t,a,r=e;e&&e.tagName!=De&&e.tagName!=Le&&e.getAttribute;){if(a=e.getAttribute(Xe)){t=a,r=e;break}if(!(e=e.parentNode))break}return t&&!/^[\w\-\.\/]+$/.test(t)&&(t="0"),{spm_c:t,el:r}}function H(e){for(var a,r={},n="";e&&e.tagName!=De&&e.tagName!=Le;){if(!n&&(n=t(e,tt))){a=parseInt(t(e,"data-spm-ab-max-idx"))||0,r.a_spm_ab=n,r.ab_idx=++a,e.setAttribute("data-spm-ab-max-idx",a);break}if(t(e,Xe))break;e=e.parentNode}return r}function B(e){var t;return e&&(t=e.match(/&?\bspm=([^&#]*)/))?t[1]:""}function X(e,t){var a=P(e),r=B(a),n=null,i=ce&&2==ce.split(".").length;return i?(n=[ce,0,W(e)||0],void j(e,n.join("."),t)):void(a&&r&&(a=a.replace(/&?\bspm=[^&#]*/g,"").replace(/&{2,}/g,"&").replace(/\?&/,"?").replace(/\?$/,"").replace(/\?#/,"#"),U(e,a)))}function z(e){var t=e.split(".");return t[0]+"."+t[1]==ce}function q(e,a){fe=e,Ge&&J();var r,n,i=t(e,et);if(i&&z(i))j(e,i,a);else{if(r=G(e.parentNode),n=r.spm_c,!n)return void X(e,a);Ce&&(n="0"),N(r.el,n,a),N(r.el,n,a,!0)}}function Q(t){if(t&&1==t.nodeType){r(t,$e),r(t,Ye);var a,n=e(t.getElementsByTagName("a")),i=e(t.getElementsByTagName("area")),o=n.concat(i),s=o.length;for(a=0;s>a;a++)r(o[a],et)}}function K(e){var t=e.parentNode;if(!t)return"";var a=e.getAttribute(Xe),r=G(t),n=r.spm_c||0;n&&-1!=n.indexOf(".")&&(n=n.split("."),n=n[n.length-1]);var i=ce+"."+n,o=Ne[i]||0;return o++,Ne[i]=o,a=a||o,i+".i"+a}function $(e){var a,r=e.tagName;return me=_e.g_aplus_pv_id,"A"!=r&&"AREA"!=r?a=K(e):(q(e,ve),a=t(e,et)),a=(a||"0.0.0.0").split("."),{a:a[0],b:a[1],c:a[2],d:a[3],e:me}}function Y(e,t){if(t||(t=he),he.evaluate)return t.evaluate(e,he,null,9,null).singleNodeValue;for(var a,r=e.split("/");!a&&r.length>0;)a=r.shift();var n,i=/^.+?\[@id="(.+?)"]$/i,o=/^(.+?)\[(\d+)]$/i;return(n=a.match(i))?t=t.getElementById(n[1]):(n=a.match(o))&&(t=t.getElementsByTagName(n[1])[parseInt(n[2])-1]),t?0===r.length?t:Y(r.join("/"),t):null}function J(){var e,t,r,n={};for(e in He)He.hasOwnProperty(e)&&(t=Y(e),t&&(n[e]=1,r=He[e],a(t,Xe,("A"==t.tagName?r.spmd:r.spmc)||"")));for(e in n)n.hasOwnProperty(e)&&delete He[e]}function Z(){if(!Be){if(!_e.spmData)return void(Oe||setTimeout(arguments.callee,100));Be=ve;var e,t,a,r,n=_e.spmData.data;if(n&&c(n)){for(e=0,t=n.length;t>e;e++)a=n[e],
+r=a.xpath,r=r.replace(/^id\("(.+?)"\)(.*)/g,'//*[@id="$1"]$2'),He[r]={spmc:a.spmc,spmd:a.spmd};J()}}}function ee(){var e,a,r,n,i=he.getElementsByTagName("iframe"),o=i.length;for(a=0;o>a;a++)e=i[a],!e.src&&(r=t(e,qe))&&(n=$(e),n?(n=[n.a,n.b,n.c,n.d,n.e].join("."),e.src=L(r,n)):e.src=r)}function te(){function e(){t++,t>10&&(a=3e3),ee(),setTimeout(e,a)}var t=0,a=500;e()}function ae(e,t){var a,r,o="gostr",s="locaid",c={};if(h(t,c),a=c[o],r=c[s],a&&r){i(a,"/")&&(a=a.substr(1));var l=$(e),u=[l.a,l.b,l.c,r].join("."),m=a+"."+u,d=["logtype=2","cache="+Math.random(),"autosend=1","spm-cnt="+[l.a,l.b].join(".")+".0.0"],p=n(Se);p&&d.push("spm-pre="+p);var g;for(g in c)c.hasOwnProperty(g)&&g!=o&&g!=s&&d.push(g+"="+c[g]);d.length>0&&(m+="?"+d.join("&"));var f,_={gmkey:"",gokey:d.length>0?d.join("&"):""};setTimeout(function(){if(we&&_e.goldlog&&_e.goldlog.call&&(f=_e.goldlog.windVaneData)){try{_=JSON.stringify(_),"{}"==_&&(_="")}catch(e){_=""}f.functype="2101",f.logkey="/"+a+"."+u,f.logkeyargs=_,f.extendargs="",delete f.spmcnt,delete f.spmpre,delete f.lzsid,_e.goldlog.call("WVTBUserTrack","toUT",f)}},300),I(Ie+m),e.setAttribute(et,u)}}function re(e){for(var a;e&&e.tagName!=De;){a=t(e,Qe);{if(a){ae(e,a);break}e=e.parentNode}}}function ne(){we&&Re?M(he,"tap",re):M(he,"mousedown",re)}function ie(e){for(var t;e&&(t=e.tagName);){if("A"==t||"AREA"==t){q(e,Ee),_e.g_SPM&&(g_SPM._current_spm=$(e));break}if(t==Le||t==De)break;e=e.parentNode}}var oe,se,ce,le,ue,me,de,pe,ge,fe,_e=window,he=document,be=location,ve=!0,Ee=!1,Se=be.href,Ae=be.protocol,ye="https:"==Ae,Te=ye?Ae:"http:",Pe=be.host,Me=/TB\-PD/i.test(navigator.userAgent),we=Me?!0:b(),Re=S(),Ie=Te+(we?"//wgo.mmstat.com/":"//gm.mmstat.com/"),Oe=Ee,xe=parent!==_e.self,Ne={},ke="0.0",Ce=!1,Fe="::-plain-::",De="HTML",Le="BODY",Ve=!!he.attachEvent,je="attachEvent",Ue="addEventListener",We=Ve?je:Ue,Ge=Ee,He={},Be=Ee,Xe="data-spm",ze="data-spm-protocol",qe="data-spm-src",Qe="data-spm-click",Ke="data-auto-spmd",$e="data-spm-max-idx",Ye="data-auto-spmd-max-idx",Je="",Ze="data-spm-wangpu-module-id",et="data-spm-anchor-id",tt="data-spm-ab",at=["xiaobai.com","admin.taobao.org","aliloan.com","mybank.cn"],rt=["tmc.admin.taobao.org"];(!d(Pe,at)||d(Pe,rt))&&(R(function(){Oe=ve}),O(),Z(),we||te(),ne(),we&&Re?M(he,"tap",ie):(M(he,"mousedown",ie),M(he,"keydown",ie)),_e.g_SPM={resetModule:Q,anchorBeacon:q,getParam:$})}(),function(){function e(e,t,a){e[A]((v?"on":"")+t,function(e){e=e||l.event;var t=e.target||e.srcElement;a(e,t)},!1)}function t(){return/&?\bspm=[^&#]*/.test(location.href)?location.href.match(/&?\bspm=[^&#]*/gi)[0].split("=")[1]:""}function a(e,t){if(e&&/&?\bspm=[^&#]*/.test(e)&&(e=e.replace(/&?\bspm=[^&#]*/g,"").replace(/&{2,}/g,"&").replace(/\?&/,"?").replace(/\?$/,"")),!t)return e;var a,r,n,i,o,s,c,l="&";if(-1!=e.indexOf("#")&&(n=e.split("#"),e=n.shift(),r=n.join("#")),i=e.split("?"),o=i.length-1,n=i[0].split("//"),n=n[n.length-1].split("/"),s=n.length>1?n.pop():"",o>0&&(a=i.pop(),e=i.join("?")),a&&o>1&&-1==a.indexOf("&")&&-1!=a.indexOf("%")&&(l="%26"),e=e+"?spm="+t+(a?l+a:"")+(r?"#"+r:""),c=s.indexOf(".")>-1?s.split(".").pop().toLowerCase():""){if({png:1,jpg:1,jpeg:1,gif:1,bmp:1,swf:1}.hasOwnProperty(c))return 0;!a&&1>=o&&(r||{htm:1,html:1,php:1}.hasOwnProperty(c)||(e+="&file="+s))}return e}function r(e){function t(e){return e=e.replace(/refpos[=(%3D)]\w*/gi,s).replace(i,"%3D"+r+"%26"+n.replace("=","%3D")).replace(o,r),n.length>0&&(e+="&"+n),e}var a=window.location.href,r=a.match(/mm_\d{0,24}_\d{0,24}_\d{0,24}/i),n=a.match(/[&\?](pvid=[^&]*)/i),i=new RegExp("%3Dmm_\\d+_\\d+_\\d+","ig"),o=new RegExp("mm_\\d+_\\d+_\\d+","ig");n=n&&n[1]?n[1]:"";var s=a.match(/(refpos=(\d{0,24}_\d{0,24}_\d{0,24})?(,[a-z]+)?)(,[a-z]+)?/i);return s=s&&s[0]?s[0]:"",r?(r=r[0],t(e)):e}function n(t){var a=l.KISSY;a?a.ready(t):l.jQuery?jQuery(u).ready(t):"complete"===u.readyState?t():e(l,"load",t)}function i(e,t){return e&&e.getAttribute?e.getAttribute(t)||"":""}function o(e){if(e){var t,a=b.length;for(t=0;a>t;t++)if(e.indexOf(b[t])>-1)return!0;return!1}}function s(e,t){if(e&&/&?\bspm=[^&#]*/.test(e)&&(e=e.replace(/&?\bspm=[^&#]*/g,"").replace(/&{2,}/g,"&").replace(/\?&/,"?").replace(/\?$/,"")),!t)return e;var a,r,n,i,o,s,c,l="&";if(-1!=e.indexOf("#")&&(n=e.split("#"),e=n.shift(),r=n.join("#")),i=e.split("?"),o=i.length-1,n=i[0].split("//"),n=n[n.length-1].split("/"),s=n.length>1?n.pop():"",o>0&&(a=i.pop(),e=i.join("?")),a&&o>1&&-1==a.indexOf("&")&&-1!=a.indexOf("%")&&(l="%26"),e=e+"?spm="+t+(a?l+a:"")+(r?"#"+r:""),c=s.indexOf(".")>-1?s.split(".").pop().toLowerCase():""){if({png:1,jpg:1,jpeg:1,gif:1,bmp:1,swf:1}.hasOwnProperty(c))return 0;!a&&1>=o&&(r||{htm:1,html:1,php:1}.hasOwnProperty(c)||(e+="&__file="+s))}return e}function c(e){if(o(e.href)){var a=i(e,h);if(!a){if(!g)return;var r=g(e),n=[r.a,r.b,r.c,r.d,r.e].join(".");f&&(n=[r.a||"0",r.b||"0",r.c||"0",r.d||"0"].join("."),n=(t()||"0.0.0.0.0")+"_"+n);var c=s(e.href,n);e.href=c,e.setAttribute(h,n)}}e=void 0}var l=window,u=document,m=location,d=(m.href,l._alimm_spmact_on_);if("undefined"==typeof d&&(d=1),1==d&&(d=1),0==d&&(d=0),d){var p=function(){return{a:0,b:0,c:0,d:0,e:0}},g=l.g_SPM&&l.g_SPM.getParam?l.g_SPM.getParam:p,f=!0;try{f=self.location!=top.location}catch(_){}var h="data-spm-act-id",b=["mclick.simba.taobao.com","click.simba.taobao.com","click.tanx.com","click.mz.simba.taobao.com","click.tz.simba.taobao.com","redirect.simba.taobao.com","rdstat.tanx.com","stat.simba.taobao.com","s.click.taobao.com"],v=!!u.attachEvent,E="attachEvent",S="addEventListener",A=v?E:S;e(u,"mousedown",function(e,t){for(var a,r=0;t&&(a=t.tagName)&&5>r;){if("A"==a||"AREA"==a){c(t);break}if("BODY"==a||"HTML"==a)break;t=t.parentNode,r++}}),n(function(){for(var e,n,o=document.getElementsByTagName("iframe"),s=0;s<o.length;s++){e=i(o[s],"mmsrc"),n=i(o[s],"mmworked");var c=g(o[s]),l=[c.a||"0",c.b||"0",c.c||"0",c.d||"0",c.e||"0"].join(".");e&&!n?(f&&(l=[c.a||"0",c.b||"0",c.c||"0",c.d||"0"].join("."),l=t()+"_"+l),o[s].src=a(r(e),l),o[s].setAttribute("mmworked","mmworked")):o[s].setAttribute(h,l)}})}}()},{"./config":1,"./lib/client":3,"./lib/etag":5,"./lib/fingerprint":6,"./lib/log":7,"./lib/makeid":8,"./lib/misc":9,"./lib/nameStorage":10,"./lib/rule":11,"./lib/util":13}],3:[function(e,t,a){"use strict";!function(e,t){var a=2,r="ali_analytics";if(!(e[r]&&e[r].ua&&a<=e[r].ua.version)){var n,i,o,s,c,l,u,m,d,p,g,f,_,h,b,v,E,S=e.navigator,A=S.appVersion,y=S&&S.userAgent||"",T=function(e){var t=0;return parseFloat(e.replace(/\./g,function(){return 0===t++?".":""}))},P=function(e,t){var a,r;t[a="trident"]=.1,(r=e.match(/Trident\/([\d.]*)/))&&r[1]&&(t[a]=T(r[1])),t.core=a},M=function(e){var t,a;return(t=e.match(/MSIE ([^;]*)|Trident.*; rv(?:\s|:)?([0-9.]+)/))&&(a=t[1]||t[2])?T(a):0},w=function(e){return e||"other"},R=function(a){function r(){for(var e=[["Windows NT 5.1","winXP"],["Windows NT 6.1","win7"],["Windows NT 6.0","winVista"],["Windows NT 6.2","win8"],["Windows NT 10.0","win10"],["iPad","ios"],["iPhone;","ios"],["iPod","ios"],["Macintosh","mac"],["Android","android"],["Ubuntu","ubuntu"],["Linux","linux"],["Windows NT 5.2","win2003"],["Windows NT 5.0","win2000"],["Windows","winOther"],["rhino","rhino"]],t=0,r=e.length;r>t;++t)if(-1!==a.indexOf(e[t][0]))return e[t][1];return"other"}function n(t,a,r,n){var i,o=e.navigator.mimeTypes;try{for(i in o)if(o.hasOwnProperty(i)&&o[i][t]==a){if(void 0!==r&&n.test(o[i][r]))return!0;if(void 0===r)return!0}return!1}catch(s){return!1}}var i,o,s,c,l,u,m,d="",p=d,g=d,f=[6,9],_="{{version}}",h="<!--[if IE "+_+"]><s></s><![endif]-->",b=t&&t.createElement("div"),v=[],E={webkit:void 0,edge:void 0,trident:void 0,gecko:void 0,presto:void 0,chrome:void 0,safari:void 0,firefox:void 0,ie:void 0,ieMode:void 0,opera:void 0,mobile:void 0,core:void 0,shell:void 0,phantomjs:void 0,os:void 0,ipad:void 0,iphone:void 0,ipod:void 0,ios:void 0,android:void 0,nodejs:void 0,extraName:void 0,extraVersion:void 0};if(b&&b.getElementsByTagName&&(b.innerHTML=h.replace(_,""),v=b.getElementsByTagName("s")),v.length>0){for(P(a,E),c=f[0],l=f[1];l>=c;c++)if(b.innerHTML=h.replace(_,c),v.length>0){E[g="ie"]=c;break}!E.ie&&(s=M(a))&&(E[g="ie"]=s)}else((o=a.match(/AppleWebKit\/*\s*([\d.]*)/i))||(o=a.match(/Safari\/([\d.]*)/)))&&o[1]?(E[p="webkit"]=T(o[1]),(o=a.match(/OPR\/(\d+\.\d+)/))&&o[1]?E[g="opera"]=T(o[1]):(o=a.match(/Chrome\/([\d.]*)/))&&o[1]?E[g="chrome"]=T(o[1]):(o=a.match(/\/([\d.]*) Safari/))&&o[1]?E[g="safari"]=T(o[1]):E.safari=E.webkit,(o=a.match(/Edge\/([\d.]*)/))&&o[1]&&(p=g="edge",E[p]=T(o[1])),/ Mobile\//.test(a)&&a.match(/iPad|iPod|iPhone/)?(E.mobile="apple",o=a.match(/OS ([^\s]*)/),o&&o[1]&&(E.ios=T(o[1].replace("_","."))),i="ios",o=a.match(/iPad|iPod|iPhone/),o&&o[0]&&(E[o[0].toLowerCase()]=E.ios)):/ Android/i.test(a)?(/Mobile/.test(a)&&(i=E.mobile="android"),o=a.match(/Android ([^\s]*);/),o&&o[1]&&(E.android=T(o[1]))):(o=a.match(/NokiaN[^\/]*|Android \d\.\d|webOS\/\d\.\d/))&&(E.mobile=o[0].toLowerCase()),(o=a.match(/PhantomJS\/([^\s]*)/))&&o[1]&&(E.phantomjs=T(o[1]))):(o=a.match(/Presto\/([\d.]*)/))&&o[1]?(E[p="presto"]=T(o[1]),(o=a.match(/Opera\/([\d.]*)/))&&o[1]&&(E[g="opera"]=T(o[1]),(o=a.match(/Opera\/.* Version\/([\d.]*)/))&&o[1]&&(E[g]=T(o[1])),(o=a.match(/Opera Mini[^;]*/))&&o?E.mobile=o[0].toLowerCase():(o=a.match(/Opera Mobi[^;]*/))&&o&&(E.mobile=o[0]))):(s=M(a))?(E[g="ie"]=s,P(a,E)):(o=a.match(/Gecko/))&&(E[p="gecko"]=.1,(o=a.match(/rv:([\d.]*)/))&&o[1]&&(E[p]=T(o[1]),/Mobile|Tablet/.test(a)&&(E.mobile="firefox")),(o=a.match(/Firefox\/([\d.]*)/))&&o[1]&&(E[g="firefox"]=T(o[1])));i||(i=r());var S,y,w;if(!n("type","application/vnd.chromium.remoting-viewer")){S="scoped"in t.createElement("style"),w="v8Locale"in e;try{y=e.external||void 0}catch(R){}if(o=a.match(/360SE/))u="360";else if((o=a.match(/SE\s([\d.]*)/))||y&&"SEVersion"in y)u="sougou",m=T(o[1])||.1;else if((o=a.match(/Maxthon(?:\/)+([\d.]*)/))&&y){u="maxthon";try{m=T(y.max_version||o[1])}catch(I){m=.1}}else S&&w?u="360se":S||w||!/Gecko\)\s+Chrome/.test(A)||E.opera||E.edge||(u="360ee")}return(o=a.match(/TencentTraveler\s([\d.]*)|QQBrowser\/([\d.]*)/))?(u="tt",m=T(o[2])||.1):(o=a.match(/LBBROWSER/))||y&&"LiebaoGetVersion"in y?u="liebao":(o=a.match(/TheWorld/))?(u="theworld",m=3):(o=a.match(/TaoBrowser\/([\d.]*)/))?(u="taobao",m=T(o[1])||.1):(o=a.match(/UCBrowser\/([\d.]*)/))&&(u="uc",m=T(o[1])||.1),E.os=i,E.core=E.core||p,E.shell=g,E.ieMode=E.ie&&t.documentMode||E.ie,E.extraName=u,E.extraVersion=m,E.resolution=e.screen.width+"x"+e.screen.height,E},I=function(e){function t(e){return Object.prototype.toString.call(e)}function a(e,a,r){if("[object Function]"==t(a)&&(a=a(r)),!a)return null;var n={name:e,version:""},i=t(a);if(a===!0)return n;if("[object String]"===i){if(-1!==r.indexOf(a))return n}else if(a.exec){var o=a.exec(r);if(o)return o.length>=2&&o[1]?n.version=o[1].replace(/_/g,"."):n.version="",n}}var r={name:"other",version:""};e=(e||"").toLowerCase();for(var n=[["nokia",function(e){return-1!==e.indexOf("nokia ")?/\bnokia ([0-9]+)?/:/\bnokia([a-z0-9]+)?/}],["samsung",function(e){return-1!==e.indexOf("samsung")?/\bsamsung(?:[ \-](?:sgh|gt|sm))?-([a-z0-9]+)/:/\b(?:sgh|sch|gt|sm)-([a-z0-9]+)/}],["wp",function(e){return-1!==e.indexOf("windows phone ")||-1!==e.indexOf("xblwp")||-1!==e.indexOf("zunewp")||-1!==e.indexOf("windows ce")}],["pc","windows"],["ipad","ipad"],["ipod","ipod"],["iphone",/\biphone\b|\biph(\d)/],["mac","macintosh"],["mi",/\bmi[ \-]?([a-z0-9 ]+(?= build|\)))/],["hongmi",/\bhm[ \-]?([a-z0-9]+)/],["aliyun",/\baliyunos\b(?:[\-](\d+))?/],["meizu",function(e){return e.indexOf("meizu")>=0?/\bmeizu[\/ ]([a-z0-9]+)\b/:/\bm([0-9x]{1,3})\b/}],["nexus",/\bnexus ([0-9s.]+)/],["huawei",function(e){var t=/\bmediapad (.+?)(?= build\/huaweimediapad\b)/;return-1!==e.indexOf("huawei-huawei")?/\bhuawei\-huawei\-([a-z0-9\-]+)/:t.test(e)?t:/\bhuawei[ _\-]?([a-z0-9]+)/}],["lenovo",function(e){return-1!==e.indexOf("lenovo-lenovo")?/\blenovo\-lenovo[ \-]([a-z0-9]+)/:/\blenovo[ \-]?([a-z0-9]+)/}],["zte",function(e){return/\bzte\-[tu]/.test(e)?/\bzte-[tu][ _\-]?([a-su-z0-9\+]+)/:/\bzte[ _\-]?([a-su-z0-9\+]+)/}],["vivo",/\bvivo(?: ([a-z0-9]+))?/],["htc",function(e){return/\bhtc[a-z0-9 _\-]+(?= build\b)/.test(e)?/\bhtc[ _\-]?([a-z0-9 ]+(?= build))/:/\bhtc[ _\-]?([a-z0-9 ]+)/}],["oppo",/\boppo[_]([a-z0-9]+)/],["konka",/\bkonka[_\-]([a-z0-9]+)/],["sonyericsson",/\bmt([a-z0-9]+)/],["coolpad",/\bcoolpad[_ ]?([a-z0-9]+)/],["lg",/\blg[\-]([a-z0-9]+)/],["android",/\bandroid\b|\badr\b/],["blackberry",function(e){return e.indexOf("blackberry")>=0?/\bblackberry\s?(\d+)/:"bb10"}]],i=0;i<n.length;i++){var o=n[i][0],s=n[i][1],c=a(o,s,e);if(c){r=c;break}}return r},O=1;try{n=R(y),i=I(y),o=n.os,s=n.shell,c=n.core,l=n.resolution,u=n.extraName,m=n.extraVersion,d=i.name,p=i.version,f=o?o+(n[o]?n[o]:""):"",_=s?s+parseInt(n[s]):"",h=c,b=l,v=u?u+(m?parseInt(m):""):"",E=d+p}catch(x){}g={p:O,o:w(f),b:w(_),w:w(h),s:b,mx:v,ism:E},e[r]||(e[r]={}),e[r].ua||(e[r].ua={}),e[r].ua={version:a,ua_info:g}}}(window,document)},{}],4:[function(e,t,a){function r(e,t){var a=(65535&e)+(65535&t),r=(e>>16)+(t>>16)+(a>>16);return r<<16|65535&a}function n(e,t){return e<<t|e>>>32-t}function i(e,t,a,i,o,s){return r(n(r(r(t,e),r(i,s)),o),a)}function o(e,t,a,r,n,o,s){return i(t&a|~t&r,e,t,n,o,s)}function s(e,t,a,r,n,o,s){return i(t&r|a&~r,e,t,n,o,s)}function c(e,t,a,r,n,o,s){return i(t^a^r,e,t,n,o,s)}function l(e,t,a,r,n,o,s){return i(a^(t|~r),e,t,n,o,s)}function u(e,t){e[t>>5]|=128<<t%32,e[(t+64>>>9<<4)+14]=t;var a,n,i,u,m,d=1732584193,p=-271733879,g=-1732584194,f=271733878;for(a=0;a<e.length;a+=16)n=d,i=p,u=g,m=f,d=o(d,p,g,f,e[a],7,-680876936),f=o(f,d,p,g,e[a+1],12,-389564586),g=o(g,f,d,p,e[a+2],17,606105819),p=o(p,g,f,d,e[a+3],22,-1044525330),d=o(d,p,g,f,e[a+4],7,-176418897),f=o(f,d,p,g,e[a+5],12,1200080426),g=o(g,f,d,p,e[a+6],17,-1473231341),p=o(p,g,f,d,e[a+7],22,-45705983),d=o(d,p,g,f,e[a+8],7,1770035416),f=o(f,d,p,g,e[a+9],12,-1958414417),g=o(g,f,d,p,e[a+10],17,-42063),p=o(p,g,f,d,e[a+11],22,-1990404162),d=o(d,p,g,f,e[a+12],7,1804603682),f=o(f,d,p,g,e[a+13],12,-40341101),g=o(g,f,d,p,e[a+14],17,-1502002290),p=o(p,g,f,d,e[a+15],22,1236535329),d=s(d,p,g,f,e[a+1],5,-165796510),f=s(f,d,p,g,e[a+6],9,-1069501632),g=s(g,f,d,p,e[a+11],14,643717713),p=s(p,g,f,d,e[a],20,-373897302),d=s(d,p,g,f,e[a+5],5,-701558691),f=s(f,d,p,g,e[a+10],9,38016083),g=s(g,f,d,p,e[a+15],14,-660478335),p=s(p,g,f,d,e[a+4],20,-405537848),d=s(d,p,g,f,e[a+9],5,568446438),f=s(f,d,p,g,e[a+14],9,-1019803690),g=s(g,f,d,p,e[a+3],14,-187363961),p=s(p,g,f,d,e[a+8],20,1163531501),d=s(d,p,g,f,e[a+13],5,-1444681467),f=s(f,d,p,g,e[a+2],9,-51403784),g=s(g,f,d,p,e[a+7],14,1735328473),p=s(p,g,f,d,e[a+12],20,-1926607734),d=c(d,p,g,f,e[a+5],4,-378558),f=c(f,d,p,g,e[a+8],11,-2022574463),g=c(g,f,d,p,e[a+11],16,1839030562),p=c(p,g,f,d,e[a+14],23,-35309556),d=c(d,p,g,f,e[a+1],4,-1530992060),f=c(f,d,p,g,e[a+4],11,1272893353),g=c(g,f,d,p,e[a+7],16,-155497632),p=c(p,g,f,d,e[a+10],23,-1094730640),d=c(d,p,g,f,e[a+13],4,681279174),f=c(f,d,p,g,e[a],11,-358537222),g=c(g,f,d,p,e[a+3],16,-722521979),p=c(p,g,f,d,e[a+6],23,76029189),d=c(d,p,g,f,e[a+9],4,-640364487),f=c(f,d,p,g,e[a+12],11,-421815835),g=c(g,f,d,p,e[a+15],16,530742520),p=c(p,g,f,d,e[a+2],23,-995338651),d=l(d,p,g,f,e[a],6,-198630844),f=l(f,d,p,g,e[a+7],10,1126891415),g=l(g,f,d,p,e[a+14],15,-1416354905),p=l(p,g,f,d,e[a+5],21,-57434055),d=l(d,p,g,f,e[a+12],6,1700485571),f=l(f,d,p,g,e[a+3],10,-1894986606),g=l(g,f,d,p,e[a+10],15,-1051523),p=l(p,g,f,d,e[a+1],21,-2054922799),d=l(d,p,g,f,e[a+8],6,1873313359),f=l(f,d,p,g,e[a+15],10,-30611744),g=l(g,f,d,p,e[a+6],15,-1560198380),p=l(p,g,f,d,e[a+13],21,1309151649),d=l(d,p,g,f,e[a+4],6,-145523070),f=l(f,d,p,g,e[a+11],10,-1120210379),g=l(g,f,d,p,e[a+2],15,718787259),p=l(p,g,f,d,e[a+9],21,-343485551),d=r(d,n),p=r(p,i),g=r(g,u),f=r(f,m);return[d,p,g,f]}function m(e){var t,a="";for(t=0;t<32*e.length;t+=8)a+=String.fromCharCode(e[t>>5]>>>t%32&255);return a}function d(e){var t,a=[];for(a[(e.length>>2)-1]=void 0,t=0;t<a.length;t+=1)a[t]=0;for(t=0;t<8*e.length;t+=8)a[t>>5]|=(255&e.charCodeAt(t/8))<<t%32;return a}function p(e){return m(u(d(e),8*e.length))}function g(e,t){var a,r,n=d(e),i=[],o=[];for(i[15]=o[15]=void 0,n.length>16&&(n=u(n,8*e.length)),a=0;16>a;a+=1)i[a]=909522486^n[a],o[a]=1549556828^n[a];return r=u(i.concat(d(t)),512+8*t.length),m(u(o.concat(r),640))}function f(e){var t,a,r="0123456789abcdef",n="";for(a=0;a<e.length;a+=1)t=e.charCodeAt(a),n+=r.charAt(t>>>4&15)+r.charAt(15&t);return n}function _(e){return unescape(encodeURIComponent(e))}function h(e){return p(_(e))}function b(e){return f(h(e))}function v(e,t){return g(_(e),_(t))}function E(e,t){return f(v(e,t))}function S(e,t,a){return t?a?v(t,e):E(t,e):a?h(e):b(e)}t.exports=S},{}],5:[function(e,t,a){function r(e,t){var a=new Date;a.setTime(a.getTime()+31536e7),t+="; expires="+a.toUTCString(),t+="; domain="+i.getDomain(location.hostname),t+="; path=/",o.cookie=e+"="+t}function n(e,t){function a(e){r.onreadystatechange=r.onload=r.onerror=null,r=null,t(e)}var r=o.createElement("script");if(r.async=!0,"onload"in r)r.onload=a;else{var n=function(){/loaded|complete/.test(r.readyState)&&a()};r.onreadystatechange=n,n()}r.onerror=function(){a(1)},r.src=e,s.appendChild(r)}var i=e("./tld"),o=document,s=o.head||o.getElementsByTagName("head")[0],c=0,l=-1,u="",m=!1;t.exports={init:function(e){if(e)return void(c=1);var t=null;m=!0,n("https://log.mmstat.com/eg.js",function(e){e&&(l=-3),m&&(m=!1,goldlog.Etag&&(u=goldlog.Etag,r("cna",u)),"undefined"!=typeof goldlog.stag&&(l=goldlog.stag),clearTimeout(t))}),t=setTimeout(function(){m=!1,l=-2},1e3)},inject:function(e,t){var a=function(r,n){return n?!c&&m?void setTimeout(function(){a(r,n)},50):(n.push(["tag",c]),n.push(["stag",l]),!c&&u&&n.unshift([t(),"cna="+u]),e(r,n)):void 0};return a}}},{"./tld":12}],6:[function(e,t,a){"use strict";function r(e){return function(t){return{}.toString.call(t)==="[object "+e+"]"}}function n(e){return"function"==typeof _?_(e):""}function i(){var e=p.createElement("canvas"),t=null;try{t=e.getContext("webgl")||e.getContext("experimental-webgl")}catch(a){}return t||(t=null),t}function o(e){d.localStorage&&localStorage.setItem&&localStorage.setItem(f,_(e))}function s(){if(d.localStorage&&localStorage.getItem){var e=localStorage.getItem(f);if(e){try{e=JSON.parse(e)}catch(t){}return e}}}var c,l,u,m=e("./encrypt/md5"),d=window,p=document,g=navigator,f="aplus_fp",_=d.JSON&&JSON.stringify,h=r("Function"),b=function(e,t,a){if(e){var r=0,n=e.length;if(n===+n)for(;n>r&&t.call(a,e[r],r,e)!==!1;r++);else for(r in e)if(e.hasOwnProperty(r)&&t.call(a,e[r],r,e)===!1)break}},v=[],E={},S=function(e,t){h(t)&&(t=t()),v.push({k:e,v:t})},A=function(){u||(u=1,E.canvas=function(){var e=p.createElement("canvas");return e.getContext&&e.getContext("2d")}(),E.plugins="undefined"!=typeof g.plugins,E.webgl=function(){if(!E.canvas)return!1;var e,t=p.createElement("canvas");try{e=t.getContext&&(t.getContext("webgl")||t.getContext("experimental-webgl"))}catch(a){e=!1}return!!d.WebGLRenderingContext&&!!e}(),S("ua",g.userAgent),S("platform",g.platform),S("language",g.language),S("doNotTrack",g.doNotTrack||"unknown"),S("cookieEnabled",g.cookieEnabled),S("colorDepth",d.screen.colorDepth),S("screenWidth",d.screen.width),S("screenHeight",d.screen.height),S("timezoneOffset",(new Date).getTimezoneOffset()),S("hasSessionStorage",function(){try{return!!d.sessionStorage}catch(e){return!0}}),S("hasLocalStorage",function(){try{return!!d.localStorage}catch(e){return!0}}),S("hasIndexedDB",!!d.indexedDB),E.canvas&&S("canvasFP",function(){var e=[],t=p.createElement("canvas");t.width=2e3,t.height=200,t.style.display="inline";var a=t.getContext("2d");return a.rect(0,0,10,10),a.rect(2,2,6,6),e.push("canvas winding:"+(a.isPointInPath(5,5,"evenodd")===!1?"yes":"no")),a.textBaseline="alphabetic",a.fillStyle="#f60",a.fillRect(125,1,62,20),a.fillStyle="#069",a.font="12px 'Arial'",a.fillText("Cwm fjordbank glyphs vext quiz",2,15),a.fillStyle="rgba(102, 204, 0, 0.7)",a.font="18px 'Arial'",a.fillText("Cwm fjordbank glyphs vext quiz",4,45),a.globalCompositeOperation="multiply",a.fillStyle="rgb(255,0,255)",a.beginPath(),a.arc(50,50,50,0,2*Math.PI,!0),a.closePath(),a.fill(),a.fillStyle="rgb(0,255,255)",a.beginPath(),a.arc(100,50,50,0,2*Math.PI,!0),a.closePath(),a.fill(),a.fillStyle="rgb(255,255,0)",a.beginPath(),a.arc(75,100,50,0,2*Math.PI,!0),a.closePath(),a.fill(),a.fillStyle="rgb(255,0,255)",a.arc(75,75,75,0,2*Math.PI,!0),a.arc(75,75,25,0,2*Math.PI,!0),a.fill("evenodd"),e.push("canvas fp:"+t.toDataURL()),c=e.join("~")}),E.webgl&&S("webglFP",function(){var e,t=function(t){return e.clearColor(0,0,0,1),e.enable(e.DEPTH_TEST),e.depthFunc(e.LEQUAL),e.clear(e.COLOR_BUFFER_BIT|e.DEPTH_BUFFER_BIT),"["+t[0]+", "+t[1]+"]"},a=function(e){var t,a=e.getExtension("EXT_texture_filter_anisotropic")||e.getExtension("WEBKIT_EXT_texture_filter_anisotropic")||e.getExtension("MOZ_EXT_texture_filter_anisotropic");return a?(t=e.getParameter(a.MAX_TEXTURE_MAX_ANISOTROPY_EXT),0===t&&(t=2),t):null};if(e=i(),!e)return null;var r=[],n="attribute vec2 attrVertex;varying vec2 varyinTexCoordinate;uniform vec2 uniformOffset;void main(){varyinTexCoordinate=attrVertex+uniformOffset;gl_Position=vec4(attrVertex,0,1);}",o="precision mediump float;varying vec2 varyinTexCoordinate;void main() {gl_FragColor=vec4(varyinTexCoordinate,0,1);}",s=e.createBuffer();e.bindBuffer(e.ARRAY_BUFFER,s);var c=new Float32Array([-.2,-.9,0,.4,-.26,0,0,.732134444,0]);e.bufferData(e.ARRAY_BUFFER,c,e.STATIC_DRAW),s.itemSize=3,s.numItems=3;var u=e.createProgram(),m=e.createShader(e.VERTEX_SHADER);e.shaderSource(m,n),e.compileShader(m);var d=e.createShader(e.FRAGMENT_SHADER);return e.shaderSource(d,o),e.compileShader(d),e.attachShader(u,m),e.attachShader(u,d),e.linkProgram(u),e.useProgram(u),u.vertexPosAttrib=e.getAttribLocation(u,"attrVertex"),u.offsetUniform=e.getUniformLocation(u,"uniformOffset"),e.enableVertexAttribArray(u.vertexPosArray),e.vertexAttribPointer(u.vertexPosAttrib,s.itemSize,e.FLOAT,!1,0,0),e.uniform2f(u.offsetUniform,1,1),e.drawArrays(e.TRIANGLE_STRIP,0,s.numItems),e.canvas&&r.push(e.canvas.toDataURL()),r.push("1"+e.getSupportedExtensions().join(";")),r.push("2"+t(e.getParameter(e.ALIASED_LINE_WIDTH_RANGE))),r.push("3"+t(e.getParameter(e.ALIASED_POINT_SIZE_RANGE))),r.push("4"+e.getParameter(e.ALPHA_BITS)),r.push("5"+(e.getContextAttributes().antialias?"yes":"no")),r.push("6"+e.getParameter(e.BLUE_BITS)),r.push("7"+e.getParameter(e.DEPTH_BITS)),r.push("8"+e.getParameter(e.GREEN_BITS)),r.push("9"+a(e)),r.push("10"+e.getParameter(e.MAX_COMBINED_TEXTURE_IMAGE_UNITS)),r.push("11"+e.getParameter(e.MAX_CUBE_MAP_TEXTURE_SIZE)),r.push("12"+e.getParameter(e.MAX_FRAGMENT_UNIFORM_VECTORS)),r.push("13"+e.getParameter(e.MAX_RENDERBUFFER_SIZE)),r.push("14"+e.getParameter(e.MAX_TEXTURE_IMAGE_UNITS)),r.push("15"+e.getParameter(e.MAX_TEXTURE_SIZE)),r.push("16"+e.getParameter(e.MAX_VARYING_VECTORS)),r.push("17"+e.getParameter(e.MAX_VERTEX_ATTRIBS)),r.push("18"+e.getParameter(e.MAX_VERTEX_TEXTURE_IMAGE_UNITS)),r.push("19"+e.getParameter(e.MAX_VERTEX_UNIFORM_VECTORS)),r.push("20"+t(e.getParameter(e.MAX_VIEWPORT_DIMS))),r.push("21"+e.getParameter(e.RED_BITS)),r.push("22"+e.getParameter(e.RENDERER)),r.push("23"+e.getParameter(e.SHADING_LANGUAGE_VERSION)),r.push("24"+e.getParameter(e.STENCIL_BITS)),r.push("25"+e.getParameter(e.VENDOR)),r.push("26"+e.getParameter(e.VERSION)),e.getShaderPrecisionFormat?(r.push("50"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.HIGH_FLOAT).precision),r.push("51"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.HIGH_FLOAT).rangeMin),r.push("52"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.HIGH_FLOAT).rangeMax),r.push("53"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.MEDIUM_FLOAT).precision),r.push("54"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.MEDIUM_FLOAT).rangeMin),r.push("55"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.MEDIUM_FLOAT).rangeMax),r.push("56"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.LOW_FLOAT).precision),r.push("57"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.LOW_FLOAT).rangeMin),r.push("58"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.LOW_FLOAT).rangeMax),r.push("59"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.HIGH_FLOAT).precision),r.push("60"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.HIGH_FLOAT).rangeMin),r.push("61"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.HIGH_FLOAT).rangeMax),r.push("62"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.MEDIUM_FLOAT).precision),r.push("63"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.MEDIUM_FLOAT).rangeMin),r.push("64"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.MEDIUM_FLOAT).rangeMax),r.push("65"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.LOW_FLOAT).precision),r.push("66"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.LOW_FLOAT).rangeMin),r.push("67"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.LOW_FLOAT).rangeMax),r.push("68"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.HIGH_INT).precision),r.push("69"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.HIGH_INT).rangeMin),r.push("70"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.HIGH_INT).rangeMax),r.push("71"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.MEDIUM_INT).precision),r.push("72"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.MEDIUM_INT).rangeMin),r.push("73"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.MEDIUM_INT).rangeMax),r.push("74"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.LOW_INT).precision),r.push("75"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.LOW_INT).rangeMin),r.push("76"+e.getShaderPrecisionFormat(e.VERTEX_SHADER,e.LOW_INT).rangeMax),r.push("77"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.HIGH_INT).precision),r.push("78"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.HIGH_INT).rangeMin),r.push("79"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.HIGH_INT).rangeMax),r.push("80"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.MEDIUM_INT).precision),r.push("81"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.MEDIUM_INT).rangeMin),r.push("82"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.MEDIUM_INT).rangeMax),r.push("83"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.LOW_INT).precision),r.push("84"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.LOW_INT).rangeMin),r.push("85"+e.getShaderPrecisionFormat(e.FRAGMENT_SHADER,e.LOW_INT).rangeMax),l=r.join("~")):r.join("~")}),E.plugins&&S("plugins",function(){var e=[];b(g.plugins,function(t){e.push(t)}),e=e.sort(function(e,t){return e.name>t.name?1:e.name<t.name?-1:0});var t=[];return b(e,function(e){t.push(e.name)}),t.join(";")}),S("mimeTypes",function(){var e=g.mimeTypes;if(e){var t=[];return b(e,function(e){t.push(e&&e.type)}),t.join(";")}return""}))};t.exports={get:function(){var e=s();return e?e:(A(),e={fp:m(c+l),fp2:m(n(v))},o(e),e)}}},{"./encrypt/md5":4}],7:[function(e,t,a){"use strict";function r(){var e=c.getMetaCnt("aplus-ajax"),t=goldlog.spm_ab;return t&&c.makeChkSum([t[0],(t[1]||"").split("/")[0]].join("."))==e?!0:c.makeChkSum(location.href)==e?!0:!1}function n(e,t,a){o(e,"spm-cnt",function(e){var r=e.split(".");return t?r[1]=r[1].split("/")[0]+"/"+t:r[1]=r[1].split("/")[0],a&&(r[4]=a),r.join(".")})}function i(e,t){var a=g_SPM._current_spm;a&&o(e,"spm-url",function(){return[a.a,a.b,a.c,a.d].join(".")+(t?"."+t:"")},"spm-cnt")}function o(e,t,a,r){var n,i,o=e.length,s=-1,c="function"==typeof a;for(n=0;o>n;n++){if(i=e[n],i[0]===t)return void(c?i[1]=a(i[1]):i[1]=a);r&&i[0]===r&&(s=n)}r&&(c&&(a=a()),s>-1?e.splice(s,0,[t,a]):e.push([t,a]))}function s(e){r()&&goldlog.launch({},e||{})}var c=e("./util");t.exports={sendPV:s,checkIfSendPV:r,updateSPMCnt:n,updateSPMUrl:i,updateKey:o}},{"./util":13}],8:[function(e,t,a){"use strict";function r(){if(!o.is_aliloan())return null;if(n)return n;var e;for(e=(goldlog.page_id||"")+c,e=e.substr(0,20);e.length<42;)e+=i.rndInt32();return e=e.substr(0,42),s.alilog_1688_pvid=s.dmtrack_pageid=s.unique_pageid=e,n=e,e}var n,i=e("./util"),o=e("./rule"),s=window,c=(new Date).getTime();a.makePageId=r},{"./rule":11,"./util":13}],9:[function(e,t,a){"use strict";function r(){var e=n.getElementById("tb-beacon-aplus"),t=o.tryToGetAttribute(e,"exparams");if(!t)return t;var a,r,i=["taobao.com","tmall.com","etao.com","hitao.com","taohua.com","juhuasuan.com","alimama.com"];if(s){for(r=i.length,a=0;r>a;a++)if(o.isContain(location.hostname,i[a]))return t;t=t.replace(/\buserid=\w*&?/,"")}return t=t.replace(/\buserid=/,"uidaplus=")}var n=document,i=window,o=e("./util"),s=parent!==i.self;a.getExParams=r},{"./util":13}],10:[function(e,t,a){var r=function(){function e(){var e,t=[],i=!0;for(var u in m)m.hasOwnProperty(u)&&(i=!1,e=m[u]||"",t.push(l(u)+s+l(e)));a.name=i?r:n+l(r)+o+t.join(c)}function t(e,t,a){e&&(e.addEventListener?e.addEventListener(t,a,!1):e.attachEvent&&e.attachEvent("on"+t,function(t){a.call(e,t)}))}var a=window;if(a.nameStorage)return a.nameStorage;var r,n="nameStorage:",i=/^([^=]+)(?:=(.*))?$/,o="?",s="=",c="&",l=encodeURIComponent,u=decodeURIComponent,m={},d={};return function(e){if(e&&0===e.indexOf(n)){var t=e.split(/[:?]/);t.shift(),r=u(t.shift())||"";for(var a,o,s,l=t.join(""),d=l.split(c),p=0,g=d.length;g>p;p++)a=d[p].match(i),a&&a[1]&&(o=u(a[1]),s=u(a[2])||"",m[o]=s)}else r=e||""}(a.name),d.setItem=function(t,a){t&&"undefined"!=typeof a&&(m[t]=String(a),e())},d.getItem=function(e){return m.hasOwnProperty(e)?m[e]:null},d.removeItem=function(t){m.hasOwnProperty(t)&&(m[t]=null,delete m[t],e())},d.clear=function(){m={},e()},d.valueOf=function(){return m},d.toString=function(){var e=a.name;return 0===e.indexOf(n)?e:n+e},t(a,"beforeunload",function(){e()}),d}();a.nameStorage=r},{}],11:[function(e,t,a){"use strict";function r(e,t,a){if(t)return"m";if(a)return o.isContain(e,"wrating.com")?"k":"y";var r,n,i="o",s=[["ju.taobao.com","4"],["juhuasuan.com","4"],["alipay.com","f"],["china.alibaba.com","6"],["qd.alibaba.com","o"],["jaq.alibaba.com","o"],["110.alibaba.com","o"],["security.alibaba.com","o"],["1688.com","6"],["alibaba.com","7"],["aliloan.com","8"],["cnzz.com","9"],["net.cn","a"],["hichina.com","a"],["phpwind.com","b"],["aliyun.com","c"],["tao123.com","d"],["alimama.com","e"],["taobao.com","1"],["tmall.com","2"],["tmall.hk","2"],["etao.com","3"],["sm.cn","s"],["*",i]],c=s.length;for(r=0;c>r;r++)if(n=s[r],o.isContain(e,n[0]))return n[1];return i}function n(e){var t,a,r=["/theme/info/info","/promo/co_header.php","fast_buy.htm","/add_collection.htm","/taobao_digital_iframe","/promo/co_header_taoinfo.php","/list_forum","/theme/info/info"];for(t=0,a=r.length;a>t;t++)if(-1!=l.indexOf(r[t]))return!0;var n=[m,d];for(t=0,a=n.length;a>t;t++)if(o.isEndWith(u,n[t]))return!0;if(e=e||s.referrer){var i=/^https?:\/\/[\w\.]+\.taobao\.com/i;return!i.test(e)}return!1}function i(){return"boolean"==typeof p?p:p=o.isEndWith(u,m)||o.isEndWith(u,d)}var o=e("./util"),s=document,c=location,l=c.pathname,u=c.hostname,m="aliloan.com",d="mybank.cn";a.getBeaconSrc=r,a.is_iframeExcption=n;var p;a.is_aliloan=i},{"./util":13}],12:[function(e,t,a){"use strict";function r(e){var t,a=e.split("."),r=a.length;return t=n.any(i,function(t){return n.isEndWith(e,t)})?a.slice(r-3):a.slice(r-2),t.join(".")}var n=e("./util"),i=[".com.cn",".net.cn"];a.getDomain=r},{"./util":13}],13:[function(e,t,a){"use strict";function r(e,t){return e&&e.getAttribute?e.getAttribute(t)||"":""}function n(e){return f=f||h.getElementsByTagName("head")[0],_&&!e?_:f?_=f.getElementsByTagName("meta"):[]}function i(e){var t,a,i,o=n(),s=o.length;for(t=0;s>t;t++)a=o[t],r(a,"name")===e&&(i=r(a,"content"));return i||""}function o(e){e=(e||"").split("#")[0].split("?")[0];var t=e.length,a=function(e){var t,a=e.length,r=0;for(t=0;a>t;t++)r=31*r+e.charCodeAt(t);return r};return t?a(t+"#"+e.charCodeAt(t-1)):-1}function s(e,t){return e.indexOf(t)>-1}function c(e,t){return 0===e.indexOf(t)}function l(e,t){var a=e.length,r=t.length;return a>=r&&e.indexOf(t)==a-r}function u(e){return"function"==typeof e}function m(e){return"string"==typeof e?e.replace(/^\s+|\s+$/g,""):""}function d(e,t,a){e[A]((v?"on":"")+t,function(e){e=e||b.event;var t=e.target||e.srcElement;a(e,t)},!1)}function p(e,t){var a,r=e.length;for(a=0;r>a;a++)t(e[a])}function g(e,t){
+var a,r=e.length;for(a=0;r>a;a++)if(t(e[a]))return!0;return!1}var f,_,h=document,b=window;a.tryToGetAttribute=r,a.getMetaTags=n,a.getMetaCnt=i,a.makeChkSum=o,a.isContain=s,a.isStartWith=c,a.isEndWith=l,a.isFunction=u,a.trim=m,a.rndInt32=function(){return Math.round(2147483647*Math.random())};var v=!!h.attachEvent,E="attachEvent",S="addEventListener",A=v?E:S;a.on=d,a.DOMReady=function(e){var t=b.KISSY;t&&u(t.ready)?t.ready(e):b.jQuery?jQuery(h).ready(e):"complete"===h.readyState?e():d(b,"load",e)},a.onload=function(e){d(b,"load",e)},a.each=p,a.any=g},{}]},{},[2]);</script><script type="text/javascript" async="" charset="utf-8" src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/core.php"></script><script type="text/javascript" src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/kissy-min.js"></script>
+    <script type="text/javascript" src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/config.js"></script>
+    <script>plibConfig({name:'aq',group:'sd',dir:'mobi-aq',version:'0.2.69'});</script>
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253553028'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/q_stat.php%3Fid%3D1253553028' type='text/javascript'%3E%3C/script%3E"));</script></head><body data-spm="7916648"><script id="tb-beacon-aplus" src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/aplus_v2.js" exparams="category=&amp;userid=&amp;aplus&amp;yunid=&amp;&amp;asid=AAAouZFX3KIeOzxJ8AI="></script><script id="tb-beacon-aplus" src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/aplus_v2.js" exparams="category=&amp;userid=&amp;aplus&amp;yunid=&amp;&amp;trid=0a67bc7d14691679125412495e&amp;asid=AQAAAAAouZFXXrWFBwAAAAA74Kyb7jltVA=="></script><span id="cnzz_stat_icon_1253553028"></span><script src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/q_stat.php" type="text/javascript"></script>
+    
+    
+
+<script>
+with(document)with(body)with(insertBefore(createElement("script"),firstChild))setAttribute("exparams","category=&userid=&aplus&yunid=&&trid=0a67bc7d14691679125412495e&asid=AQAAAAAouZFXXrWFBwAAAAA74Kyb7jltVA==",id="tb-beacon-aplus",src=(location>"https"?"//g":"//g")+".alicdn.com/alilog/mlog/aplus_v2.js")
+</script>
+<script>
+with(document)with(body)with(insertBefore(createElement("script"),firstChild))setAttribute("exparams","category=&userid=&aplus&yunid=&&asid=AAAouZFX3KIeOzxJ8AI=",id="tb-beacon-aplus",src=(location>"https"?"//g":"//g")+".alicdn.com/alilog/mlog/aplus_v2.js")
+</script>
+
+
+
+<div class="header">
+    <div class="site-nav-wrapper" data-spm="1000000">
+        <div class="page-container">
+            <div class="site-logo">
+                <h1 class="hide">安卓动态调试七种武器之离别钩 – Hooking（下）</h1>
+                <a href="https://jaq.alibaba.com/"></a>
+            </div>
+            <ul class="site-nav clearfix">
+                <li class="item">
+                    <a class="nav-item" href="https://jaq.alibaba.com/">首&nbsp;&nbsp;&nbsp;&nbsp;页</a>
+                </li>
+                <li class="item product">
+                    <a class="nav-item" href="javascript:void(0);">产品与服务</a>
+                    <div class="sub-nav" data-spm="1000001">
+                        <dl>
+                            <dt><a href="https://jaq.alibaba.com/safety">移动安全</a></dt>
+                            <dd><a href="https://jaq.alibaba.com/safety#0">安全扫描</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/safety#2">安全组件</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/safety#1">应用加固</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/safety#3">实时监控</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/safety#4">安全审计</a></dd>
+                        </dl>
+
+                        <dl>
+                            <dt><a href="https://jaq.alibaba.com/riskcontrol">数据风控</a></dt>
+                            <dd><a href="https://jaq.alibaba.com/riskcontrol#0">虚假注册防控</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/riskcontrol#1">账号被盗防控</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/riskcontrol#2">活动作弊防控</a></dd>
+                        </dl>
+
+                        <dl class="width120">
+                            <dt><a href="https://jaq.alibaba.com/green">内容安全（绿网）</a></dt>
+                            <dd><a href="https://jaq.alibaba.com/green#0">鉴黄服务</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/green#0">图像识别</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/green#0">图文识别</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/green#0">文本识别</a></dd>
+                        </dl>
+
+                        <dl class="last">
+                            <dt><a href="https://jaq.alibaba.com/person">实人认证</a></dt>
+                            <dd><a href="https://jaq.alibaba.com/person#0">风险分析</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/person#0">认证方式</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/person#0">动态管理</a></dd>
+                        </dl>
+                    </div>
+                </li>
+                <li class="item solution">
+                    <a class="nav-item" href="javascript:void(0);">解决方案</a>
+                    <div class="sub-nav" data-spm="1000002">
+                        <dl>
+                            <dd><a href="https://jaq.alibaba.com/solution.htm#0">金融行业</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/solution.htm#1">手机游戏</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/solution.htm#2">软件开发</a></dd>
+                            <dd><a href="https://jaq.alibaba.com/solution.htm#3">应用市场</a></dd>
+                        </dl>
+                    </div>
+                </li>
+                <li class="item"><a class="nav-item" href="https://jaq.alibaba.com/helpget.htm?helpid=1">帮助中心</a></li>
+                <li class="item"><a class="nav-item active" href="https://jaq.alibaba.com/community/index.htm">安全博客</a></li>
+                <li class="item"><a class="nav-item" href="https://jaq.alibaba.com/api.htm">API</a></li>
+                <li class="item"><a class="nav-item" href="https://jaq.alibaba.com/apply_cooperate_partner.htm">渠道商申请</a></li>
+                <li class="item"><span>|</span><a class="nav-item qiandun" href="https://qd.alibaba.com/" target="_blank">阿里钱盾</a></li></ul>
+            <div class="site-admin" data-spm="1100000">
+                <div class="user">
+                    
+                    <a href="https://jaq.alibaba.com/login/login.htm">登录</a>
+                    
+
+                </div>
+                <a href="https://jaq.alibaba.com/gc/index.htm" class="admin-btn">管理后台</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="home-content">
+    <div class="blog-left">
+        <div class="topic-bread" role="navigation" data-spm="21000000">
+            <i class="jaqicons icon-uea0chome"></i> 您当前的位置:
+            <a href="https://jaq.alibaba.com/community/index">安全博客</a>&nbsp;&gt;&nbsp;
+            <a href="https://jaq.alibaba.com/community/category?catid=4">技术研究</a>&nbsp;&gt;&nbsp;
+            安卓动态调试七种武器之离别钩 – Hooking（下）
+        </div>
+        <h2 class="article-title">
+            <a href="https://jaq.alibaba.com/community/art/show?articleid=378" title="安卓动态调试七种武器之离别钩 – Hooking（下）">安卓动态调试七种武器之离别钩 – Hooking（下）</a>
+        </h2>
+        <p class="article-time">
+            <i class="jaqicons icon-uea09calendar"></i>
+            2016年06月21日 09:30
+            <i class="jaqicons icon-uea07eye"></i>
+            912
+        </p>
+        <div class="article-content">
+            <!--文章内容-->
+            <h2 style="font-size:24px;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-weight:400;color:#222222;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;font-size:18px;"><strong>0x00 序</strong></span> 
+</h2>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">随着移动安全越来越火，各种调试工具也都层出不穷，但因为环境和需求的不同，并没有工具是万能的。另外工具是死的，人是活的，如果能搞懂工具的原理再结合上自身的经验，你也可以创造出属于自己的调试武器。因此，笔者将会在这一系列文章中分享一些自己经常用或原创的调试工具以及手段，希望能对国内移动安全的研究起到一些催化剂的作用。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;color:#337FE5;"><strong>目录如下:</strong></span> 
+</p>
+<p>
+	<span style="font-size:14px;font-family:&#39;Microsoft YaHei&#39;;"><a href="https://jaq.alibaba.com/community/art/show?spm=a313e.7916648.0.0.IhIFl9&amp;articleid=339" target="_blank"><u><span style="line-height:2;">安卓动态调试七种武器之长生剑 - Smali Instrumentation</span></u></a></span><br>
+<span style="font-size:14px;font-family:&#39;Microsoft YaHei&#39;;"><a href="https://jaq.alibaba.com/community/art/show?spm=a313e.7916648.0.0.IhIFl9&amp;articleid=365" target="_blank"><u><span style="line-height:2;">安卓动态调试七种武器之孔雀翎 – Ida Pro</span></u></a></span><br>
+<span style="font-size:14px;font-family:&#39;Microsoft YaHei&#39;;"><a href="http://jaq.alibaba.com/community/art/show?spm=a313e.7916642.220000NaN1.1.hXYySn&amp;articleid=373" target="_blank"><u><span style="line-height:2;">安卓动态调试七种武器之离别钩 – Hooking (上)</span></u></a></span><br>
+<span style="font-size:14px;font-family:&#39;Microsoft YaHei&#39;;line-height:2;">安卓动态调试七种武器之离别钩 – Hooking (下)</span><br>
+<span style="font-size:14px;font-family:&#39;Microsoft YaHei&#39;;line-height:2;">安卓动态调试七种武器之碧玉刀- Customized DVM</span><br>
+<span style="font-size:14px;font-family:&#39;Microsoft YaHei&#39;;line-height:2;">安卓动态调试七种武器之多情环- Customized Kernel</span><br>
+<span style="font-size:14px;font-family:&#39;Microsoft YaHei&#39;;line-height:2;">安卓动态调试七种武器之霸王枪 - Anti Anti-debugging</span><br>
+<span style="font-size:14px;font-family:&#39;Microsoft YaHei&#39;;line-height:2;">安卓动态调试七种武器之拳头 - Tricks &amp; Summary</span> 
+</p>
+<p>
+	<span style="font-size:14px;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">文章中所有提到的代码和工具都可以在我的github下载到，地址是： https://github.com/zhengmin1989/TheSevenWeapons</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<h2 style="font-size:24px;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-weight:400;color:#222222;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;font-size:18px;"><strong>0x01 利用函数挂钩实现native层的hook</strong></span> 
+</h2>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">我们在离别钩(上)中已经可以做到动态的加载自定义so文件并且运行so文件中的函数了，但还不能做到hook目标函数，这里我们需要用到函数挂钩的技术来做到这一点。函数挂钩的基本原理是先用mprotect()将原代码段改成可读可写可执行，然后修改原函数入口处的代码，让pc指针跳转到动态加载的so文件中的hook函数中，执行完hook函数以后再让pc指针跳转回原本的函数中。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">用来注入的程序hook5逻辑与之前的hook4相比并没有太大变化，仅仅少了“调用 dlclose 卸载so文件”这一个步骤，因为我们想要执行的hook后的函数在so中，所以并不需要调用dlclose进行卸载。基本步骤如下：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">保存当前寄存器的状态 -&gt; 获取目标程序的mmap, dlopen, dlsym, dlclose 地址 -&gt; 调用mmap分配一段内存空间用来保存参数信息 –&gt; 调用dlopen加载so文件 -&gt; 调用dlsym找到目标函数地址 -&gt; 使用ptrace_call执行目标函数 -&gt; 恢复寄存器的状态</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">hook5的主要代码逻辑如下：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427utq4tooo0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427utqvs2g40.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">我们知道arm处理器支持两种指令集，一种是arm指令集，另一种是thumb指令集。所以要hook的函数可能是被编译成arm指令集的，也有可能是被编译成thumb指令集的。Thumb指令集可以看作是arm指令压缩形式的子集，它是为减小代码量而提出，具有16bit的代码密度。Thumb指令体系并不完整，只支持通用功能，必要时仍需要使用ARM指令，如进入异常时。需要注意的一点是thumb指令的长度是不固定的，但arm指令是固定的32位长度。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">为了让大家更容易的理解hook的原理，我们先只考虑arm指令集，因为arm相比thumb要简单一点，不需要考虑指令长度的问题。所以我们需要将target和hook的so编译成arm指令集的形式。怎么做呢？很简单，只要在Android.mk中的文件名后面加上”.arm”即可 (真正的文件不用加)。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427utsunb8f0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">确定了指令集以后，我们来看实现挂钩最重要的逻辑，这个逻辑是在注入后的so里实现的。首先我们需要一个结构体保存汇编代码和hook地址：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uttpe5gr0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">我们接着来看注入的逻辑，最重要的函数为hook_direct()，他有三个参数，一个参数是我们最开始定义的用来保存汇编代码和hook地址的结构体，第二个是我们要hook的原函数的地址，第三个是我们用来执行hook的函数。函数的源码如下：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427utv3ivmn0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">虽然android有ASLR，但并没有PIE，所以program image是固定在0x8000这个地址的，因此我们用mprotect()函数将整个target代码段变成RWX，这样我们就能修改函数入口处的代码了。是否修改成功可以通过cat /proc/[pid]/maps查看：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uu0169vl0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">随后我们需要确定目标函数的地址，这个有两种方法。如果目标程序本身没有被strip的话，那些symbol都是存在的，因此可以使用dlopen()和dlsym()等方法来获取目标函数地址。但很多情况，目标程序都会被strip，特别是可以直接运行的二进制文件默认都会被直接strip。比如target中的sevenWeapons()这个函数名会在编译的时候去掉，所以我们使用dlsym()的话是无法找到这个函数的。这时候我们就需要使用ida或者objdump来定位一下目标函数的地址。比如我们用objdump找一下target程序里面sevenWeapons(int number)这个函数的地址：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/d0pfqmhalb4.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">虽然target这个binary被strip了，但还是可以找到sevenWeapons()这个函数的起始地址是在0x84f4。因为”mov r2, r0”就是加载number这个参数的指令，随后调用了&lt;printf@plt&gt;用来输出结果。 最后一个参数也就是我们要执行的hook函数的地址。得到这个地址非常简单，因为是so中的函数，调用hook_direct()的时候直接写上函数名即可。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p>
+	<span style="font-size:14px;color:#337FE5;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;hook_direct(&amp;eph,hookaddr,my_sevenWeapons);</strong></span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">接下来我们看如何修改函数入口（modify function entry），首先我们保存一下原函数的地址和那个函数的前三条指令。随后我们把目标函数的第一条指令修改为&nbsp;LDR pc, [pc, #0]，这条指令的意思是跳转到PC指针所指的地址，由于pc寄存器读出的值实际上是当前指令地址加8，所以我们把后面两处指令都保存为hook函数的地址，这样的话，我们就能控制PC跳转到hook函数的地址了。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">最后我们再调用hook_cacheflush()这个函数来刷新一下指令的缓存。因为虽然前面的操作修改了内存中的指令，但有可能被修改的指令已经被缓存起来了，再执行的话，CPU可能会优先执行缓存中的指令，使得修改的指令得不到执行。所以我们需要使用一个隐藏的系统调用来刷新一下缓存。hook_cacheflush()代码如下：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uuf65a400.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">刷新完缓存后，再执行到原函数的时候，pc指针就会跳转到我们自定义的hook函数中了，hook函数里的代码如下：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uugfncsp0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">首先在hook函数中，我们可以获得原函数的参数，并且我们可以对原函数的参数进行修改，比如说将数字乘2。随后我们使用hook_precall(&amp;eph);将原本函数的内容进行还原。hook_precall()内容如下：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uuisk3jt0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">在hook_precall()中，我们先对原本的三条指令进行还原，然后使用hook_cacheflush()对内存进行刷新。经过处理之后，我们就可以执行原来的函数orig_sevenWeapons(number)了。执行完后，如果我们还想再次hook这个函数，就需要调用hook_postcall(&amp;eph)将原本的三条指令再进行一次修改。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">下面我们来使用hook5和libinject2.so来注入一下target这个程序：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uukuk59f0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;color:#337FE5;"><strong>可以看到经过注入后，我们成功的获取了参数number的值，并且将”Hello,LiBieGou!”后面的数字变成了原来的两倍。</strong></span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<h2 style="font-size:24px;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-weight:400;color:#222222;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;font-size:18px;"><strong>0x02 使用adbi实现JNI层的hook</strong></span> 
+</h2>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">我们在上一节中介绍了如何hook native层的函数。下面我们再来讲讲如何利用adbi来hook JNI层的函数。Adbi是一个android平台上的一个注入框架，本身是开源的。Hook的原理和我们之前介绍的技术是一样的，这个框架支持arm和thumb指令集，也支持通过字符串定位symbol函数的地址。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">首先我们需要一个例子用来讲解，所以我写了程序叫test2。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="text-align:center;color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<img alt="enter image description here" src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/image001.png" height="200" width="300" style="height:auto;"> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<br>
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">点击程序中的button后，程序会调用so中的Java_com_mzheng_libiegou_test2_MainActivity_stringFromJNI(JNIEnv* env,jobject thiz,jint a,jint b)函数用来计算a+b的结果。我们默认传的参数是a=1, b=1。接下来我就来教你如何利用adbi来hook这个JNI函数。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">因为adbi是一个注入框架，我们下载好源码后，只要对应着源码中给的example照猫画虎即可。Hijack那个文件夹是保存的用来注入的程序，和我们之前讲的hook5.c的原理是一样的，所以不用做任何修改。我们只需要修改example中的代码，也就是将要注入的so文件的源码。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">首先，我们在/adbi-master/instruments/example这个文件夹下新建两个文件”hookjni.c”和” hookjni_arm.c”。“hookjni_arm.c”其实只是一个壳，用来将hook函数的入口编译成arm指令集的，内容如下：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/d0pfsle7lqk.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">这个文件的目的仅仅是为了用arm指令集进行编译，可以看到Android.mk中在”hookjni_arm.c”后面多了个”.arm”：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uuvsbmco0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">下面我们来看”hookjni.c”:</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uv12q7hm0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">这段代码和我上一节讲的代码非常像，my_init()用来进行hook操作，我们需要提供想要hook的so文件名和函数名，然后再提供thumb指令集和arm指令集的hook函数地址。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">my_Java_com_mzheng_libiegou_test2_MainActivity_stringFromJNI()就是我们提供的hook函数了。我们在这个hook函数中把a和b都改成了10。除此之外，我们还使用counter这个全局变量来控制hook的次数，这里我们把counter设置为3，当hook了3次以后，就不再进行hook操作了。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">编辑好代码后，我们只需要在adbi的根目录下执行” build.sh”进行编译：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uv22folp0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">编译好后，我们把hijack和libexample.so拷贝到/data/local/tmp目录下。然后使用hijack进行注入：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uv32kmpl0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">然后我们再点击button就可以看到我们已经成功的修改了a和b的值为10了，最后显示1+1=20。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="text-align:center;color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/d0pft5recui.png" width="300" height="533" alt=""> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<br>
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">通过cat adbi_example.log我们可以看到hook过程中打印的log：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uv7c42in0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">可以看到adbi是通过thumb指令集进行hook的，原因是test2程序是用thumb指令集进行编译的。其实hook thumb指令集和arm指令集差不多，在”/adbi-master/instruments/base”中可以找到hook thumb指令集的逻辑：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uv8k05fa0.JPG" width="700" height="685" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">其实h-&gt;jumpt[20]这个字符数组保存的就是thumb指令集下控制pc指针跳转到hook函数地址的代码。Hook完之后的流程就和arm指令集的hook一样了。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<h2 style="font-size:24px;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-weight:400;color:#222222;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;font-size:18px;"><strong>0x03 使用Cydia或Xposed实现JAVA层的hook</strong></span> 
+</h2>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">关于Cydia和Xposed的文章和例子已经很多了，这里就不再重复的进行介绍了。这里推荐一下瘦蛟舞和我写的文章，基本上就知道怎么使用这两个框架了：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">Android.Hook框架xposed篇(Http流量监控) http://drops.wooyun.org/papers/7488</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">Android.Hook框架Cydia篇(脱壳机制作) http://drops.wooyun.org/tips/8084</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">手把手教你当微信运动第一名 – 利用Android Hook进行微信运动作弊 http://drops.wooyun.org/tips/8416</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">个人感觉Xposed框架要做的更好一些，主要原因是Cydia的作者已经很久没有更新过Cydia框架了，不光有很多bug还不支持ART。但是有很多不错的调试软件/插件是基于两个框架制作的，所以有时候还是需要用到Cyida的。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">接下来就推荐几个很实用的基于Cydia和Xposed的插件：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="font-family:&#39;Microsoft YaHei&#39;;line-height:2;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="font-family:&#39;Microsoft YaHei&#39;;line-height:2;">1）ZjDroid: ZjDroid是基于Xposed Framewrok的动态逆向分析模块，逆向分析者可以通过ZjDroid完成以下工作： 1、DEX文件的内存dump 2、基于Dalvik关键指针的内存BackSmali，有效破解主流加固方案 3、敏感API的动态监控 4、指定内存区域数据dump 5、获取应用加载DEX信息。 6、获取指定DEX文件加载类信息。 7、dump Dalvik java堆信息。 8、在目标进程动态运行lua脚本。 https://github.com/halfkiss/ZjDroid</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="font-family:&#39;Microsoft YaHei&#39;;line-height:2;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="font-family:&#39;Microsoft YaHei&#39;;line-height:2;">2）XPrivacy: XPrivacy是一款基于Xposed框架的模块应用，可以对所有应用可能泄露隐私的权限进行管理，对禁止可能会导致崩溃的应用采取欺骗策略，提供伪造信息，比如说可以伪造手机的IMEI号码等。 https://github.com/M66B/XPrivacy</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="font-family:&#39;Microsoft YaHei&#39;;line-height:2;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="font-family:&#39;Microsoft YaHei&#39;;line-height:2;">3）Introspy: Introspy是一款可以追踪分析移动应用的黑盒测试工具并且可以发现安全问题。这个工具支持很多密码库的hook，还支持自定义hook。 https://github.com/iSECPartners/Introspy-Android</span> 
+</p>
+<p>
+	<span><span style="font-size:14px;line-height:28px;"><br>
+</span></span> 
+</p>
+<h2 style="font-size:24px;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-weight:400;color:#222222;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;font-size:18px;"><strong>0x04 Introspy实战</strong></span> 
+</h2>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">我们使用alictf上的evilapk400作为例子讲解如何利用introspy来调试程序。Evilapk400使用了比较复杂的dex加壳技术，如果不利用基于自定义dalvik的脱壳工具来进行脱壳的话做起来会非常麻烦。但我们如果换一种思路，直接通过动态调试的方法来获取加密算法的字符串，key和IV等信息就可以直接获取答案了。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">首先我们安装cyida.apk，Introspy-Android Config.apk到手机上，然后用eclipse打开“Introspy-Android Core”的源码增加一个自定义的hook函数。虽然Introspy默认对密码库进行了hook，但却没有对一些strings的函数进行hook。所以我们手动添加一个对String.equals()的hook：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uvrblufg0.png" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uvs0aded0.png" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">然后我们编译，生成并安装Introspy-Android Core.apk到手机上。然后我们安装上EvilApk400。然后打开Introspy-Android Config勾选com.ali.encryption。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="text-align:center;color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uvt5420m0.png" width="300" height="534" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">接着打开evilapk400，然后随便输入点内容并点击登陆。</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="text-align:center;color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427uvvhu0um0.png" width="300" height="533" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">然后我们使用adb logcat就能看到Introspy输出的信息了：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427v01asaci0.png" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">通过log，很容易就能看出来evilapk400使用了DES加密。通过log我们获取了密文，Key以及IV，所以我们可以写一个python程序来计算出最后的答案：</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427v02pb70u0.JPG" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="text-align:center;color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427v049f4nm0.png" alt=""><br>
+</span> 
+</p>
+<p style="text-align:center;color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<p style="text-align:center;color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><img src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/427v058qvj90.png" width="300" height="533" alt=""><br>
+</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<h2 style="font-size:24px;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-weight:400;color:#222222;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;font-size:18px;"><strong>0x05 总结</strong></span> 
+</h2>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">本篇介绍了native层，JNI层以及JAVA层的hook，基本上可以满足我们平时对于android上hook的需求了。 另外文章中所有提到的代码和工具都可以在我的github下载到，地址是： https://github.com/zhengmin1989/TheSevenWeapons</span> 
+</p>
+<p style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;"><br>
+</span> 
+</p>
+<h2 style="font-size:24px;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-weight:400;color:#222222;background-color:#FFFFFF;">
+	<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;font-size:18px;"><strong>0x06 参考资料</strong></span> 
+</h2>
+<ol style="color:#222222;font-family:Helvetica, Arial, &#39;Hiragino Sans GB&#39;, sans-serif;font-size:14px;background-color:#FFFFFF;">
+	<li>
+		<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">Android平台下hook框架adbi的研究（下）http://blog.csdn.net/roland_sun/article/details/36049307</span> 
+	</li>
+	<li>
+		<span style="line-height:2;font-family:&#39;Microsoft YaHei&#39;;">ALICTF Writeups from Dr. Mario</span> 
+	</li>
+</ol>
+<p>
+	<span><span style="font-size:14px;line-height:28px;"><br>
+</span></span> 
+</p>
+<p>
+	<span><span style="font-size:14px;line-height:28px;"><strong>作者：蒸米@阿里聚安全，更多技术文章，请访问</strong><a href="https://jaq.alibaba.com/community/index.htm" target="_blank"><strong>阿里聚安全博客</strong></a></span></span> 
+</p>
+        </div>
+    </div>
+    <div class="blog-right">
+    <div class="blog-quickarea">
+        <h3 class="vline-header">文章分类</h3>
+        <ul class="list simple classifiy" data-spm="25000001">
+        
+            <li class="item b-t">
+                <a href="https://jaq.alibaba.com/community/category?catid=4" title=""><s class="blog-icon icon-cat-1"></s>技术研究</a>
+            </li>
+        
+            <li class="item b-t">
+                <a href="https://jaq.alibaba.com/community/category?catid=17" title=""><s class="blog-icon icon-cat-2"></s>安全资讯</a>
+            </li>
+        
+            <li class="item b-t">
+                <a href="https://jaq.alibaba.com/community/category?catid=5" title=""><s class="blog-icon icon-cat-3"></s>安全报告</a>
+            </li>
+        
+            <li class="item b-t">
+                <a href="https://jaq.alibaba.com/community/category?catid=2" title=""><s class="blog-icon icon-cat-4"></s>安全漏洞</a>
+            </li>
+        
+            <li class="item b-t">
+                <a href="https://jaq.alibaba.com/community/category?catid=3" title=""><s class="blog-icon icon-cat-5"></s>病毒分析</a>
+            </li>
+        
+            <li class="item b-t">
+                <a href="https://jaq.alibaba.com/community/category?catid=18" title=""><s class="blog-icon icon-cat-6"></s>活动沙龙</a>
+            </li>
+        
+        </ul>
+    </div>
+    <!-- <div class="blog-search">
+        <input type="text">
+        <a href="#">搜索</a>
+    </div> -->
+    <div class="blog-quickarea">
+        <h3>社区热门</h3>
+        <div class="tab blogtab">
+            <ul id="J-tag-header" class="tab-header" data-spm="25000003">
+            
+                
+                <li class="current" data-id="current-1" data-spm-click="gostr=/aq;locaid=d1;">技术研究</li>
+                
+            
+                
+                <li data-id="current-2" data-spm-click="gostr=/aq;locaid=d2;">安全资讯</li>
+                
+            
+                
+                <li data-id="current-3" data-spm-click="gostr=/aq;locaid=d3;">安全报告</li>
+                
+            
+                
+                <li data-id="current-4" data-spm-click="gostr=/aq;locaid=d4;">安全漏洞</li>
+                
+            
+            </ul>
+            <div class="tab-body">
+            
+                <ul id="current-1" class="blog-quickarea-list current" data-spm="25000002">
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=352" title="Android安全开发之Provider组件安全">Android安全开发之Provider组件安全</a>
+                        <span class="jaqicons icon-uea07eye">2.8k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=321" title="Android安全开发之浅谈密钥硬编码">Android安全开发之浅谈密钥硬编码</a>
+                        <span class="jaqicons icon-uea07eye">3.3k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=285" title="微信双开是定时炸弹？关于非越狱iOS上微信分身高危插件ImgNaix的分析">微信双开是定时炸弹？关于非越狱iOS上微信分身高危插件ImgNaix的分析</a>
+                        <span class="jaqicons icon-uea07eye">2.7k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=261" title="你的应用是如何被替换的，App劫持病毒剖析">你的应用是如何被替换的，App劫持病毒剖析</a>
+                        <span class="jaqicons icon-uea07eye">3.0k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=219" title="APK瘦身记，如何实现高达53%的压缩效果">APK瘦身记，如何实现高达53%的压缩效果</a>
+                        <span class="jaqicons icon-uea07eye">8.2k</span>
+                    </li>
+                
+                </ul>
+            
+                <ul id="current-2" class="blog-quickarea-list " data-spm="25000002">
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=407" title="一周一讯 | 揭秘日入50万美金的Android黑客组织、阿里巴巴首届在线技术峰会">一周一讯 | 揭秘日入50万美金的Android黑客组织、阿里巴巴首届在线技术峰会</a>
+                        <span class="jaqicons icon-uea07eye">1k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=382" title="他用10年前的攻击手法感染了17000多名开发者的电脑">他用10年前的攻击手法感染了17000多名开发者的电脑</a>
+                        <span class="jaqicons icon-uea07eye">346</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=347" title="MySpace出现史上最大规模数据泄露事件">MySpace出现史上最大规模数据泄露事件</a>
+                        <span class="jaqicons icon-uea07eye">213</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=344" title="一周一讯|安卓动态调试七种武器之长生剑、Python 资源大全中文版">一周一讯|安卓动态调试七种武器之长生剑、Python 资源大全中文版</a>
+                        <span class="jaqicons icon-uea07eye">672</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=318" title="一周一讯|首个免费的iOS VPN、如何黑掉 Telegram 及 WhatsApp？">一周一讯|首个免费的iOS VPN、如何黑掉 Telegram 及 WhatsApp？</a>
+                        <span class="jaqicons icon-uea07eye">328</span>
+                    </li>
+                
+                </ul>
+            
+                <ul id="current-3" class="blog-quickarea-list " data-spm="25000002">
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=193" title="2015移动安全病毒年报">2015移动安全病毒年报</a>
+                        <span class="jaqicons icon-uea07eye">2.8k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=194" title="2015移动安全漏洞年报">2015移动安全漏洞年报</a>
+                        <span class="jaqicons icon-uea07eye">3.7k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=196" title="2015数据风控年报">2015数据风控年报</a>
+                        <span class="jaqicons icon-uea07eye">3.6k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=195" title="2015物联网安全年报">2015物联网安全年报</a>
+                        <span class="jaqicons icon-uea07eye">2.0k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=197" title="2015内容安全年报">2015内容安全年报</a>
+                        <span class="jaqicons icon-uea07eye">2.0k</span>
+                    </li>
+                
+                </ul>
+            
+                <ul id="current-4" class="blog-quickarea-list " data-spm="25000002">
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=336" title="华为手机Wi-Fi驱动中存在缓冲区溢出安全漏洞">华为手机Wi-Fi驱动中存在缓冲区溢出安全漏洞</a>
+                        <span class="jaqicons icon-uea07eye">920</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=90" title="Broadlink智能生态系列漏洞详解">Broadlink智能生态系列漏洞详解</a>
+                        <span class="jaqicons icon-uea07eye">2.7k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=82" title="Xcode编译器里有鬼 – XcodeGhost样本分析">Xcode编译器里有鬼 – XcodeGhost样本分析</a>
+                        <span class="jaqicons icon-uea07eye">3.0k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=81" title="iOS漏洞可导致Apple ID被盗 – iOS 9修复阿里巴巴移动安全团队所发现的三处安全漏洞">iOS漏洞可导致Apple ID被盗 – iOS 9修复阿里巴巴移动安全团队所发现的三处安全漏洞</a>
+                        <span class="jaqicons icon-uea07eye">1.5k</span>
+                    </li>
+                
+                    <li>
+                        <a href="https://jaq.alibaba.com/community/art/show?articleid=77" title="APK 漏洞“黑影无处不在(Shadows Everywhere)”详解">APK 漏洞“黑影无处不在(Shadows Everywhere)”详解</a>
+                        <span class="jaqicons icon-uea07eye">1.5k</span>
+                    </li>
+                
+                </ul>
+            
+            </div>
+        </div>
+
+    </div>
+    <div class="blog-quickarea">
+        <h4>标签</h4>
+        <ul class="list blog-tag-list">
+        
+            <li title="duanxin">短信</li>
+        
+            <li title="jifenduihuan">积分兑换</li>
+        
+            <li title="fangmaoyingyong">仿冒应用</li>
+        
+            <li title="loudongfenxi">漏洞分析</li>
+        
+            <li title="loudongyujing">漏洞预警</li>
+        
+            <li title="niandubaogao">年度报告</li>
+        
+            <li title="anquanbaogao">安全报告</li>
+        
+            <li title="bingdufenxi">病毒分析</li>
+        
+            <li title="alijuanquan">阿里聚安全</li>
+        
+        </ul>
+    </div>
+    <div class="blog-quickarea">
+        <h4>友情链接</h4>
+        <ul class="list blog-link-list" data-spm="25000004">
+            <li>
+                <a href="http://www.alibabagroup.com/cn/global/home" target="_blank">阿里巴巴集团</a>
+            </li>
+            <li>
+                <a href="http://www.aliyun.com/" target="_blank">阿里云计算</a>
+            </li>
+            <li>
+                <a href="http://www.taobao.com/" target="_blank">淘宝网</a>
+            </li>
+            <li>
+                <a href="http://www.tmall.com/" target="_blank">天猫</a>
+            </li>
+            <li>
+                <a href="https://www.alipay.com/" target="_blank">支付宝</a>
+            </li>
+            <li>
+                <a href="http://qd.alibaba.com/" target="_blank">阿里钱盾</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+<!-- 立即使用 -->
+
+<div class="blog-floatuse bottomsize" data-spm="11000000">
+    应用更安全，用户更放心！
+    
+    
+    <a class="jaqbtn-base" href="https://jaq.alibaba.com/login/login.htm">立即登录</a>
+    
+    <i class="jaqicons icon-uea04times" id="closeFloat"></i>
+    <div class="box-shade"></div>
+</div>
+
+
+<div class="wrap-footer" data-spm="10000000">
+    <div class="footer">
+        <div class="nav-user-footer">
+            <h2>用户导航</h2>
+            <dl>
+                <dt>移动安全</dt>
+                <dd><a href="https://jaq.alibaba.com/safety#0">安全扫描</a></dd>
+                <dd><a href="https://jaq.alibaba.com/safety#2">安全组件</a></dd>
+                <dd><a href="https://jaq.alibaba.com/safety#1">应用加固</a></dd>
+                <dd><a href="https://jaq.alibaba.com/safety#3">持续监控</a></dd>
+                <dd><a href="https://jaq.alibaba.com/safety#4">安全审计</a></dd>
+            </dl>
+            <dl style="margin-right:70px;">
+                <dt>数据风控</dt>
+                <dd><a href="https://jaq.alibaba.com/riskcontrol#0">虚假注册防控</a></dd>
+                <dd><a href="https://jaq.alibaba.com/riskcontrol#1">账号被盗防控</a></dd>
+                <dd><a href="https://jaq.alibaba.com/riskcontrol#2">活动作弊防控</a></dd>
+            </dl>
+            <dl style="margin-right:85px;">
+                <dt>解决方案</dt>
+                <dd><a href="https://jaq.alibaba.com/solution.htm#0">金融行业</a></dd>
+                <dd><a href="https://jaq.alibaba.com/solution.htm#1">手机游戏</a></dd>
+                <dd><a href="https://jaq.alibaba.com/solution.htm#2">软件开发</a></dd>
+                <dd><a href="https://jaq.alibaba.com/solution.htm#3">应用市场</a></dd>
+            </dl>
+            <dl class="footer-connect">
+                <dt>联系我们</dt>
+                <dd>电子邮箱：<a href="mailto:mobilesecurity@service.alibaba.com">mobilesecurity@service.alibaba.com</a></dd>
+                <dd>客服旺旺：1435906194</dd>
+                <dd>
+                    <a target="_blank" class="icon foot-help" href="https://service.taobao.com/support/onlinecs/ocs.htm?source_id=1617160725&amp;redirect_url=&amp;param=&amp;kbs_key=&amp;out_token=&amp;q=&amp;queue_id="></a>
+                    工作日&nbsp;9:00-18:00
+                </dd>
+            </dl>
+            <dl class="footer-careme">
+                <dt>关注我们</dt>
+                <dd></dd>
+                <a href="http://weibo.com/alimobilesecurity" target="_blank"><i></i>阿里聚安全<br><span style="margin-left:34px;">官方微博</span></a>
+            </dl>
+            <dl class="footer-qiandun">
+                <dd></dd>
+                <a href="javascript:void(0);"><i></i>阿里聚安全<br><span style="margin-left:41px;">微信公众号</span></a>
+            </dl>
+        </div>
+        <div class="wrap-footer-link">
+            <a href="http://www.alibabagroup.com/cn/global/home" target="_blank">阿里巴巴集团</a>
+            <s>|</s>
+            <a href="http://www.taobao.com/" target="_blank">淘宝网</a>
+            <s>|</s>
+            <a href="http://www.tmall.com/" target="_blank">天猫</a>
+            <s>|</s>
+            <a href="http://ju.taobao.com/" target="_blank">聚划算</a>
+            <s>|</s>
+            <a href="http://www.aliexpress.com/" target="_blank">全球速卖通</a>
+            <s>|</s>
+            <a href="http://page.1688.com/" target="_blank">阿里巴巴国际交易市场</a>
+            <s>|</s>
+            <a href="http://www.alimama.com/" target="_blank">阿里妈妈</a>
+            <s>|</s>
+            <a href="http://www.aliyun.com/" target="_blank">阿里云计算</a>
+            <s>|</s>
+            <a href="http://www.yunos.com/" target="_blank">YunOS</a>
+            <s>|</s>
+            <a href="http://www.net.cn/" target="_blank">万网</a>
+            <s>|</s>
+            <a href="http://www.alitrip.com/" target="_blank">阿里旅行</a>
+            <s>|</s>
+            <a href="http://www.xiami.com/" target="_blank">虾米</a>
+            <s>|</s>
+            <a href="http://www.laiwang.com/" target="_blank">来往</a>
+            <s>|</s>
+            <a href="https://www.alipay.com/" target="_blank">支付宝</a>
+        </div>
+        <div class="wrap-footer-link">
+            <a href="http://www.pediy.com/" target="_blank">看雪学院</a>
+            <s>|</s>
+            <a href="http://www.kafan.cn/" target="_blank">卡饭论坛</a>
+            <s>|</s>
+            <a href="http://pro.25pp.com/" target="_blank">PP助手</a>
+            <s>|</s>
+            <a href="http://baichuan.taobao.com/" target="_blank">阿里百川</a>
+            <s>|</s>
+            <a href="http://www.apkbus.com/" target="_blank">安卓巴士</a>
+            <s>|</s>
+            <a href="http://game.open.uc.cn/" target="_blank">阿里游戏</a>
+            <s>|</s>
+            <a href="http://www.9apps.com/" target="_blank">9apps</a>
+        </div>
+        <small class="footer-copyright">版权公告 © 1999-2016 阿里巴巴集团控股有限公司及或其关联公司及特许人版权所有。</small>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    KISSY.use("aq/community/community",function(S, Page){
+        Page.bindTabEvent();
+    });
+</script>
+
+
+
+
+
+
+
+
+
+<script src="./安卓动态调试七种武器之离别钩 – Hooking（下）-阿里聚安全_files/index(1).js"></script></body></html>

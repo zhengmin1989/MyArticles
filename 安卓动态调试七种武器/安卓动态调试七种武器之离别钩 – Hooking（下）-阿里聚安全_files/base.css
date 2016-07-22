@@ -1,0 +1,85 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {margin:0;padding:0;border:0;}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display:block;}
+body, select, textarea, th, td {font-size:12px;font-family:"Gotham-Book", Helvetica,Verdana,tahoma,"Hiragino Sans GB","Lucida Grande","Hiragino Sans GB W3", "Helvetica Neue", HelveticaNeue, "BBAlpha Sans",\5FAE\8F6F\96C5\9ED1, "Microsoft YaHei", sans-serif, Arial, simsun;}
+
+h1, h2, h3, h4, h5, h6 {font-size:100%;}
+table {border-collapse:collapse;border-spacing:0;}
+code, kbd, pre, samp, tt {font-family:"Courier New", Courier, monospace;}
+caption, th {text-align:left;}
+small {font-size:100%;}
+dl, dt, dd, ul, ol, li {list-style:none;}
+a,s {text-decoration:none;}
+abbr, acronym {border:0;font-variant:normal;}
+abbr[title], acronym[title] {border-bottom:1px dotted;cursor:help;}
+q:before, q:after {content:'';}
+a:focus {outline:0;}
+fieldset {border:none;}
+address, caption, cite, code, dfn, em, strong, th, var, optgroup {font-style:inherit;}
+input, button, textarea, select, optgroup, option {font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;outline:none;}
+input, button, textarea, select {*font-size:100%;outline:none;resize:none;}
+button::-moz-focus-inner {border:none;}
+sup {vertical-align:baseline;}
+sub {vertical-align:baseline;}
+hr {border:none;height:0;visibility:hidden;}
+button{cursor:pointer}
+
+img {-ms-interpolation-mode:bicubic;border:none;vertical-align:middle;}
+
+object, embed {outline:none;}
+
+section, article, aside, header, footer, nav, dialog, figure, details {display:block;}
+figure {margin:0;}
+
+.clearfix:after {content:".";display:block;height:0;clear:both;visibility:hidden;}
+* html .clearfix {height:1%;}
+
+
+
+.none,.hide,.hidden{display:none}
+.show{display:inherit}
+.ov{overflow:hidden}
+.pz,.pz0{position:relative;z-index:0}
+
+.fl {float:left;}.fr {float:right;}
+.ifl{display:inline;float:left}
+.ifr{display:inline;float:right}
+
+.txt-c{text-align:center}
+.txt-r{text-align:right}
+.txt-l{text-align:left}
+
+.mt{margin-top:10px;}
+.mt20{margin-top:20px;}
+.mt30{margin-top:30px;}
+.mt50{margin-top:50px;}
+.mt52{margin-top:52px;}
+.mt60{margin-top:60px;}
+.mt70{margin-top:70px;}
+
+
+.ml{margin-left:10px;}
+.ml16{margin-left:16px;}
+
+
+.pt20{padding-top:20px;}
+.pt24{padding-top:24px;}
+.pt30{padding-top:30px;}
+.pt40{padding-top:40px;}
+.pt50{padding-top:50px;}
+.pt60{padding-top:60px;}
+.pt70{padding-top:70px;}
+
+.mpointer{cursor:pointer}

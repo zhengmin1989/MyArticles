@@ -1,0 +1,163 @@
+/***********************************************************************************
+* Icons Base Styles
+***********************************************************************************/
+.v48fv_48x48_warning,
+.v48fv_48x48,
+.v48fv_48x48_critical,
+.v48fv_48x48_help,
+.v48fv_48x48_info
+{
+	margin:0;
+	padding:10px 0 10px 48px!important;
+	background-position:left center;
+	background-repeat: no-repeat;
+}
+.v48fv_10x10_edit,
+.v48fv_10x10
+{
+	margin:0;
+	padding:5px 0 5px 10px!important;
+	background-position:left center;
+	background-repeat: no-repeat;
+}
+.v48fv_20x20_download,
+.v48fv_20x20_new,
+.v48fv_20x20_delete,
+.v48fv_20x20_copy,
+.v48fv_20x20_mandatory,
+.v48fv_20x20
+{
+	margin:0;
+	padding:10px 0 10px 20px!important;
+	background-position:left center;
+	background-repeat: no-repeat;
+}
+.v48fv_16x16_debug,
+.v48fv_16x16_edit,
+.v48fv_16x16_donate,
+.v48fv_16x16_form,
+.v48fv_16x16_plate,
+.v48fv_16x16_multisite,
+.v48fv_16x16_forum,
+.v48fv_16x16_info,
+.v48fv_16x16_home,
+.v48fv_16x16_settings,
+.v48fv_16x16_correct,
+.v48fv_16x16_incorrect,
+.v48fv_16x16_download,
+.wrong,
+.correct,
+.v48fv_16x16
+{
+	margin:0;
+	padding:8px 0 8px 16px!important;
+	background-position:left center;
+	background-repeat: no-repeat;
+}
+/***********************************************************************************
+* Icons Graphics 48x48
+***********************************************************************************/
+.v48fv_48x48_critical
+{
+	background-image: url('../images/48x48_critical.png');
+}
+.v48fv_48x48_help
+{
+	background-image: url('../images/48x48_help.png');
+}
+.v48fv_48x48_info
+{
+	background-image: url('../images/48x48_info.png');
+}
+.v48fv_48x48_warning
+{
+	background-image: url('../images/48x48_warning.png');
+}
+/***********************************************************************************
+* Icons Graphics 20x20
+***********************************************************************************/
+.v48fv_20x20_download
+{
+	background-image: url('../images/20x20_download.png');
+}
+.v48fv_20x20_new
+{
+	background-image: url('../images/20x20_new.png');
+}
+.v48fv_20x20_delete
+{
+	background-image: url('../images/20x20_delete.png');
+}
+.v48fv_20x20_copy
+{
+	background-image: url('../images/20x20_copy.png');
+}
+.v48fv_20x20_mandatory
+{
+	background-image: url('../images/20x20_mandatory.png');
+}
+/***********************************************************************************
+* Icons Graphics 48x16
+***********************************************************************************/
+.v48fv_48x16_censor
+{
+	background-image: url('../images/48x16_censor.png');
+}
+.v48fv_48x16_spoiler
+{
+	background-image: url('../images/48x16_spoiler.png');
+}
+/***********************************************************************************
+* Icons Graphics 10x10
+***********************************************************************************/
+.v48fv_10x10_edit {
+	background-image: url('../images/10x10_edit.png');
+}
+/***********************************************************************************
+* Icons Graphics 16x16
+***********************************************************************************/
+.v48fv_16x16_download {
+	background-image: url('../images/16x16_download.png');
+}
+.v48fv_16x16_debug {
+	background-image: url('../images/16x16_debug.png');
+}
+.v48fv_16x16_donate {
+	background-image: url('../images/16x16_paypal.png');
+}
+.v48fv_16x16_form {
+	background-image: url('../images/16x16_forms.png');
+}
+.v48fv_16x16_plate {
+	background-image: url('../images/16x16_form.png');
+}
+.v48fv_16x16_multisite {
+	background-image: url('../images/16x16_multisite.png');
+}
+.v48fv_16x16_forum {
+	background-image: url('../images/16x16_forum.png');
+}
+.v48fv_16x16_info
+{
+	background-image: url('../images/16x16_info.png');
+}
+.v48fv_16x16_home {
+	background-image: url('../images/16x16_home.png');
+}
+.v48fv_16x16_settings {
+	background-image: url('../images/16x16_settings.png');
+}
+.v48fv_16x16_correct,
+.correct
+{
+	background-image: url('../images/16x16_correct.png');
+}
+.v48fv_16x16_incorrect,
+.wrong
+{
+	background-image: url('../images/16x16_incorrect.png');
+}
+.v48fv_16x16_edit
+{
+	background-image: url('../images/16x16_edit.png');
+}

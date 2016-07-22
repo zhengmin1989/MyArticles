@@ -1,0 +1,145 @@
+/*
+    Colorbox Core Style:
+    The following CSS is consistent between example themes and should not be altered.
+*/
+#colorbox.crayon-colorbox, #cboxOverlay.crayon-colorbox, .crayon-colorbox #cboxWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+#cboxOverlay.crayon-colorbox {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.crayon-colorbox #cboxMiddleLeft, .crayon-colorbox #cboxBottomLeft {
+  clear: left;
+}
+
+.crayon-colorbox #cboxContent {
+  position: relative;
+}
+
+.crayon-colorbox #cboxLoadedContent {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.crayon-colorbox #cboxTitle {
+  /* Fixes overlay issue preventing tag editor controls from being selected */
+  display: none !important;
+}
+
+.crayon-colorbox #cboxLoadingOverlay, .crayon-colorbox #cboxLoadingGraphic {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.crayon-colorbox #cboxPrevious, .crayon-colorbox #cboxNext, .crayon-colorbox #cboxClose, .crayon-colorbox #cboxSlideshow {
+  cursor: pointer;
+}
+
+.crayon-colorbox .cboxPhoto {
+  float: left;
+  margin: auto;
+  border: 0;
+  display: block;
+  max-width: none;
+  -ms-interpolation-mode: bicubic;
+}
+
+.crayon-colorbox .cboxIframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+#colorbox.crayon-colorbox, .crayon-colorbox #cboxContent, .crayon-colorbox #cboxLoadedContent {
+  box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+}
+
+/* 
+    User Style:
+    Change the following styles to modify the appearance of Colorbox.  They are
+    ordered & tabbed in a way that represents the nesting of the generated HTML.
+*/
+#cboxOverlay.crayon-colorbox {
+  background: #000;
+}
+
+#colorbox.crayon-colorbox {
+  outline: 0;
+}
+
+.crayon-colorbox #cboxContent {
+  margin-top: 20px;
+  background: #000;
+}
+
+.crayon-colorbox .cboxIframe {
+  background: #fff;
+}
+
+.crayon-colorbox #cboxError {
+  padding: 50px;
+  border: 1px solid #ccc;
+}
+
+.crayon-colorbox #cboxLoadedContent {
+  border: 5px solid #000;
+  background: #fff;
+}
+
+.crayon-colorbox #cboxTitle {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  color: #ccc;
+}
+
+.crayon-colorbox #cboxCurrent {
+  position: absolute;
+  top: -20px;
+  right: 0px;
+  color: #ccc;
+}
+
+/* these elements are buttons, and may need to have additional styles reset to avoid unwanted base styles */
+.crayon-colorbox #cboxPrevious, .crayon-colorbox #cboxNext, .crayon-colorbox #cboxSlideshow, .crayon-colorbox #cboxClose {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  width: auto;
+  background: none;
+}
+
+/* avoid outlines on :active (mouseclick), but preserve outlines on :focus (tabbed navigating) */
+.crayon-colorbox #cboxPrevious:active, .crayon-colorbox #cboxNext:active, .crayon-colorbox #cboxSlideshow:active, .crayon-colorbox #cboxClose:active {
+  outline: 0;
+}
+
+.crayon-colorbox #cboxSlideshow {
+  position: absolute;
+  top: -20px;
+  right: 90px;
+  color: #fff;
+}
+
+.crayon-colorbox #cboxContent {
+  margin-top: 0
+}
+
+.crayon-colorbox #cboxLoadedContent {
+  border: 0
+}
