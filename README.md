@@ -1,5 +1,7 @@
 # MyArticles
 
+作者微博：蒸米spark http://www.weibo.com/zhengmin1989
+
 蒸米的部分文章（iOS冰与火之歌系列，一步一步学ROP系列，安卓动态调试七种武器系列等）, 请下载下来后用浏览器阅读:
 
 iOS冰与火之歌 — Objective-C Pwn and iOS arm64 ROP
@@ -22,6 +24,14 @@ Xcode编译器里有鬼 – XcodeGhost样本分析
 
 微信双开还是微信定时炸弹？- 关于非越狱iOS上微信分身高危插件ImgNaix的分析
 
+一步一步学ROP之linux_x86篇
+
+一步一步学ROP之linux_x64篇
+
+一步一步学ROP之gadgets和2free篇
+
+一步一步学ROP之Android ARM 32位篇
+
 安卓动态调试七种武器之长生剑 - Smali Instrumentation
 
 安卓动态调试七种武器之孔雀翎 - Ida
@@ -36,12 +46,3 @@ Xcode编译器里有鬼 – XcodeGhost样本分析
 
 人手一份核武器 - Hacking Team 泄露（开源）资料导览手册
 
-一步一步学ROP之linux_x86篇
-
-一步一步学ROP之linux_x64篇
-
-一步一步学ROP之gadgets和2free篇
-
-一步一步学ROP之Android ARM 32位篇
-
-作者微博：蒸米spark http://www.weibo.com/zhengmin1989
