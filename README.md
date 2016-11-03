@@ -14,6 +14,8 @@ iOS冰与火之歌 — 利用XPC过App沙盒
 
 iOS冰与火之歌 — UAF and Kernel PWN
 
+iOS冰与火之歌 - 基于PEGASUS的OS X 10.11.6本地提权 (番外篇)
+
 iOS URL Scheme 劫持-在未越狱的 iPhone 6上盗取支付宝和微信支付的帐号密码
 
 在非越狱的iPhone 6 (iOS 8.1.3) 上进行钓鱼攻击 (盗取App Store密码)
@@ -45,4 +47,6 @@ Xcode编译器里有鬼 – XcodeGhost样本分析
 手把手教你当微信运动第一名 – 利用Android Hook进行微信运动作弊
 
 人手一份核武器 - Hacking Team 泄露（开源）资料导览手册
+
+通杀所有系统的漏洞? - 聊一聊Drammer，Android上的RowHammer攻击
 
