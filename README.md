@@ -2,6 +2,9 @@
 
 作者微博：蒸米spark http://www.weibo.com/zhengmin1989
 
+Twitter: SparkZheng https://twitter.com/SparkZheng
+
+
 蒸米的部分文章（iOS冰与火之歌系列，一步一步学ROP系列，安卓动态调试七种武器系列等）, 请下载下来后用浏览器阅读:
 
 iOS冰与火之歌 — Objective-C Pwn and iOS arm64 ROP
@@ -50,3 +53,6 @@ Xcode编译器里有鬼 – XcodeGhost样本分析
 
 通杀所有系统的漏洞? - 聊一聊Drammer，Android上的RowHammer攻击
 
+2016年iOS公开可利用漏洞总结(中文版）
+
+2016年iOS公开可利用漏洞总结(英文版)
