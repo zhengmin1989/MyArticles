@@ -7,6 +7,8 @@ Twitter: SparkZheng https://twitter.com/SparkZheng
 
 蒸米的部分文章（iOS冰与火之歌系列，一步一步学ROP系列，安卓动态调试七种武器系列等）, 请下载下来后用浏览器阅读:
 
+Local Privilege Escalation for macOS 10.12.2 via mach_voucher and XNU port Feng Shui
+
 iOS冰与火之歌 — Objective-C Pwn and iOS arm64 ROP
 
 iOS冰与火之歌 — 在非越狱的iOS上进行App Hook（番外篇）
