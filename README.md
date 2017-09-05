@@ -7,6 +7,12 @@ Twitter: SparkZheng https://twitter.com/SparkZheng
 
 蒸米的部分文章（iOS冰与火之歌系列，一步一步学ROP系列，安卓动态调试七种武器系列等）, 请下载下来后用浏览器阅读:
 
+Breaking iOS Mitigation Jails to Achieve Your Own Private Jailbreak
+
+Triple_Fetch Analysis and another iOS NSXPC Sandbox Escape Vulnerability
+
+再谈CVE-2017-7047 Triple_Fetch和另一种用NSXPC过沙盒的姿势
+
 Local Privilege Escalation for macOS 10.12.2 via mach_voucher and XNU port Feng Shui
 
 iOS冰与火之歌 — Objective-C Pwn and iOS arm64 ROP
