@@ -7,6 +7,14 @@ Twitter: SparkZheng https://twitter.com/SparkZheng
 
 蒸米的部分文章（iOS冰与火之歌系列，一步一步学ROP系列，安卓动态调试七种武器系列等）, 请下载下来后用浏览器阅读:
 
+eu-18-Zheng-Eternal-War-in-XNU-Kernel-Objects
+
+eu-18-Bai-The-Last-Line-Of-Defense-Understanding-And-Attacking-Apple-File-System-On-iOS
+
+DEFCON-26-Min-Spark-Zheng-iOS-11-Sandbox-Escaping
+
+DEFCON-25-Min-Spark-Zheng-macOS-iOS-Kernel-Debugging
+
 Breaking iOS Mitigation Jails to Achieve Your Own Private Jailbreak
 
 Triple_Fetch Analysis and another iOS NSXPC Sandbox Escape Vulnerability
